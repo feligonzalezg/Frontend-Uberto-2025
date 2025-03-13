@@ -21,13 +21,13 @@ export const ReadAppRoutes = () => {
           element={
             <>
               <Header />
-              <div style={{ margin: '1rem', paddingBottom: '7rem' }}></div>
-
-              <Routes>
-                <Route path="/" element={<Navigate to="/login" />} />
-                <Route path="/Home" element={<HomeUsuario />} />
-                <Route path="/Home_Chofer" element={<HomeChofer />} />
-              </Routes>
+              <div style={{ paddingBottom: '5rem' }}>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/login" />} />
+                  <Route path="/Home" element={<HomeUsuario />} />
+                  <Route path="/Home_Chofer" element={<HomeChofer />} />
+                </Routes>
+              </div>
 
               <Footer />
             </>
