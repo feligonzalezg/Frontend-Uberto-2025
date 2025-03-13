@@ -1,0 +1,8 @@
+.layout-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 2rem 4rem;
+  width: 100%;
+}

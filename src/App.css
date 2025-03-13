@@ -1,10 +1,16 @@
-#root {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0rem;
-  text-align: center;
-}
+
+@import './styles/button.css';
+@import './styles/input.css';
+@import './styles/layout.css';
+
+:root {
+  --background-color: rgb(245, 244, 244);
+  --primary-color: #470968;
+  --secondary-color: #e6ccb2;
+  --primary-text-color: rgb(0, 0, 0);
+  --secondary-text-color: rgb(255, 255, 255);
+  --hover-color: #470968;
+  --error-color: rgb(235, 20, 20);
 
 .logo {
   height: 6em;
@@ -40,4 +46,5 @@
 
 .read-the-docs {
   color: #888;
+
 }
