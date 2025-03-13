@@ -1,21 +1,13 @@
-import './HomeUsuario.css'
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  IconButton,
-  Divider,
-  InputLabel,
-} from "@mui/material";
+import React, { useState } from 'react';
+import { Box, Typography, TextField, Button, IconButton, Divider } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { useState } from 'react';
+import CardUsuario from "../../Componentes/Card_usuario/Card_usuario";
 import { useNavigate } from 'react-router-dom';
-import CardUsuario from '../../Componentes/Card_usuario/Card_usuario';
+import './HomeUsuario.css';
 
 const HomeUsuario: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [cantidadPasajeros, setCantidadPasajeros] = useState(1);
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
@@ -27,93 +19,45 @@ const HomeUsuario: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    navigate('/Confirmar_Viaje');
-  };
+    navigate('/Confirmar_Viaje')
+  }
 
   return (
-    <div className="home-usuario">
-      <Box className="home-usuario__header">
-        <Typography variant="h5" className="home-usuario__title">
-          Realizar un Viaje
-        </Typography>
+    <Box className="home-container">
+      <Typography variant="h5" className="title">Realizar un Viaje</Typography>
+
+      <Box className="input-group">
+        <Typography variant="body2" className="label">Origen*</Typography>
+        <TextField fullWidth variant="outlined" placeholder="Ingresa el origen" className="input-field" />
       </Box>
 
-      <Box className="home-usuario__form">
-        <form onSubmit={handleSubmit}>
-          <InputLabel className="input-label" htmlFor="origen">
-            Origen*
-          </InputLabel>
-          <TextField
-            className="text-field"
-            id="origen"
-            fullWidth
-            variant="outlined"
-            placeholder="Ingresa el origen"
-            required
-          />
+      <Box className="input-group">
+        <Typography variant="body2" className="label">Destino*</Typography>
+        <TextField fullWidth variant="outlined" placeholder="Ingresa el destino" className="input-field" />
+      </Box>
 
-          <InputLabel className="input-label" htmlFor="destino">
-            Destino*
-          </InputLabel>
-          <TextField
-            className="text-field"
-            id="destino"
-            fullWidth
-            variant="outlined"
-            placeholder="Ingresa el destino"
-            required
-          />
+      <Box className="input-group">
+        <Typography variant="body2" className="label">Fecha*</Typography>
+        <TextField fullWidth variant="outlined" type="date" InputLabelProps={{ shrink: true }} className="input-field" />
+      </Box>
 
-          <InputLabel className="input-label" htmlFor="fecha">
-            Fecha*
-          </InputLabel>
-          <TextField
-            className="text-field"
-            id="fecha"
-            fullWidth
-            variant="outlined"
-            type="date"
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-
-          <InputLabel className="input-label" htmlFor="cantidadPasajeros">
-            Cantidad de Pasajeros*
-          </InputLabel>
-          <Box className="cantidad-pasajeros">
-            <TextField
-              className="text-field cantidad-pasajeros__field"
-              value={cantidadPasajeros}
-              variant="outlined"
-              fullWidth
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <Box className="cantidad-pasajeros__controls">
-              <IconButton onClick={() => handleCantidadPasajerosChange(true)}>
-                <AddCircleIcon className="icon" />
-              </IconButton>
-              <IconButton onClick={() => handleCantidadPasajerosChange(false)}>
-                <RemoveCircleIcon className="icon" />
-              </IconButton>
-            </Box>
+      <Box className="input-group">
+        <Typography variant="body2" className="label">Cantidad de Pasajeros*</Typography>
+        <Box className="cantidad-pasajeros">
+          <TextField value={cantidadPasajeros} variant="outlined" fullWidth className="input-field" InputProps={{ readOnly: true }} />
+          <Box className="button-group">
+            <IconButton onClick={() => handleCantidadPasajerosChange(true)}><AddCircleIcon className="icon" /></IconButton>
+            <IconButton onClick={() => handleCantidadPasajerosChange(false)}><RemoveCircleIcon className="icon" /></IconButton>
           </Box>
-
-          <Button className="button-gradient" type="submit" variant="contained">
-            Buscar
-          </Button>
-        </form>
+        </Box>
       </Box>
 
-      <Divider className="divider" />
-
-      <Box className="home-usuario__results">
-        <Typography variant="h5" className="home-usuario__results-title">
-          Resultados
-        </Typography>
+      <Box className="submit-section">
+        <Button className="submit-button" type="submit" variant="contained" onClick={handleSubmit}>
+          Buscar
+        </Button>
+        <Divider className="divider" />
+        <Typography variant="h5" className="title">Resultados</Typography>
         <CardUsuario
           nombre="Roberto Pettinato"
           cantidadPersonas={2}
@@ -133,9 +77,10 @@ const HomeUsuario: React.FC = () => {
           importe={1500}
         />
       </Box>
-    </div>
+    </Box>
   );
 };
 
 export default HomeUsuario;
+
 

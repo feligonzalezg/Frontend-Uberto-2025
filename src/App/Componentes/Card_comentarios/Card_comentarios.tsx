@@ -1,4 +1,4 @@
-import React from "react";
+import './CardComentario.css';
 import { Card, CardHeader, CardContent, Avatar, Typography, Box } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 
@@ -12,34 +12,31 @@ interface ComentarioProps {
 
 const CardComentario: React.FC<ComentarioProps> = ({ nombre, fecha, foto, puntuacion, comentario }) => {
   return (
-    <Card sx={{ width: '100%', maxWidth: 600, margin: 'auto',marginBottom: 1, boxShadow: 3, borderRadius: 3, border: '1px solid black' }}>
-      <CardHeader
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '20%'
-        }}
-        avatar={<Avatar src={foto} alt={nombre} sx={{ width: 50, height: 50 }} />}
-        title={
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Typography variant="h6">{nombre}</Typography>
-            <Typography variant="body2" sx={{ color: 'gray' }}>{fecha}</Typography>
-          </Box>
-        }
-        action={
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="body2" sx={{ fontSize: "110%", fontWeight: 'bold' }}>
-              {puntuacion}
-            </Typography>
-            <StarIcon sx={{ color: 'black' }} />
-          </Box>
-        }
-      />
-      <CardContent sx={{ textAlign: 'left' }}>
-        <Typography variant="body1">{comentario}</Typography>
-      </CardContent>
-    </Card>
+    <div className="card-comentario">
+      <Card className="card-comentario__card">
+        <CardHeader
+          className="card-comentario__header"
+          avatar={<Avatar src={foto} alt={nombre} className="card-comentario__avatar" />}
+          title={
+            <Box className="card-comentario__header-content">
+              <Typography variant="h6" className="card-comentario__name">{nombre}</Typography>
+              <Typography variant="body2" className="card-comentario__date">{fecha}</Typography>
+            </Box>
+          }
+          action={
+            <Box className="card-comentario__rating">
+              <Typography variant="body2" className="card-comentario__rating-text">
+                {puntuacion}
+              </Typography>
+              <StarIcon className="card-comentario__star-icon" />
+            </Box>
+          }
+        />
+        <CardContent className="card-comentario__content">
+          <Typography variant="body1">{comentario}</Typography>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

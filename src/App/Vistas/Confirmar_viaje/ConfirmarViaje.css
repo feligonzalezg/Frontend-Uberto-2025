@@ -1,4 +1,3 @@
-/* ConfirmarViaje.css */
 .confirmar-viaje {
     width: 100%;
     max-width: 600px;
@@ -21,7 +20,7 @@
   .confirmar-viaje__label {
     font-weight: bold;
     text-align: left;
-    color: #9348e4;
+    color: #000000;
   }
   
   .confirmar-viaje__value {
@@ -45,7 +44,7 @@
   .chofer-info__label {
     font-weight: bold;
     text-align: left;
-    color: #9348e4;
+    color: #000000;
   }
   
   .chofer-info__value {

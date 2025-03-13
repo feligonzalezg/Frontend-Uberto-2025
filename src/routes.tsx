@@ -10,7 +10,7 @@ import HomeUsuario from './App/Vistas/Home_Usuario/Home_usuario'
 import Header from './App/Componentes/Header/Header'
 import Footer from './App/Componentes/Footer/Footer'
 import HomeChofer from './App/Vistas/Home_chofer/Home_chofer'
-import ConfirmarViaje from './App/Vistas/Home_Usuario/Confirmar_viaje'
+import ConfirmarViaje from './App/Vistas/Confirmar_viaje/Confirmar_viaje'
 
 export const ReadAppRoutes = () => {
   return (
