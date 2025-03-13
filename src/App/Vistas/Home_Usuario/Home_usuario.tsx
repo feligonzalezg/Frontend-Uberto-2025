@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, IconButton, Divider } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import CardUsuario from "../../Componentes/Card_usuario/Card_usuario";
+import { useNavigate } from 'react-router-dom'
 
 const HomeUsuario: React.FC = () => {
+  const navigate = useNavigate()
   const [cantidadPasajeros, setCantidadPasajeros] = useState(1);
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
@@ -15,10 +17,13 @@ const HomeUsuario: React.FC = () => {
     }
   };
 
+  const handleSubmit = () => {
+    navigate('/Confirmar_Viaje')
+  }
+
   return (
     <Box sx={{ 
       width: '100%', 
-      maxWidth: 600, 
       margin: 'auto', 
       padding: 2, 
       boxShadow: 3, 
@@ -95,11 +100,7 @@ const HomeUsuario: React.FC = () => {
       </Box>
 
       <Box sx={{ textAlign: 'center' }}>
-        <Button 
-          variant="contained" 
-          color="primary" 
-          sx={{ width: "100%", backgroundColor: '#9348e4', color: '#fff' }}  
-        >
+      <Button className="button-gradient" type="submit" variant="contained" onClick={handleSubmit}>
           Buscar
         </Button>
         <Divider sx={{ my: 2, backgroundColor: "#5508a7" }} />
