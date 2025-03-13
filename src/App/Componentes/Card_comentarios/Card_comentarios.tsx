@@ -12,12 +12,13 @@ interface ComentarioProps {
 
 const CardComentario: React.FC<ComentarioProps> = ({ nombre, fecha, foto, puntuacion, comentario }) => {
   return (
-    <Card sx={{ width: '100%', maxWidth: 600, margin: 'auto', boxShadow: 3, borderRadius: 3, border: '1px solid black' }}>
+    <Card sx={{ width: '100%', maxWidth: 600, margin: 'auto',marginBottom: 1, boxShadow: 3, borderRadius: 3, border: '1px solid black' }}>
       <CardHeader
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          height: '20%'
         }}
         avatar={<Avatar src={foto} alt={nombre} sx={{ width: 50, height: 50 }} />}
         title={

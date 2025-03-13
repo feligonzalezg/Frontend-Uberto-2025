@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Typography, TextField, Button, IconButton } from "@mui/material";
+import { Box, Typography, TextField, Button, IconButton, Divider } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import CardUsuario from "../../Componentes/Card_usuario/Card_usuario";
 
 const HomeUsuario: React.FC = () => {
   const [cantidadPasajeros, setCantidadPasajeros] = useState(1);
@@ -101,6 +102,28 @@ const HomeUsuario: React.FC = () => {
         >
           Buscar
         </Button>
+        <Divider sx={{ my: 2, backgroundColor: "#5508a7" }} />
+        <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'start', color: '#5508a7', fontWeight: 'bold' }}>
+  Resultados
+</Typography>
+        <CardUsuario
+          nombre="Roberto Pettinato"
+          cantidadPersonas={2}
+          foto="https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1"
+          desde="Av Siempre viva"
+          hacia="Calle falsa"
+          horario={1800}
+          importe={1500}
+        />
+        <CardUsuario
+          nombre="Roberto Pettinato"
+          cantidadPersonas={2}
+          foto="https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1"
+          desde="Av Siempre viva"
+          hacia="Calle falsa"
+          horario={1800}
+          importe={1500}
+        />
       </Box>
     </Box>
   );

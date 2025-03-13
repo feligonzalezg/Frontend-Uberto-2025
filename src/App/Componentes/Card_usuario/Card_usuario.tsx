@@ -11,6 +11,7 @@ interface CardUsuarioProps {
   importe: number;
 }
 
+
 const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, foto, desde, hacia, horario, importe }) => {
 
   const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
@@ -18,7 +19,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, fot
   const fotoUsuario = foto || "https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1";
 
   return (
-    <Box sx={{  display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{  display: 'flex', justifyContent: 'center', marginBottom: 1 }}>
       <Card sx={{
         margin: 'auto',
         width: '100%', 
