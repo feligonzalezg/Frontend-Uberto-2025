@@ -21,14 +21,14 @@ interface ConfirmarViajeProps {
   };
 }
 
-const ConfirmarViaje: React.FC<ConfirmarViajeProps> = ({
+const ConfirmarViaje = ({
   origen,
   destino,
   fecha,
   duracion,
   cantidadPasajeros,
   chofer,
-}) => {
+}: ConfirmarViajeProps) => {
   return (
     <div className="confirmar-viaje">
       <Box className="confirmar-viaje__header">

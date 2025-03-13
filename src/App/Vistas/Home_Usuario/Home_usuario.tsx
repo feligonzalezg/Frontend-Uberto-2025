@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Typography, TextField, Button, IconButton, Divider } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -6,21 +6,17 @@ import CardUsuario from "../../Componentes/Card_usuario/Card_usuario";
 import { useNavigate } from 'react-router-dom';
 import './HomeUsuario.css';
 
-const HomeUsuario: React.FC = () => {
-  const navigate = useNavigate()
+const HomeUsuario = () => {
+  const navigate = useNavigate();
   const [cantidadPasajeros, setCantidadPasajeros] = useState(1);
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
-    if (increment) {
-      setCantidadPasajeros(cantidadPasajeros + 1);
-    } else if (cantidadPasajeros > 1) {
-      setCantidadPasajeros(cantidadPasajeros - 1);
-    }
+    setCantidadPasajeros(prev => (increment ? prev + 1 : Math.max(1, prev - 1)));
   };
 
   const handleSubmit = () => {
-    navigate('/Confirmar_Viaje')
-  }
+    navigate('/Confirmar_Viaje');
+  };
 
   return (
     <Box className="home-container">
@@ -82,5 +78,6 @@ const HomeUsuario: React.FC = () => {
 };
 
 export default HomeUsuario;
+
 
 
