@@ -1,0 +1,46 @@
+.button-primary {
+  display: flex;
+  width: 100%;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.295);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.button-primary:hover {
+  background-color: var(--hover-color);
+  box-shadow: 0 5px 9px rgba(99, 57, 135, 0.658);
+}
+
+.button-secondary {
+  background-color: var(--secondary-buton-color);
+  color: var(--primary-text-color);
+  border: 1px solid #827878;
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.295);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.button-gradient {
+  display: flex;
+  width: 100%;
+  font-size: 18px;
+  background-image: linear-gradient(45deg, #2f0636, #7016a0);
+  color: white;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.295);
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
