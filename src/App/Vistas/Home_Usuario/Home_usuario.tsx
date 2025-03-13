@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, IconButton, Divider } from "@mui/material";
+import './HomeUsuario.css'
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  IconButton,
+  Divider,
+  InputLabel,
+} from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import CardUsuario from "../../Componentes/Card_usuario/Card_usuario";
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CardUsuario from '../../Componentes/Card_usuario/Card_usuario';
 
 const HomeUsuario: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [cantidadPasajeros, setCantidadPasajeros] = useState(1);
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
@@ -18,95 +27,93 @@ const HomeUsuario: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    navigate('/Confirmar_Viaje')
-  }
+    navigate('/Confirmar_Viaje');
+  };
 
   return (
-    <Box sx={{ 
-      width: '100%', 
-      margin: 'auto', 
-      padding: 2, 
-      boxShadow: 3, 
-      borderRadius: 2, 
-      backgroundColor: '#f0eff2'  
-    }}>
-      <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'start', color: '#5508a7', fontWeight: 'bold' }}>
-  Realizar un Viaje
-</Typography>
-
-      <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="body2" sx={{ marginBottom: 1, textAlign: 'start', color: '#9348e4' }}>
-          Origen*
+    <div className="home-usuario">
+      <Box className="home-usuario__header">
+        <Typography variant="h5" className="home-usuario__title">
+          Realizar un Viaje
         </Typography>
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Ingresa el origen"
-          sx={{ color: '#9348e4' }} 
-        />
       </Box>
 
-      <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="body2" sx={{ marginBottom: 1, textAlign: 'start', color: '#9348e4' }}>
-          Destino*
-        </Typography>
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Ingresa el destino"
-          sx={{ color: '#9348e4' }}  
-        />
-      </Box>
-
-      <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="body2" sx={{ textAlign: 'start', marginBottom: 1, color: '#9348e4' }}>
-          Fecha*
-        </Typography>
-        <TextField
-          fullWidth
-          variant="outlined"
-          type="date"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          sx={{ color: '#9348e4' }}  
-        />
-      </Box>
-
-      <Box sx={{ marginBottom: 2 }}>
-        <Typography variant="body2" sx={{ marginBottom: 1, textAlign: 'start', color: '#9348e4' }}>
-          Cantidad de Pasajeros*
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box className="home-usuario__form">
+        <form onSubmit={handleSubmit}>
+          <InputLabel className="input-label" htmlFor="origen">
+            Origen*
+          </InputLabel>
           <TextField
-            value={cantidadPasajeros}
-            variant="outlined"
+            className="text-field"
+            id="origen"
             fullWidth
-            sx={{ textAlign: 'center', color: '#9348e4' }}  
-            InputProps={{
-              readOnly: true,
+            variant="outlined"
+            placeholder="Ingresa el origen"
+            required
+          />
+
+          <InputLabel className="input-label" htmlFor="destino">
+            Destino*
+          </InputLabel>
+          <TextField
+            className="text-field"
+            id="destino"
+            fullWidth
+            variant="outlined"
+            placeholder="Ingresa el destino"
+            required
+          />
+
+          <InputLabel className="input-label" htmlFor="fecha">
+            Fecha*
+          </InputLabel>
+          <TextField
+            className="text-field"
+            id="fecha"
+            fullWidth
+            variant="outlined"
+            type="date"
+            required
+            InputLabelProps={{
+              shrink: true,
             }}
           />
-          
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <IconButton onClick={() => handleCantidadPasajerosChange(true)}>
-              <AddCircleIcon sx={{ color: '#9348e4' }} /> 
-            </IconButton>
-            <IconButton onClick={() => handleCantidadPasajerosChange(false)}>
-              <RemoveCircleIcon sx={{ color: '#9348e4' }} /> 
-            </IconButton>
+
+          <InputLabel className="input-label" htmlFor="cantidadPasajeros">
+            Cantidad de Pasajeros*
+          </InputLabel>
+          <Box className="cantidad-pasajeros">
+            <TextField
+              className="text-field cantidad-pasajeros__field"
+              value={cantidadPasajeros}
+              variant="outlined"
+              fullWidth
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+            <Box className="cantidad-pasajeros__controls">
+              <IconButton onClick={() => handleCantidadPasajerosChange(true)}>
+                <AddCircleIcon className="icon" />
+              </IconButton>
+              <IconButton onClick={() => handleCantidadPasajerosChange(false)}>
+                <RemoveCircleIcon className="icon" />
+              </IconButton>
+            </Box>
           </Box>
-        </Box>
+
+          <Button className="button-gradient" type="submit" variant="contained">
+            Buscar
+          </Button>
+        </form>
       </Box>
 
-      <Box sx={{ textAlign: 'center' }}>
-      <Button className="button-gradient" type="submit" variant="contained" onClick={handleSubmit}>
-          Buscar
-        </Button>
-        <Divider sx={{ my: 2, backgroundColor: "#5508a7" }} />
-        <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'start', color: '#5508a7', fontWeight: 'bold' }}>
-  Resultados
-</Typography>
+      <Divider className="divider" />
+
+      <Box className="home-usuario__results">
+        <Typography variant="h5" className="home-usuario__results-title">
+          Resultados
+        </Typography>
         <CardUsuario
           nombre="Roberto Pettinato"
           cantidadPersonas={2}
@@ -126,8 +133,9 @@ const HomeUsuario: React.FC = () => {
           importe={1500}
         />
       </Box>
-    </Box>
+    </div>
   );
 };
 
 export default HomeUsuario;
+

@@ -1,0 +1,74 @@
+/* HomeUsuario.css */
+.home-usuario {
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #f0eff2;
+  }
+  
+  .home-usuario__header {
+    text-align: center;
+  }
+  
+  .home-usuario__title {
+    font-weight: bold;
+    color: #5508a7;
+  }
+  
+  .home-usuario__form {
+    margin-bottom: 20px;
+  }
+  
+  .input-label {
+    color: #9348e4;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .text-field {
+    margin-bottom: 20px;
+    color: #9348e4;
+  }
+  
+  .cantidad-pasajeros {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .cantidad-pasajeros__field {
+    text-align: center;
+  }
+  
+  .cantidad-pasajeros__controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10px;
+  }
+  
+  .icon {
+    color: #9348e4;
+  }
+  
+  .button-gradient {
+    background: linear-gradient(to right, #9348e4, #5508a7);
+    color: white;
+  }
+  
+  .divider {
+    margin: 20px 0;
+    background-color: #5508a7;
+  }
+  
+  .home-usuario__results {
+    text-align: center;
+  }
+  
+  .home-usuario__results-title {
+    font-weight: bold;
+    color: #5508a7;
+  }
+  
