@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import usuarioService from '../../Services/LoginService'
 
 export const Login = () => {
   const navigate = useNavigate()
@@ -23,6 +24,32 @@ export const Login = () => {
     password: '',
     showPassword: false,
   })
+  const [usuario, setUsuario] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(false)
+  
+
+  const iniciarSesion = async () => {
+    try {
+      if (!usuario || !password) {
+        
+
+        return
+      }
+      const usuarioObjeto = await usuarioService.validarUsuario(usuario, password)
+      console.log('Inicio de sesión exitoso. Usuario:', usuarioObjeto)
+      const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
+      localStorage.setItem('usuId', usuarioId.toString())
+      console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
+      //setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
+
+      navigate('/Home')
+     
+      } catch (error) {
+        console.error('Error al iniciar sesión:')
+      }
+    }
+  
 
   const togglePasswordVisibility = () => {
     setFormValues((prevValues) => ({
@@ -55,7 +82,7 @@ export const Login = () => {
           name="userName"
           autoFocus
           required
-          onChange={() => {}}
+          onChange={(event) => setUsuario(event.target.value)}
           slotProps={{
             input: {
               startAdornment: (
@@ -81,7 +108,7 @@ export const Login = () => {
           name="password"
           type={formValues.showPassword ? 'text' : 'password'}
           required
-          onChange={() => {}}
+          onChange={(event) => setPassword(event.target.value)}
           slotProps={{
             input: {
               startAdornment: (
@@ -104,7 +131,7 @@ export const Login = () => {
           }}
         />
 
-        <Button className="button-gradient" type="submit" variant="contained">
+        <Button className="button-gradient" type="submit" variant="contained" onClick={iniciarSesion()}>
           Ingresar
         </Button>
       </Box>
