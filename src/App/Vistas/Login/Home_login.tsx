@@ -44,9 +44,12 @@ export const Login = () => {
       const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
       localStorage.setItem('usuId', usuarioId.toString())
       console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
+      if(usuarioObjeto.esChofer) {
+        navigate('/HomeChofer')
+        }else{
+        navigate('/Home')
+        }
       //setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-
-      navigate('/Home')
       
       } catch (error) {
         console.error('Error al iniciar sesión:')
