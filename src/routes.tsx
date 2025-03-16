@@ -5,11 +5,12 @@ import {
   Navigate,
 } from 'react-router-dom'
 
-import Login from './App/Vistas/Login/Home_login'
+import Login from './App/Vistas/Login/login'
 import HomeUsuario from './App/Vistas/Home_Usuario/Home_usuario'
 import Header from './App/Componentes/Header/Header'
 import Footer from './App/Componentes/Footer/Footer'
 import HomeChofer from './App/Vistas/Home_chofer/Home_chofer'
+import Perfil from './App/Vistas/Perfil/Perfil'
 import ConfirmarViaje from './App/Vistas/Confirmar_viaje/Confirmar_viaje'
 
 export const ReadAppRoutes = () => {
@@ -27,6 +28,7 @@ export const ReadAppRoutes = () => {
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="/Home" element={<HomeUsuario />} />
                   <Route path="/Home_Chofer" element={<HomeChofer />} />
+                  <Route path="/Perfil_Usuario" element={<Perfil />} />
                   <Route path="/Confirmar_viaje" element={<ConfirmarViaje
                     origen="City A"
                     destino="City B"
@@ -48,7 +50,6 @@ export const ReadAppRoutes = () => {
             </>
           }
         />
-      </Routes>
     </>
   )
 }
