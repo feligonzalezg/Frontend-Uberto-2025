@@ -5,7 +5,7 @@ import StarIcon from '@mui/icons-material/Star';
 interface ComentarioProps {
   nombre: string;
   fecha: string;
-  foto: string;
+  //foto: string;
   puntuacion: number;
   comentario: string;
 }

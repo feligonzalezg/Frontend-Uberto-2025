@@ -18,7 +18,7 @@ import { REST_SERVER_URL } from './configuracion'
     cerrarSession(){
       return usuarioId (null)
     }
- 
+  
   }
 
   const usuarioService = new UsuarioService()

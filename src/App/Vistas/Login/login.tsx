@@ -42,7 +42,7 @@ export const Login = () => {
       const usuarioObjeto = await usuarioService.validarUsuario(usuario, password)
       console.log('Inicio de sesión exitoso. Usuario:', usuarioObjeto)
       const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
-      localStorage.setItem('usuId', usuarioId.toString())
+      localStorage.setItem('usuario', JSON.stringify(usuarioObjeto))
       console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
       if(usuarioObjeto.esChofer) {
         navigate('/HomeChofer')
