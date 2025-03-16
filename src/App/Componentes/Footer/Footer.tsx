@@ -40,7 +40,7 @@ const Footer = () => {
             value="perfil"
             icon={<PortraitIcon />}
             component={Link}
-            to="/Home"
+            to="/Perfil_Usuario"
           />
 
           <BottomNavigationAction

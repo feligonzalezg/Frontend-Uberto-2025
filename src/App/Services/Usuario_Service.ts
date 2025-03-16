@@ -1,7 +1,4 @@
 const UsuarioService = () => {
-
-  return {
-    
-  }
+  return {}
 }
-
+export const userService = UsuarioService()
