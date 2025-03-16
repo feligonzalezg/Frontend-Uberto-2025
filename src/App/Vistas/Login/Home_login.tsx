@@ -30,9 +30,12 @@ export const Login = () => {
   
 
   const iniciarSesion = async () => {
+    event?.preventDefault()
+
     try {
       if (!usuario || !password) {
-        
+        console.error("Usuario invalido")
+        setError(true)
 
         return
       }
@@ -44,7 +47,7 @@ export const Login = () => {
       //setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
 
       navigate('/Home')
-     
+      
       } catch (error) {
         console.error('Error al iniciar sesión:')
       }
@@ -59,7 +62,7 @@ export const Login = () => {
   }
 
   const handleSubmit = () => {
-    navigate('/Home')
+    //navigate('/Home')
   }
 
   return (
@@ -67,7 +70,7 @@ export const Login = () => {
       <Box className="logo">
         <h1>Uberto</h1>
       </Box>
-      <Box className="login-form" component="form" onSubmit={handleSubmit}>
+      <Box className="login-form" component="form" onSubmit={iniciarSesion}>
         <InputLabel
           className="input-label input-label--login"
           htmlFor="userName"
@@ -131,7 +134,7 @@ export const Login = () => {
           }}
         />
 
-        <Button className="button-gradient" type="submit" variant="contained" onClick={iniciarSesion()}>
+        <Button className="button-gradient" type="submit" variant="contained">
           Ingresar
         </Button>
       </Box>
