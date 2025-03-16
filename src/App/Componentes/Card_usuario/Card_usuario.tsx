@@ -1,4 +1,4 @@
-import React from "react";
+import './CardUsuario.css';
 import { Card, CardHeader, CardContent, Avatar, Typography, Box } from "@mui/material";
 
 interface CardUsuarioProps {
@@ -11,7 +11,6 @@ interface CardUsuarioProps {
   importe: number;
 }
 
-
 const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, foto, desde, hacia, horario, importe }) => {
 
   const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
@@ -19,42 +18,30 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, fot
   const fotoUsuario = foto || "https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1";
 
   return (
-    <Box sx={{  display: 'flex', justifyContent: 'center', marginBottom: 1 }}>
-      <Card sx={{
-        margin: 'auto',
-        width: '100%', 
-        maxWidth: 400,
-        boxShadow: 3,
-        borderRadius: 3,
-        border: '1px solid black',
-      }}>
+    <div className="card-usuario">
+      <Card className="card-usuario__card">
         <CardHeader
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: '#5508a7',
-          }}
+          className="card-usuario__header"
           title={
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', color: 'black' }}>
-              <Typography variant="h6" sx={{ color: 'black' }}>{nombre}</Typography>
-              <Typography variant="body2" sx={{ color: 'black' }}>{`Personas: ${cantidadPersonas}`}</Typography>
+            <Box className="card-usuario__header-content">
+              <Typography variant="h6" className="card-usuario__name">{nombre}</Typography>
+              <Typography variant="body2" className="card-usuario__people-count">{`Personas: ${cantidadPersonas}`}</Typography>
             </Box>
           }
           action={
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: 2 }}>
+            <Box className="card-usuario__avatar-container">
               <Avatar src={fotoUsuario} alt={nombre} />
             </Box>
           }
         />
-        <CardContent sx={{ textAlign: 'left' }}>
+        <CardContent className="card-usuario__content">
           <Typography variant="body1"><strong>Desde:</strong> {desde}</Typography>
           <Typography variant="body1"><strong>Hacia:</strong> {hacia}</Typography>
           <Typography variant="body1"><strong>Horario:</strong> {formatoHorario}</Typography>
           <Typography variant="body1"><strong>Importe:</strong> ${importe}</Typography>
         </CardContent>
       </Card>
-    </Box>
+    </div>
   );
 };
 

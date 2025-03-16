@@ -1,0 +1,69 @@
+.home-container {
+  width: 100%;
+  margin: auto;
+  padding: 16px;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #f0eff2;
+}
+
+.title {
+  margin-bottom: 16px;
+  text-align: left;
+  color: #5508a7;
+  font-weight: bold;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.label {
+  margin-bottom: 8px;
+  text-align: left;
+  color: #9348e4;
+}
+
+.input-field {
+  color: #9348e4;
+}
+
+.cantidad-pasajeros {
+  display: flex;
+  align-items: center;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  color: #9348e4;
+}
+
+.submit-section {
+  text-align: center;
+}
+
+.submit-button {
+  background: linear-gradient(90deg, #9348e4, #5508a7);
+  color: white;
+  width: 100%;
+}
+
+.divider {
+  margin: 16px 0;
+  background-color: #5508a7;
+}
+
+.card-section {
+  margin-top: 24px;
+}
+
+.card-title {
+  text-align: left;
+  color: #5508a7;
+  font-weight: bold;
+}
