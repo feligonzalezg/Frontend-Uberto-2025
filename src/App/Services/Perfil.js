@@ -21,6 +21,20 @@ import { REST_SERVER_URL } from './configuracion'
 
     }
 
+    async getComentarios(id) {
+      try {
+        console.log("llegue al service del perfil")
+        const comentarios = await axios.get(`${REST_SERVER_URL}/comentario/${id}`)
+        console.log(comentarios.data)
+        return comentarios.data
+      }
+  
+  catch (error) {
+      console.error(error)
+    }
+
+  }
+
 
 
   }

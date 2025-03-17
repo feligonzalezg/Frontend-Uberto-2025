@@ -1,28 +1,14 @@
 import { Box, Typography, Avatar, IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { useEffect, useState } from 'react'
 
 interface Amigo {
   nombreYApellido: string,
+  username: string,
   avatar: string,
-  info: string
 }
 
 
-const Amigos = () => {
-
-  const [usuario, setUsuario] = useState({
-    amigos:[]
-  })
-
-
-  useEffect(() => {
-    const choferStorage = localStorage.getItem("usuario")
-    const choferObject = JSON.parse(choferStorage!!)
-    setUsuario({
-      amigos: choferObject.amigos || [],
-    })
-  },[])
+const Amigos = ({amigos}: any) => {
 
   return (
     <Box sx={{ marginTop: 3 }}>
@@ -30,9 +16,9 @@ const Amigos = () => {
         Amigos
       </Typography>
 
-      {usuario.amigos.map((amigo: Amigo) => (
+      {amigos.map((amigo: Amigo, index: any) => (
         <Box
-          //key={amigo.nombreYApellido}
+          key={index}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -50,7 +36,7 @@ const Amigos = () => {
               <Typography variant="h6" fontWeight="bold">
                 {amigo.nombreYApellido}
               </Typography>
-              <Typography variant="body1">{amigo.info}</Typography>
+              <Typography variant="body1">{amigo.username}</Typography>
             </Box>
           </Box>
           <IconButton>

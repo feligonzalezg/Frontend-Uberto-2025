@@ -1,6 +1,7 @@
 import { TextField, Button, Typography, Box } from '@mui/material'
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
+import Amigos from './amigos'
 
 interface Usuario {
   nombre: string,
@@ -99,7 +100,7 @@ const DatosUsuario = () => {
         type="number"
         variant="outlined"
         margin="normal"
-        value={usuario!!.saldo}
+        value={usuario.saldo ?? ""}
         onChange={(event) => actualizarCampo("saldo", event.target.value)}
       />
 
@@ -113,6 +114,7 @@ const DatosUsuario = () => {
         Agregar Saldo
         
       </Button>
+      {usuario.amigos && <Amigos amigos={usuario.amigos} /> }
     </Box>
   )
 }
