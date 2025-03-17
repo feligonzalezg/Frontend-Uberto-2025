@@ -45,12 +45,7 @@ const Perfil = () => {
 
       {/* Contenido */}
       <Box>
-        {tabIndex === 0 && (
-          <>
-            <DatosUsuario />
-            <Amigos />
-          </>
-        )}
+        {tabIndex === 0 && <DatosUsuario />}
         {tabIndex === 1 && <Viajes />}
         {tabIndex === 2 && <Calificaciones />}
       </Box>
