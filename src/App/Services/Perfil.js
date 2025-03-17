@@ -1,15 +1,22 @@
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuracion'
 
-  class UsuarioService  {
+  class PerfilService  {
 
-    async dataUsuario(usuario,contrasenia) {
+    async dataUsuario(userObject) {
         try {
-
+          console.log("llegue al service del perfil")
+          const usuario = await axios.get(`${REST_SERVER_URL}/perfil/${userObject.id}`, {
+            params: {
+              esChofer: userObject.esChofer
+            }
+          })
+          console.log(usuario.data)
+          return usuario.data
         }
     
     catch (error) {
-        
+        console.error(error)
       }
 
     }
@@ -17,3 +24,6 @@ import { REST_SERVER_URL } from './configuracion'
 
 
   }
+
+const perfilService = new PerfilService()
+export default perfilService
