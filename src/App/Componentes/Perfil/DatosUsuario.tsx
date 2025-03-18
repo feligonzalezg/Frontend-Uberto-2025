@@ -1,4 +1,15 @@
-import { TextField, Button, Typography, Box, CircularProgress, Snackbar, Alert } from '@mui/material'
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  CircularProgress,
+  Snackbar,
+  Alert,
+  IconButton,
+  Modal,
+} from '@mui/material'
+import { Add as AddIcon } from '@mui/icons-material' // Ícono de "+"
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
 import Amigos from './amigos'
@@ -28,6 +39,8 @@ const DatosUsuario = () => {
   const [mensaje, setMensaje] = useState('')
   const [success, setSuccess] = useState(false)
   const [monto, setMonto] = useState("")
+  const [openAgregarAmigoModal, setOpenAgregarAmigoModal] = useState(false) // Estado para el modal
+  const [nuevoAmigo, setNuevoAmigo] = useState("") // Estado para el nuevo amigo
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
     setUsuario((prevUsuario) => ({
@@ -41,7 +54,7 @@ const DatosUsuario = () => {
     console.log('usuario Modificado ', usuario)
 
     try {
-      await perfilService.actualizarUsuario(userObject.id, usuario)
+      // await perfilService.actualizarUsuario(userObject.id, usuario)
       setMensaje("Cambios guardados exitosamente.")
       setSuccess(true)
     } catch (error) {
@@ -57,12 +70,53 @@ const DatosUsuario = () => {
     console.log('usuario Modificado ', monto)
 
     try {
-      await perfilService.cargarSaldo(userObject.id, monto)
+      // await perfilService.cargarSaldo(userObject.id, usuario)
       setMensaje("Se cargó saldo exitosamente.")
       setSuccess(true)
       setMonto("")
     } catch (error) {
       setError("Error al cargar saldo. Por favor, inténtalo de nuevo.")
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Abrir modal para agregar amigo
+  const handleOpenAgregarAmigoModal = () => {
+    setOpenAgregarAmigoModal(true)
+  }
+
+  // Cerrar modal para agregar amigo
+  const handleCloseAgregarAmigoModal = () => {
+    setOpenAgregarAmigoModal(false)
+    setNuevoAmigo("") // Limpiar el campo al cerrar
+  }
+
+  // Agregar amigo
+  const handleAgregarAmigo = async () => {
+    if (!nuevoAmigo) {
+      setError("Por favor, ingresa un nombre de usuario.")
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      // Simular la llamada a la API para agregar un amigo
+      // await perfilService.agregarAmigo(userObject.id, nuevoAmigo)
+
+      // Actualizar la lista de amigos (simulado)
+      setUsuario((prevUsuario) => ({
+        ...prevUsuario,
+        amigos: [...(prevUsuario.amigos || []), nuevoAmigo],
+      }))
+
+      setMensaje("Amigo agregado exitosamente.")
+      setSuccess(true)
+      handleCloseAgregarAmigoModal() // Cerrar el modal
+    } catch (error) {
+      setError("Error al agregar amigo. Por favor, inténtalo de nuevo.")
       console.error(error)
     } finally {
       setLoading(false)
@@ -122,10 +176,6 @@ const DatosUsuario = () => {
             value={usuario.precioBase ?? ""}
             onChange={(event) => actualizarCampo("precioBase", Number(event.target.value))}
           />
-
-<Typography fontWeight="bold" variant="h5" sx={{ margin: 3 }}>
-        Automivilista Premium
-      </Typography>
           <TextField
             fullWidth
             label="Dominio"
@@ -157,34 +207,92 @@ const DatosUsuario = () => {
       </Button>
 
       {!esChofer && (
-  <>
-    <Typography variant="h6" sx={{ mt: 3 }}>
-      Saldo Disponible: {usuario.saldo ?? ""}
-    </Typography>
-    <TextField
-      fullWidth
-      label="Monto"
-      type="number"
-      variant="outlined"
-      margin="normal"
-      value={monto}
-      onChange={(event) => setMonto(event.target.value)}
-    />
+        <>
+          <Typography variant="h6" sx={{ mt: 3 }}>
+            Saldo Disponible: {usuario.saldo ?? ""}
+          </Typography>
+          <TextField
+            fullWidth
+            label="Monto"
+            type="number"
+            variant="outlined"
+            margin="normal"
+            value={monto}
+            onChange={(event) => setMonto(event.target.value)}
+          />
 
-    <Button
-      className="button-primary"
-      variant="contained"
-      fullWidth
-      sx={{ mt: 2, backgroundColor: 'purple' }}
-      onClick={handleAgregarSaldo}
-      disabled={loading}
-    >
-      {loading ? <CircularProgress size={24} /> : "Agregar Saldo"}
-    </Button>
+          <Button
+            className="button-primary"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 2, backgroundColor: 'purple' }}
+            onClick={handleAgregarSaldo}
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={24} /> : "Agregar Saldo"}
+          </Button>
 
-    {usuario.amigos && <Amigos amigos={usuario.amigos} />}
-  </>
-)}
+          {/* Botón para agregar amigo */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+            <IconButton
+              onClick={handleOpenAgregarAmigoModal}
+              sx={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
+            >
+              <AddIcon />
+            </IconButton>
+          </Box>
+
+          {usuario.amigos && <Amigos amigos={usuario.amigos} />}
+        </>
+      )}
+
+      {/* Modal para agregar amigo */}
+      <Modal
+        open={openAgregarAmigoModal}
+        onClose={handleCloseAgregarAmigoModal}
+        aria-labelledby="modal-agregar-amigo"
+        aria-describedby="modal-agregar-amigo-desc"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+            Agregar Amigo
+          </Typography>
+          <TextField
+            fullWidth
+            label="Nombre de usuario"
+            variant="outlined"
+            margin="normal"
+            value={nuevoAmigo}
+            onChange={(event) => setNuevoAmigo(event.target.value)}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
+            <Button variant="outlined" onClick={handleCloseAgregarAmigoModal}>
+              Cancelar
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleAgregarAmigo}
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : "Agregar"}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* Snackbar para mensajes de éxito y error */}
       <Snackbar
         open={success}
         autoHideDuration={6000}
