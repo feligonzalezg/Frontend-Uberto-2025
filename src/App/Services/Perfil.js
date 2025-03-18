@@ -64,13 +64,13 @@ async getViajesPendientes(userObject){
     
   try {
     console.log("llegue al service del perfil")
-    const viajesRealizados = await axios.get(`${REST_SERVER_URL}/viajesRealizados/${userObject.id}`, {
+    const viajesPendientes = await axios.get(`${REST_SERVER_URL}/viajesPendientes/${userObject.id}`, {
         params: {
           esChofer: userObject.esChofer
         }
       })
-    console.log(viajesRealizados.data)
-    return viajesRealizados.data
+    console.log(viajesPendientes.data)
+    return viajesPendientes.data
   }
 
 catch (error) {
