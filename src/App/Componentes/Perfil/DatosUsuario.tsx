@@ -92,7 +92,7 @@ const DatosUsuario = () => {
       </Button>
 
       <Typography variant="h6" sx={{ mt: 3 }}>
-        Saldo Disponible: $300.000
+        Saldo Disponible: {usuario.saldo ?? ""}
       </Typography>
       <TextField
         fullWidth
@@ -100,7 +100,7 @@ const DatosUsuario = () => {
         type="number"
         variant="outlined"
         margin="normal"
-        value={usuario.saldo ?? ""}
+        value={""}
         onChange={(event) => actualizarCampo("saldo", event.target.value)}
       />
 
