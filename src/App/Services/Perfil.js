@@ -79,6 +79,46 @@ catch (error) {
 
 }
 
+async actualizarUsuario(userObject, usuario){
+    
+  try {
+    console.log("llegue al service del perfil")
+    const viajesPendientes = await axios.post(`${REST_SERVER_URL}/actualizarUsuario/${userObject.id}`, {
+        params: {
+          esChofer: userObject.esChofer
+        }
+      })
+    console.log(viajesPendientes.data)
+    return viajesPendientes.data
+  }
+
+catch (error) {
+  console.error(error)
+}
+
+}
+ 
+
+async cargarSaldo(userObject,monto){
+    
+  try {
+    console.log("llegue al service del perfil")
+    const cargarSaldo = await axios.post(`${REST_SERVER_URL}/cargarSaldo/${userObject.id}`, {
+        params: {
+          esChofer: userObject.esChofer,
+          monto: monto
+        }
+      })
+    console.log(cargarSaldo.data)
+    return cargarSaldo.data
+  }
+
+catch (error) {
+  console.error(error)
+}
+
+}
+
 
 
   }
