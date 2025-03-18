@@ -25,7 +25,7 @@ const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
  
   const handleCloseModal = () => {
     setOpenModal(false)
-    setAmigoToDelete(null!
+    setAmigoToDelete(null)
   }
 
   const handleConfirmDelete = () => {
