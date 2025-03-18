@@ -1,68 +1,83 @@
-import { Box, Typography, Avatar, IconButton, Modal, Button, CircularProgress, Alert, Snackbar } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
-import perfilService from '../../Services/Perfil';
-import { AxiosError } from 'axios';
+import { Box, Typography, Avatar, IconButton, Modal, Button, CircularProgress, Alert, Snackbar } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { useState } from 'react'
+import perfilService from '../../Services/Perfil'
+import { AxiosError } from 'axios'
 
 interface Amigo {
-  nombreYApellido: string;
-  username: string;
-  avatar: string;
-  id: number;
+  nombreYApellido: string
+  username: string
+  avatar: string
+  id: number
 }
 
 const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [amigoToDelete, setAmigoToDelete] = useState<Amigo | null>(null);
-  const [mensaje, setMensaje] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [openModal, setOpenModal] = useState(false)
+  const [amigoToDelete, setAmigoToDelete] = useState<Amigo | null>(null)
+  const [mensaje, setMensaje] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleOpenModal = (amigo: Amigo) => {
-    setAmigoToDelete(amigo);
-    setOpenModal(true);
+    setAmigoToDelete(amigo)
+    setOpenModal(true)
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false);
-    setAmigoToDelete(null);
+    setOpenModal(false)
+    setAmigoToDelete(null)
   };
 
+const obtenerUsuario = () => {
+  try {
+    const userString = localStorage.getItem('usuario')
+    if (!userString) {
+      throw new Error('Usuario no encontrado en el localStorage')
+    }
+    const userObject = JSON.parse(userString)
+    return userObject
+  } catch (error) {
+    if (error instanceof Error) {
+      setError(error.message || 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
+    } else {
+      setError('Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
+    }
+  }
+};
   const handleConfirmDelete = async () => {
     try {
-      setLoading(true);
-  
-      // Verificar que amigoToDelete no sea null
+      setLoading(true)
       if (!amigoToDelete) {
-        throw new Error('No se ha seleccionado un amigo para eliminar.');
+        throw new Error('No se ha seleccionado un amigo para eliminar.')
       }
-  
-      console.log('Eliminando amigo:', amigoToDelete.username);
-  
-      // Llamar al servicio para eliminar al amigo
-      await perfilService.actualizarUsuario(amigoToDelete.id); // Asegúrate de que amigoToDelete.id no sea undefined
+      
+      console.log('Eliminando amigo:', amigoToDelete.username)
+      const userObject = obtenerUsuario()
+      console.log("mi id=",userObject.id)
+      console.log("amigoToDelete.id=",amigoToDelete.id)
+      await perfilService.eliminarAmigo(userObject.id,amigoToDelete.id)
   
       // Mostrar mensaje de éxito
-      setMensaje(`${amigoToDelete.nombreYApellido} fue eliminado exitosamente.`);
-      setSuccess(true);
-      handleCloseModal();
+      setMensaje(`${amigoToDelete.nombreYApellido} fue eliminado exitosamente.`)
+      setSuccess(true)
+      handleCloseModal()
     } catch (e: unknown) {
       // Manejar el error de Axios
       if (e instanceof AxiosError) {
         if (e.response?.status === 500 && e.response.data.message) {
           setError(e.response.data.message); // Mostrar el mensaje del servidor
         } else {
-          setError('Error al eliminar el amigo. Por favor, inténtalo de nuevo.');
+          setError('Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
         }
       } else {
         // Manejar otros errores (no relacionados con Axios)
         const err = e as Error;
-        setError(err.message || 'Ocurrió un error inesperado.');
+        setError(err.message || 'Ocurrió un error inesperado.')
       }
-      console.error(e);
+      console.error(e)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
   return (
