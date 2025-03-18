@@ -5,7 +5,7 @@ import perfilService from '../../Services/Perfil'
 
 interface Viaje {
   conductor: string;
-  cantidadPersonas: number;
+  cantidadDePasajeros: number;
   origen: string;
   destino: string;
   fechaInicio: number;
@@ -51,7 +51,7 @@ const Viajes = () => {
             <CardUsuario
               key={index}
               nombre={viaje.conductor}
-              cantidadPersonas={viaje.cantidadPersonas}
+              cantidadPersonas={viaje.cantidadDePasajeros}
               desde={viaje.origen}
               hacia={viaje.destino}
               horario={viaje.fechaInicio}
@@ -69,7 +69,7 @@ const Viajes = () => {
         <CardUsuario
           key={index}
           nombre={viaje.conductor}
-          cantidadPersonas={viaje.cantidadPersonas}
+          cantidadPersonas={viaje.cantidadDePasajeros}
           desde={viaje.origen}
           hacia={viaje.destino}
           horario={viaje.fechaInicio}
