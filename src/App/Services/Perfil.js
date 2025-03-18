@@ -132,12 +132,12 @@ catch (error) {
 
   async eliminarAmigo(userId, amigoId) {
     try {
-      console.log("elimino a un amigo");
-      const response = await axios.delete(`${REST_SERVER_URL}/eliminarAmigo/${userId}/${amigoId}`);
-      console.log(response.data);
-      return response.data;
+      console.log("elimino a un amigo")
+      const response = await axios.delete(`${REST_SERVER_URL}/eliminarAmigo/${userId}/${amigoId}`)
+      console.log(response.data)
+      return response.data
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
 
