@@ -1,19 +1,8 @@
-import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  CircularProgress,
-  Snackbar,
-  Alert,
-  IconButton,
-  Modal,
-} from '@mui/material'
-import { Add as AddIcon } from '@mui/icons-material' // Ícono de "+"
+import {TextField,  Button,  Typography,  Box,  CircularProgress,  Snackbar,  Alert,  IconButton,  Modal,  Autocomplete,} from '@mui/material'
+import { Add as AddIcon } from '@mui/icons-material'  
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
 import Amigos from './amigos'
-
 interface Usuario {
   nombre: string
   apellido: string
@@ -27,20 +16,21 @@ interface Usuario {
 }
 
 const DatosUsuario = () => {
-  const userStorage = localStorage.getItem("usuario")
+  const userStorage = localStorage.getItem('usuario')
   const userObject = JSON.parse(userStorage!!)
   const esChofer = userObject.esChofer
   const [usuario, setUsuario] = useState<Usuario>({
-    nombre: "",
-    apellido: "",
+    nombre: '',
+    apellido: '',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState('')
   const [success, setSuccess] = useState(false)
-  const [monto, setMonto] = useState("")
-  const [openAgregarAmigoModal, setOpenAgregarAmigoModal] = useState(false) // Estado para el modal
-  const [nuevoAmigo, setNuevoAmigo] = useState("") // Estado para el nuevo amigo
+  const [monto, setMonto] = useState('')
+  const [openAgregarAmigoModal, setOpenAgregarAmigoModal] = useState(false) 
+  const [nuevoAmigo, setNuevoAmigo] = useState('') 
+  const [sugerencias, setSugerencias] = useState<string[]>([]) 
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
     setUsuario((prevUsuario) => ({
@@ -54,11 +44,11 @@ const DatosUsuario = () => {
     console.log('usuario Modificado ', usuario)
 
     try {
-      // await perfilService.actualizarUsuario(userObject.id, usuario)
-      setMensaje("Cambios guardados exitosamente.")
+      await perfilService.actualizarUsuario(userObject.id, usuario)
+      setMensaje('Cambios guardados exitosamente.')
       setSuccess(true)
     } catch (error) {
-      setError("Error al guardar los cambios. Por favor, inténtalo de nuevo.")
+      setError('Error al guardar los cambios. Por favor, inténtalo de nuevo.')
       console.error(error)
     } finally {
       setLoading(false)
@@ -70,53 +60,60 @@ const DatosUsuario = () => {
     console.log('usuario Modificado ', monto)
 
     try {
-      // await perfilService.cargarSaldo(userObject.id, usuario)
-      setMensaje("Se cargó saldo exitosamente.")
+      await perfilService.cargarSaldo(userObject.id, usuario)
+      setMensaje('Se cargó saldo exitosamente.')
       setSuccess(true)
-      setMonto("")
+      setMonto('')
     } catch (error) {
-      setError("Error al cargar saldo. Por favor, inténtalo de nuevo.")
+      setError('Error al cargar saldo. Por favor, inténtalo de nuevo.')
       console.error(error)
     } finally {
       setLoading(false)
     }
   }
 
-  // Abrir modal para agregar amigo
   const handleOpenAgregarAmigoModal = () => {
     setOpenAgregarAmigoModal(true)
   }
 
-  // Cerrar modal para agregar amigo
-  const handleCloseAgregarAmigoModal = () => {
-    setOpenAgregarAmigoModal(false)
-    setNuevoAmigo("") // Limpiar el campo al cerrar
+  const buscarSugerencias = async (query: string) => {
+    if (query.length > 2) {
+      try {
+        const response = await perfilService.buscarUsuarios(query)
+        setSugerencias(response)
+      } catch (error) {
+        console.error('Error al buscar sugerencias:', error)
+        setSugerencias([])
+      }
+    } else {
+      setSugerencias([])
+    }
   }
 
-  // Agregar amigo
+  const handleCloseAgregarAmigoModal = () => {
+    setOpenAgregarAmigoModal(false)
+    setNuevoAmigo('')
+  }
+
   const handleAgregarAmigo = async () => {
     if (!nuevoAmigo) {
-      setError("Por favor, ingresa un nombre de usuario.")
+      setError('Por favor, ingresa un nombre de usuario.')
       return
     }
 
     setLoading(true)
 
     try {
-      // Simular la llamada a la API para agregar un amigo
-      // await perfilService.agregarAmigo(userObject.id, nuevoAmigo)
-
-      // Actualizar la lista de amigos (simulado)
       setUsuario((prevUsuario) => ({
         ...prevUsuario,
         amigos: [...(prevUsuario.amigos || []), nuevoAmigo],
       }))
 
-      setMensaje("Amigo agregado exitosamente.")
+      setMensaje('Amigo agregado exitosamente.')
       setSuccess(true)
-      handleCloseAgregarAmigoModal() // Cerrar el modal
+      handleCloseAgregarAmigoModal()
     } catch (error) {
-      setError("Error al agregar amigo. Por favor, inténtalo de nuevo.")
+      setError('Error al agregar amigo. Por favor, inténtalo de nuevo.')
       console.error(error)
     } finally {
       setLoading(false)
@@ -138,63 +135,17 @@ const DatosUsuario = () => {
 
   return (
     <Box>
-      <TextField
-        fullWidth
-        label="Nombre"
-        variant="outlined"
-        margin="normal"
-        value={usuario.nombre}
-        onChange={(event) => actualizarCampo("nombre", event.target.value)}
-      />
-      <TextField
-        fullWidth
-        label="Apellido"
-        variant="outlined"
-        margin="normal"
-        value={usuario.apellido}
-        onChange={(event) => actualizarCampo("apellido", event.target.value)}
-      />
-
+      <TextField fullWidth label="Nombre" variant="outlined" margin="normal" value={usuario.nombre} onChange={(event) => actualizarCampo('nombre', event.target.value)}/>
+      <TextField fullWidth label="Apellido" variant="outlined" margin="normal" value={usuario.apellido} onChange={(event) => actualizarCampo('apellido', event.target.value)}/>
       {!esChofer && (
-        <TextField
-          fullWidth
-          label="Teléfono"
-          variant="outlined"
-          margin="normal"
-          value={usuario.telefono ?? ""}
-          onChange={(event) => actualizarCampo("telefono", Number(event.target.value))}
-        />
+        <TextField fullWidth label="Teléfono" variant="outlined"  margin="normal" value={usuario.telefono ?? ''} onChange={(event) => actualizarCampo('telefono', Number(event.target.value))} />
       )}
-
       {esChofer && (
-        <>
-          <TextField
-            fullWidth
-            label="Precio base"
-            variant="outlined"
-            margin="normal"
-            value={usuario.precioBase ?? ""}
-            onChange={(event) => actualizarCampo("precioBase", Number(event.target.value))}
-          />
-          <TextField
-            fullWidth
-            label="Dominio"
-            variant="outlined"
-            margin="normal"
-            value={usuario.dominio ?? ""}
-            onChange={(event) => actualizarCampo("dominio", event.target.value)} // Dominio es texto
-          />
-          <TextField
-            fullWidth
-            label="Modelo"
-            variant="outlined"
-            margin="normal"
-            value={usuario.modelo ?? ""}
-            onChange={(event) => actualizarCampo("modelo", event.target.value)} // Modelo es texto
-          />
+        <> <TextField fullWidth label="Precio base" variant="outlined" margin="normal"  value={usuario.precioBase ?? ''} onChange={(event) =>  actualizarCampo('precioBase', Number(event.target.value))} />
+          <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)}/>
+          <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)}/>
         </>
       )}
-
       <Button
         className="button-primary"
         variant="contained"
@@ -203,13 +154,13 @@ const DatosUsuario = () => {
         onClick={handleGuardarCambios}
         disabled={loading}
       >
-        {loading ? <CircularProgress size={24} /> : "Guardar Cambios"}
+        {loading ? <CircularProgress size={24} /> : 'Guardar Cambios'}
       </Button>
 
       {!esChofer && (
         <>
           <Typography variant="h6" sx={{ mt: 3 }}>
-            Saldo Disponible: {usuario.saldo ?? ""}
+            Saldo Disponible: {usuario.saldo ?? ''}
           </Typography>
           <TextField
             fullWidth
@@ -229,7 +180,7 @@ const DatosUsuario = () => {
             onClick={handleAgregarSaldo}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} /> : "Agregar Saldo"}
+            {loading ? <CircularProgress size={24} /> : 'Agregar Saldo'}
           </Button>
 
           {/* Botón para agregar amigo */}
@@ -269,15 +220,26 @@ const DatosUsuario = () => {
           <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
             Agregar Amigo
           </Typography>
-          <TextField
-            fullWidth
-            label="Nombre de usuario"
-            variant="outlined"
-            margin="normal"
-            value={nuevoAmigo}
-            onChange={(event) => setNuevoAmigo(event.target.value)}
+          <Autocomplete
+            freeSolo
+            options={sugerencias}
+            onInputChange={(event, newValue) => {
+              setNuevoAmigo(newValue)
+              buscarSugerencias(newValue)
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                label="Nombre de usuario"
+                variant="outlined"
+                margin="normal"
+              />
+            )}
           />
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}
+          >
             <Button variant="outlined" onClick={handleCloseAgregarAmigoModal}>
               Cancelar
             </Button>
@@ -286,7 +248,7 @@ const DatosUsuario = () => {
               onClick={handleAgregarAmigo}
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : "Agregar"}
+              {loading ? <CircularProgress size={24} /> : 'Agregar'}
             </Button>
           </Box>
         </Box>

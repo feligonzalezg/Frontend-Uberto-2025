@@ -119,10 +119,30 @@ catch (error) {
 
 }
 
-
+async buscarUsuarios(query){
+    
+  try {
+    console.log("llegue al service del perfil")
+    const response = await axios.get(`${REST_SERVER_URL}/usuarios/buscar?query=${query}`);
+    console.log(response.data)
+    return response.data;
 
   }
 
+catch (error) {
+  console.error(error)
+}
 
+}
+
+
+
+}
+
+
+
+
+
+  
 const perfilService = new PerfilService()
 export default perfilService
