@@ -39,9 +39,50 @@ import { REST_SERVER_URL } from './configuracion'
 
   }
 
+  async getViajesRealizados(userObject){
+    
+    try {
+      console.log("llegue al service del perfil")
+      const viajesRealizados = await axios.get(`${REST_SERVER_URL}/viajesRealizados/${userObject.id}`, {
+          params: {
+            esChofer: userObject.esChofer
+          }
+        })
+      console.log(viajesRealizados.data)
+      return viajesRealizados.data
+    }
+
+catch (error) {
+    console.error(error)
+  }
+
+}
+
+
+
+async getViajesPendientes(userObject){
+    
+  try {
+    console.log("llegue al service del perfil")
+    const viajesRealizados = await axios.get(`${REST_SERVER_URL}/viajesRealizados/${userObject.id}`, {
+        params: {
+          esChofer: userObject.esChofer
+        }
+      })
+    console.log(viajesRealizados.data)
+    return viajesRealizados.data
+  }
+
+catch (error) {
+  console.error(error)
+}
+
+}
+
 
 
   }
+
 
 const perfilService = new PerfilService()
 export default perfilService

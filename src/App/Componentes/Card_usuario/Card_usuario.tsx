@@ -4,18 +4,17 @@ import { Card, CardHeader, CardContent, Avatar, Typography, Box } from "@mui/mat
 interface CardUsuarioProps {
   nombre: string;
   cantidadPersonas: number;
-  foto: string;
   desde: string;
   hacia: string;
   horario: number;
   importe: number;
 }
 
-const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, foto, desde, hacia, horario, importe }) => {
+const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, desde, hacia, horario, importe }) => {
 
   const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
 
-  const fotoUsuario = foto || "https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1";
+  //const fotoUsuario = foto || "https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1";
 
   return (
     <div className="card-usuario">
@@ -30,7 +29,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, fot
           }
           action={
             <Box className="card-usuario__avatar-container">
-              <Avatar src={fotoUsuario} alt={nombre} />
+              <Avatar alt={nombre} />
             </Box>
           }
         />
