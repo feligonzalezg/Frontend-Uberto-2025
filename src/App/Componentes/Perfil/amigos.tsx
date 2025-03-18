@@ -25,14 +25,14 @@ const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
  
   const handleCloseModal = () => {
     setOpenModal(false)
-    setAmigoToDelete(null)
+    setAmigoToDelete(null!
   }
 
   const handleConfirmDelete = () => {
     try {
       console.log('Eliminando amigo:', amigoToDelete?.username)
       // await perfilService.actualizarUsuario(userObject.id, usuario)
-      setMensaje(`${amigoToDelete?.nombreYApellido} fue eliminado exitosamente.`);     
+      setMensaje(`${amigoToDelete?.nombreYApellido} fue eliminado exitosamente.`)     
        setSuccess(true)
       handleCloseModal() 
      } catch (error) {
@@ -115,15 +115,15 @@ const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
         </Box>
       </Modal>
       <Snackbar
-      open={success || !!error} // Se abre si hay éxito o error
-      autoHideDuration={6000} // Duración de 6 segundos
+      open={success || !!error} 
+      autoHideDuration={6000} // mseg
       onClose={() => {
         setSuccess(false); 
         setError(''); 
       }}
     >
       <Alert
-        severity={success ? "success" : "error"} // Tipo de alerta (éxito o error)
+        severity={success ? "success" : "error"} 
         onClose={() => {
           setSuccess(false); 
           setError(''); 
