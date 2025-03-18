@@ -19,13 +19,14 @@ const Calificaciones = () => {
   const [comentarios, setComentarios] = useState<Comentario[]>([])
   const userStorage = localStorage.getItem("usuario")
   const userObject = JSON.parse(userStorage!!)
+  console.log(userObject)
 
 
   useEffect(() => {
 
     const fetchComentarios = async ()=> {
       try {
-        const response = await perfilService.getComentarios(userObject.id)
+        const response = await perfilService.getComentarios(userObject)
         setComentarios(response)
       }
       catch (error) {

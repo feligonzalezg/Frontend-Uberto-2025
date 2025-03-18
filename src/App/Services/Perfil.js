@@ -21,10 +21,14 @@ import { REST_SERVER_URL } from './configuracion'
 
     }
 
-    async getComentarios(id) {
+    async getComentarios(userObject) {
       try {
         console.log("llegue al service del perfil")
-        const comentarios = await axios.get(`${REST_SERVER_URL}/comentario/${id}`)
+        const comentarios = await axios.get(`${REST_SERVER_URL}/comentario/${userObject.id}`, {
+            params: {
+              esChofer: userObject.esChofer
+            }
+          })
         console.log(comentarios.data)
         return comentarios.data
       }
