@@ -1,5 +1,5 @@
 import './CardUsuario.css';
-import { Card, CardHeader, CardContent, Avatar, Typography, Box } from "@mui/material";
+import { Card, CardHeader, CardContent, Avatar, Typography, Box, Button } from "@mui/material";
 
 interface CardUsuarioProps {
   nombre: string;
@@ -10,11 +10,12 @@ interface CardUsuarioProps {
   importe: number;
 }
 
+const handleCalificar = (viaje) => {
+  console.log('Calificando viaje:', viaje);
+};
+
 const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, desde, hacia, horario, importe }) => {
-
   const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
-
-  //const fotoUsuario = foto || "https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1";
 
   return (
     <div className="card-usuario">
@@ -35,10 +36,33 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({ nombre, cantidadPersonas, des
         />
         <CardContent className="card-usuario__content">
           <Typography variant="body1"><strong>Desde:</strong> {desde}</Typography>
-          <Typography variant="body1"><strong>Hacia:</strong> {hacia}</Typography>
+          <Typography variant="body1"><strong>Haya:</strong> {hacia}</Typography>
           <Typography variant="body1"><strong>Horario:</strong> {formatoHorario}</Typography>
           <Typography variant="body1"><strong>Importe:</strong> ${importe}</Typography>
         </CardContent>
+     
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center', 
+            marginTop: 2, 
+            marginBottom: 2, 
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: '#8A2BE2', 
+              '&:hover': {
+                backgroundColor: '#7B1FA2', 
+              },
+            }}
+            onClick={() => handleCalificar({ nombre, desde, hacia, horario, importe })}
+          >
+            Calificar Viaje
+          </Button>
+        </Box>
       </Card>
     </div>
   );

@@ -44,7 +44,7 @@ const DatosUsuario = () => {
     console.log('usuario Modificado ', usuario)
 
     try {
-      await perfilService.actualizarUsuario(userObject.id, usuario)
+      await perfilService.actualizarUsuario(userObject, usuario)
       setMensaje('Cambios guardados exitosamente.')
       setSuccess(true)
     } catch (error) {
@@ -60,7 +60,7 @@ const DatosUsuario = () => {
     console.log('usuario Modificado ', monto)
 
     try {
-      await perfilService.cargarSaldo(userObject.id, usuario)
+      await perfilService.cargarSaldo(userObject, monto)
       setMensaje('Se cargó saldo exitosamente.')
       setSuccess(true)
       setMonto('')

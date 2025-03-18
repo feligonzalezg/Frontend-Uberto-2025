@@ -75,6 +75,7 @@ const Viajes = () => {
           horario={viaje.fechaInicio}
           importe={viaje.importe}
         />
+        
       ))}
     </Box>
   )
