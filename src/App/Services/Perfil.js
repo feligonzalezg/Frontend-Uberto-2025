@@ -58,8 +58,6 @@ catch (error) {
 
 }
 
-
-
 async getViajesPendientes(userObject){
     
   try {
@@ -119,9 +117,32 @@ catch (error) {
 
 }
 
-
-
+  async agregarAmigo(userId, amigoId) {
+    try {
+      console.log("agrego amigo")
+      const response = await axios.post(`${REST_SERVER_URL}/agregarAmigo/${userId}`, null, {
+        params: { amigoId: amigoId }
+      });
+      console.log(response.data)
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
   }
+
+  async eliminarAmigo(userId, amigoId) {
+    try {
+      console.log("elimino a un amigo");
+      const response = await axios.delete(`${REST_SERVER_URL}/eliminarAmigo/${userId}/${amigoId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+}
 
 
 const perfilService = new PerfilService()

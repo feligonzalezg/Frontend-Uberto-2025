@@ -1,48 +1,70 @@
-import { Box, Typography, Avatar, IconButton, Modal, Button,CircularProgress, Alert ,Snackbar} from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { useState } from 'react'
+import { Box, Typography, Avatar, IconButton, Modal, Button, CircularProgress, Alert, Snackbar } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import perfilService from '../../Services/Perfil';
+import { AxiosError } from 'axios';
 
 interface Amigo {
-  nombreYApellido: string
-  username: string
-  avatar: string
+  nombreYApellido: string;
+  username: string;
+  avatar: string;
+  id: number;
 }
 
 const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
-  const [openModal, setOpenModal] = useState(false) 
-  const [amigoToDelete, setAmigoToDelete] = useState<Amigo>() 
-  const [mensaje, setMensaje] = useState('')
-  const [success, setSuccess] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [openModal, setOpenModal] = useState(false);
+  const [amigoToDelete, setAmigoToDelete] = useState<Amigo | null>(null);
+  const [mensaje, setMensaje] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
- 
   const handleOpenModal = (amigo: Amigo) => {
-    setAmigoToDelete(amigo)
-    setOpenModal(true)
-  }
+    setAmigoToDelete(amigo);
+    setOpenModal(true);
+  };
 
- 
   const handleCloseModal = () => {
-    setOpenModal(false)
-    setAmigoToDelete(null)
-  }
+    setOpenModal(false);
+    setAmigoToDelete(null);
+  };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     try {
-      console.log('Eliminando amigo:', amigoToDelete?.username)
-      // await perfilService.actualizarUsuario(userObject.id, usuario)
-      setMensaje(`${amigoToDelete?.nombreYApellido} fue eliminado exitosamente.`)     
-       setSuccess(true)
-      handleCloseModal() 
-     } catch (error) {
-       setError("Error al guardar los cambios. Por favor, inténtalo de nuevo.")
-       console.error(error)
-     } finally {
-       setLoading(false)
-     }
-   }
-
+      setLoading(true);
+  
+      // Verificar que amigoToDelete no sea null
+      if (!amigoToDelete) {
+        throw new Error('No se ha seleccionado un amigo para eliminar.');
+      }
+  
+      console.log('Eliminando amigo:', amigoToDelete.username);
+  
+      // Llamar al servicio para eliminar al amigo
+      await perfilService.actualizarUsuario(amigoToDelete.id); // Asegúrate de que amigoToDelete.id no sea undefined
+  
+      // Mostrar mensaje de éxito
+      setMensaje(`${amigoToDelete.nombreYApellido} fue eliminado exitosamente.`);
+      setSuccess(true);
+      handleCloseModal();
+    } catch (e: unknown) {
+      // Manejar el error de Axios
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 500 && e.response.data.message) {
+          setError(e.response.data.message); // Mostrar el mensaje del servidor
+        } else {
+          setError('Error al eliminar el amigo. Por favor, inténtalo de nuevo.');
+        }
+      } else {
+        // Manejar otros errores (no relacionados con Axios)
+        const err = e as Error;
+        setError(err.message || 'Ocurrió un error inesperado.');
+      }
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Box sx={{ marginTop: 3 }}>
       <Typography variant="h5" fontWeight="bold" sx={{ marginBottom: 2 }}>
@@ -78,7 +100,6 @@ const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
         </Box>
       ))}
 
-     
       <Modal
         open={openModal}
         onClose={handleCloseModal}
@@ -109,31 +130,32 @@ const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
               Cancelar
             </Button>
             <Button variant="contained" color="error" onClick={handleConfirmDelete}>
-            {loading ? <CircularProgress size={24} /> : "Eliminar"}
+              {loading ? <CircularProgress size={24} /> : 'Eliminar'}
             </Button>
           </Box>
         </Box>
       </Modal>
+
       <Snackbar
-      open={success || !!error} 
-      autoHideDuration={6000} // mseg
-      onClose={() => {
-        setSuccess(false); 
-        setError(''); 
-      }}
-    >
-      <Alert
-        severity={success ? "success" : "error"} 
+        open={success || !!error}
+        autoHideDuration={6000}
         onClose={() => {
-          setSuccess(false); 
-          setError(''); 
+          setSuccess(false);
+          setError('');
         }}
       >
-        {success ? mensaje : error} 
-      </Alert>
-    </Snackbar>
+        <Alert
+          severity={success ? 'success' : 'error'}
+          onClose={() => {
+            setSuccess(false);
+            setError('');
+          }}
+        >
+          {success ? mensaje : error}
+        </Alert>
+      </Snackbar>
     </Box>
-  )
-}
+  );
+};
 
-export default Amigos
+export default Amigos;
