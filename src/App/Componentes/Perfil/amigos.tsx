@@ -11,7 +11,8 @@ interface Amigo {
   id: number
 }
 
-const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
+const Amigos = ({ amigos: initialAmigos }: { amigos: Amigo[] }) => {
+  const [amigos, setAmigos] = useState<Amigo[]>(initialAmigos)
   const [openModal, setOpenModal] = useState(false)
   const [amigoToDelete, setAmigoToDelete] = useState<Amigo | null>(null)
   const [mensaje, setMensaje] = useState('')
@@ -22,64 +23,49 @@ const Amigos = ({ amigos }: { amigos: Amigo[] }) => {
   const handleOpenModal = (amigo: Amigo) => {
     setAmigoToDelete(amigo)
     setOpenModal(true)
-  };
+  }
 
   const handleCloseModal = () => {
     setOpenModal(false)
     setAmigoToDelete(null)
-  };
+  }
 
-const obtenerUsuario = () => {
-  try {
-    const userString = localStorage.getItem('usuario')
-    if (!userString) {
-      throw new Error('Usuario no encontrado en el localStorage')
-    }
-    const userObject = JSON.parse(userString)
-    return userObject
-  } catch (error) {
-    if (error instanceof Error) {
-      setError(error.message || 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
-    } else {
-      setError('Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
+  const obtenerUsuario = () => {
+    try {
+      const userString = localStorage.getItem('usuario')
+      if (!userString) throw new Error('Usuario no encontrado en el localStorage')
+      return JSON.parse(userString)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.'
+      setError(errorMessage)
     }
   }
-};
+
   const handleConfirmDelete = async () => {
     try {
       setLoading(true)
-      if (!amigoToDelete) {
-        throw new Error('No se ha seleccionado un amigo para eliminar.')
-      }
-      
+      if (!amigoToDelete) throw new Error('No se ha seleccionado un amigo para eliminar.')
+
       console.log('Eliminando amigo:', amigoToDelete.username)
       const userObject = obtenerUsuario()
-      console.log("mi id=",userObject.id)
-      console.log("amigoToDelete.id=",amigoToDelete.id)
-      await perfilService.eliminarAmigo(userObject.id,amigoToDelete.id)
-  
-      // Mostrar mensaje de éxito
+      await perfilService.eliminarAmigo(userObject.id, amigoToDelete.id)
+      setAmigos(amigos.filter(amigo => amigo.id !== amigoToDelete.id))
       setMensaje(`${amigoToDelete.nombreYApellido} fue eliminado exitosamente.`)
       setSuccess(true)
       handleCloseModal()
-    } catch (e: unknown) {
-      // Manejar el error de Axios
+    } catch (e) {
       if (e instanceof AxiosError) {
-        if (e.response?.status === 500 && e.response.data.message) {
-          setError(e.response.data.message); // Mostrar el mensaje del servidor
-        } else {
-          setError('Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
-        }
+        setError(e.response?.data.message || 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
       } else {
-        // Manejar otros errores (no relacionados con Axios)
-        const err = e as Error;
+        const err = e as Error
         setError(err.message || 'Ocurrió un error inesperado.')
       }
       console.error(e)
     } finally {
       setLoading(false)
     }
-  };
+  }
+
   return (
     <Box sx={{ marginTop: 3 }}>
       <Typography variant="h5" fontWeight="bold" sx={{ marginBottom: 2 }}>
@@ -97,11 +83,8 @@ const obtenerUsuario = () => {
             borderBottom: '1px solid #ccc',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar
-              src={amigo.avatar}
-              sx={{ width: 56, height: 56, marginRight: 2 }}
-            />
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+            <Avatar src={amigo.avatar} sx={{ width: 56, height: 56, marginRight: 2 }} />
             <Box>
               <Typography variant="h6" fontWeight="bold">
                 {amigo.nombreYApellido}
@@ -155,22 +138,22 @@ const obtenerUsuario = () => {
         open={success || !!error}
         autoHideDuration={6000}
         onClose={() => {
-          setSuccess(false);
-          setError('');
+          setSuccess(false)
+          setError('')
         }}
       >
         <Alert
           severity={success ? 'success' : 'error'}
           onClose={() => {
-            setSuccess(false);
-            setError('');
+            setSuccess(false)
+            setError('')
           }}
         >
           {success ? mensaje : error}
         </Alert>
       </Snackbar>
     </Box>
-  );
-};
+  )
+}
 
-export default Amigos;
+export default Amigos
