@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Box,
   Typography,
@@ -160,16 +161,17 @@ const HomeUsuario: React.FC = () => {
         >
           Resultados
         </Typography>
-
-        <CardChofer
-          patente="AC 822 WC"
-          nombre="Ivan Piñeda"
-          modelo="FiaT Cronos"
-          foto="https://www.kia.com/content/dam/kwcms/gt/en/images/discover-kia/voice-search/parts-80-1.jpg"
-          año={2018}
-          tarifa={5670}
-          calificacion={5}
-        />
+        <Link to="/Confirmar_viaje">
+  <CardChofer
+    patente="AC 822 WC"
+    nombre="Ivan Piñeda"
+    modelo="FiaT Cronos"
+    foto="https://www.kia.com/content/dam/kwcms/gt/en/images/discover-kia/voice-search/parts-80-1.jpg"
+    año={2018}
+    tarifa={5670}
+    calificacion={5}
+  />
+</Link>
       </Box>
     </Box>
   )
