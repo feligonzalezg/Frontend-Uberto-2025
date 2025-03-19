@@ -154,7 +154,31 @@ class PerfilService {
       console.error(error)
     }
   }
+
+  async confirmarViaje(idUsuario, idChofer, origen, destino, fecha, cantidadPasajeros, duracion, importe) {
+    try {
+      const payload = {
+        idUsuario,
+        idChofer,
+        origen,
+        destino,
+        fecha,
+        cantidadPasajeros,
+        duracion,
+        importe
+      };
+      const response = await axios.post(`${REST_SERVER_URL}/confirmarViaje`, payload);
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      console.error('Error al confirmar el viaje:', error);
+      throw error;
+    }
+  }
 }
+
+
+
 
 const perfilService = new PerfilService()
 export default perfilService
