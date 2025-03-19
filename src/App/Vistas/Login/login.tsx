@@ -61,10 +61,6 @@ export const Login = () => {
     }))
   }
 
-  const handleSubmit = () => {
-    //navigate('/Home')
-  }
-
   return (
     <div className="layout-content layout-content--login gradient">
       <Box className="logo">

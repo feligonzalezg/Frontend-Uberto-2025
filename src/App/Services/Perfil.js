@@ -146,7 +146,7 @@ class PerfilService {
     try {
       console.log('Llegué al service del perfil');
       const response = await axios.get(
-        `${REST_SERVER_URL}/usuarios/buscar/${userId}?query=${query}`
+        `${REST_SERVER_URL}/buscarAmigos/${userId}?query=${query}`
       );
       console.log(response.data);
       return response.data;
