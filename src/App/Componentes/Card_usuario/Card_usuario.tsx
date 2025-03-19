@@ -12,23 +12,23 @@ import {
 } from "@mui/material";
 
 interface CardUsuarioProps {
-  idChofer: string; // Nuevo: ID del chofer
   nombre: string;
   cantidadPersonas: number;
   desde: string;
   hacia: string;
   horario: number;
   importe: number;
+  pendiente: boolean;
 }
 
 const CardUsuario: React.FC<CardUsuarioProps> = ({
-  idChofer,
   nombre,
   cantidadPersonas,
   desde,
   hacia,
   horario,
   importe,
+  pendiente
 }) => {
   const userStorage = localStorage.getItem('usuario')
   const userObject = JSON.parse(userStorage!!)
@@ -78,9 +78,9 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
           <Typography variant="body1">
             <strong>Importe:</strong> ${importe}
           </Typography>
-        </CardContent>
+       
 
-        {!esChofer && (
+        {!esChofer && pendiente && (
           <> 
         <Box
           sx={{
@@ -112,7 +112,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
         />
         </>
         )}
-
+    </CardContent>
       </Card>
     </div>
   );
