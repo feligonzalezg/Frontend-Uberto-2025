@@ -9,7 +9,6 @@ import {
 } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
-import CardUsuario from '../../Componentes/Card_usuario/Card_usuario'
 import CardChofer from '../../Componentes/CardChofer/CardChofer'
 
 const HomeUsuario: React.FC = () => {
@@ -161,15 +160,6 @@ const HomeUsuario: React.FC = () => {
         >
           Resultados
         </Typography>
-        <CardUsuario
-          nombre="Roberto Pettinato"
-          cantidadPersonas={2}
-          foto="https://i0.wp.com/es.rollingstone.com/wp-content/uploads/2024/08/PETTINATO-APERTURA.jpg?w=1280&ssl=1"
-          desde="Av Siempre viva"
-          hacia="Calle falsa"
-          horario={1800}
-          importe={1500}
-        />
 
         <CardChofer
           patente="AC 822 WC"
