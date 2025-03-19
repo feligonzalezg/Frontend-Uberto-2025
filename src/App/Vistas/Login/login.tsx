@@ -27,35 +27,32 @@ export const Login = () => {
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
-  
 
   const iniciarSesion = async () => {
     event?.preventDefault()
 
     try {
       if (!usuario || !password) {
-        console.error("Usuario invalido")
+        console.error('Usuario invalido')
         setError(true)
 
         return
       }
-      const usuarioObjeto = await usuarioService.validarUsuario(usuario, password)
+      const usuarioObjeto = await usuarioService.validarUsuario(
+        usuario,
+        password,
+      )
       console.log('Inicio de sesión exitoso. Usuario:', usuarioObjeto)
       const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
       localStorage.setItem('usuario', JSON.stringify(usuarioObjeto))
-      console.log("Inicio de sesión exitoso. ID de usuario:", usuarioId)
-      if(usuarioObjeto.esChofer) {
-        navigate('/HomeChofer')
-        }else{
-        navigate('/Home')
-        }
+      console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
+      navigate('/Home')
+
       //setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-      
-      } catch (error) {
-        console.error('Error al iniciar sesión:')
-      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:')
     }
-  
+  }
 
   const togglePasswordVisibility = () => {
     setFormValues((prevValues) => ({
