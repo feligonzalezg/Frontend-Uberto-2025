@@ -142,16 +142,16 @@ class PerfilService {
     }
   }
 
-  async buscarUsuarios(query) {
+  async buscarUsuarios(query, userId) {
     try {
-      console.log('llegue al service del perfil')
+      console.log('Llegué al service del perfil');
       const response = await axios.get(
-        `${REST_SERVER_URL}/usuarios/buscar?query=${query}`,
-      )
-      console.log(response.data)
-      return response.data
+        `${REST_SERVER_URL}/usuarios/buscar/${userId}?query=${query}`
+      );
+      console.log(response.data);
+      return response.data;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 }

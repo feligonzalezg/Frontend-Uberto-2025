@@ -79,7 +79,7 @@ const DatosUsuario = () => {
   const buscarSugerencias = async (query: string) => {
     if (query.length > 2) {
       try {
-        const response = await perfilService.buscarUsuarios(query)
+        const response = await perfilService.buscarUsuarios(query,userObject.id)
         setSugerencias(response)
       } catch (error) {
         console.error('Error al buscar sugerencias:', error)
@@ -140,9 +140,13 @@ const DatosUsuario = () => {
       {!esChofer && (
         <TextField fullWidth label="Teléfono" variant="outlined"  margin="normal" value={usuario.telefono ?? ''} onChange={(event) => actualizarCampo('telefono', Number(event.target.value))} />
       )}
-      {esChofer && (
-        <> <TextField fullWidth label="Precio base" variant="outlined" margin="normal"  value={usuario.precioBase ?? ''} onChange={(event) =>  actualizarCampo('precioBase', Number(event.target.value))} />
+      {esChofer && (<>
+         <TextField fullWidth label="Precio base" variant="outlined" margin="normal"  value={usuario.precioBase ?? ''} onChange={(event) =>  actualizarCampo('precioBase', Number(event.target.value))} />
+         <Typography variant="h6" sx={{ mt: 3 }}>
+         Informacion Vehiculo 
+       </Typography>
           <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)}/>
+          <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.descripcion ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)}/>
           <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)}/>
         </>
       )}
