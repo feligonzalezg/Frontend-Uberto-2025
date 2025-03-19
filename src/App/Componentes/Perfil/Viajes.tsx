@@ -10,6 +10,7 @@ interface Viaje {
   destino: string;
   fechaInicio: number;
   importe: number;
+  pendiente: boolean;
 }
 
 const Viajes = () => {
@@ -24,12 +25,21 @@ const Viajes = () => {
       try {
        
         const responseRealizados = await perfilService.getViajesRealizados(userObject)
-        setViajesRealizados(responseRealizados)
+        const viajesRealizadosConPendiente = responseRealizados.map((viaje) => ({
+          ...viaje,
+          pendiente: false,
+        }));
+        setViajesRealizados(viajesRealizadosConPendiente);
+        console.log(viajesRealizadosConPendiente);
 
     
         if (!esChofer) {
           const responsePendientes = await perfilService.getViajesPendientes(userObject)
-          setViajesPendientes(responsePendientes)
+          const viajesPendientesConPendiente = responsePendientes.map((viaje) => ({
+            ...viaje,
+            pendiente: true,
+          }));
+          setViajesPendientes(viajesPendientesConPendiente);
         }
       } catch (error) {
         console.error(error)
@@ -74,7 +84,9 @@ const Viajes = () => {
           hacia={viaje.destino}
           horario={viaje.fechaInicio}
           importe={viaje.importe}
+          pendiente ={viaje.pendiente}
         />
+        
       ))}
     </Box>
   )

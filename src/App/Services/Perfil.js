@@ -101,6 +101,7 @@ async cargarSaldo(userObject,monto){
     
   try {
     console.log("llegue al service del perfil")
+    
     const cargarSaldo = await axios.post(`${REST_SERVER_URL}/cargarSaldo/${userObject.id}`, {
         params: {
           esChofer: userObject.esChofer,
@@ -139,8 +140,20 @@ catch (error) {
     } catch (error) {
       console.error(error)
     }
+
+async buscarUsuarios(query){
+    
+  try {
+    console.log("llegue al service del perfil")
+    const response = await axios.get(`${REST_SERVER_URL}/usuarios/buscar?query=${query}`);
+    console.log(response.data)
+    return response.data;
+
   }
 
+catch (error) {
+  console.error(error)
+}
 
 }
 
