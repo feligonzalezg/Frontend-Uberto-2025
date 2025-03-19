@@ -154,7 +154,9 @@ const DatosUsuario = () => {
         className="button-primary"
         variant="contained"
         fullWidth
-        sx={{ mt: 2 }}
+        sx={{ mt: 2, 
+          mb:2
+        }}
         onClick={handleGuardarCambios}
         disabled={loading}
       >
