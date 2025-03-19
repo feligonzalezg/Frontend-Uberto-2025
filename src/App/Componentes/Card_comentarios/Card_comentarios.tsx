@@ -1,6 +1,7 @@
 import './CardComentario.css';
 import { Card, CardHeader, CardContent, Avatar, Typography, Box } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
+import DeleteIcon from '@mui/icons-material/Delete'
 
 interface ComentarioProps {
   nombre: string;
@@ -11,6 +12,10 @@ interface ComentarioProps {
 }
 
 const CardComentario: React.FC<ComentarioProps> = ({ nombre, fecha, foto, puntuacion, comentario }) => {
+  const userStorage = localStorage.getItem("usuario")
+  const userObject = JSON.parse(userStorage!!)
+  const esChofer = userObject.esChofer
+
   return (
     <div className="card-comentario">
       <Card className="card-comentario__card">
@@ -29,6 +34,9 @@ const CardComentario: React.FC<ComentarioProps> = ({ nombre, fecha, foto, puntua
                 {puntuacion}
               </Typography>
               <StarIcon className="card-comentario__star-icon" />
+              {window.location.pathname == "/Perfil_Usuario" && !esChofer &&(
+              <DeleteIcon fontSize="large" sx={{ color: 'var(--primary-color)' }} />
+              )}
             </Box>
           }
         />
