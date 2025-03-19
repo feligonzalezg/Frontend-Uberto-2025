@@ -19,6 +19,7 @@ interface CardUsuarioProps {
   horario: number;
   importe: number;
   pendiente: boolean;
+  
 }
 
 const CardUsuario: React.FC<CardUsuarioProps> = ({
@@ -34,6 +35,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   const userObject = JSON.parse(userStorage!!)
   const esChofer = userObject.esChofer
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [calificacionEnviada, setCalificacionEnviada] = useState(false);
   const formatoHorario = `${horario < 10 ? "0" : ""}${horario}:00`;
 
   const handleCalificar = (calificacion) => {
@@ -41,6 +43,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
       ...calificacion,
       //idChofer, hay que tomar el id del chofer 
     });
+    setCalificacionEnviada(true); 
   };
   
   return (
@@ -78,9 +81,9 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
           <Typography variant="body1">
             <strong>Importe:</strong> ${importe}
           </Typography>
-       
+      
 
-        {!esChofer && pendiente && (
+        {!esChofer && !pendiente && !calificacionEnviada && (
           <> 
         <Box
           sx={{
@@ -105,10 +108,10 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
         </Box>
 
 
-       <CalificarViajeModal
+      <CalificarViajeModal
           open={modalAbierto}
           onClose={() => setModalAbierto(false)} // Cerrar el modal
-          onCalificar={handleCalificar} // Función para manejar la calificación
+          onCalificar={handleCalificar}
         />
         </>
         )}
