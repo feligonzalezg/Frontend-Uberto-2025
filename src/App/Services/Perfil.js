@@ -115,13 +115,8 @@ class PerfilService {
   async agregarAmigo(userId, amigoId) {
     try {
       console.log('agrego amigo')
-      const response = await axios.post(
-        `${REST_SERVER_URL}/agregarAmigo/${userId}`,
-        null,
-        {
-          params: { amigoId: amigoId },
-        },
-      )
+      const response = await axios.put(
+        `${REST_SERVER_URL}/agregarAmigo/${userId}/${amigoId}`)
       console.log(response.data)
       return response.data
     } catch (error) {
