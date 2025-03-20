@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
 
 interface Viaje {
-  conductor: string;
+  nombre: string;
   cantidadDePasajeros: number;
   origen: string;
   destino: string;
@@ -65,7 +65,7 @@ const Viajes = () => {
           {viajesPendientes.map((viaje, index) => (
             <CardUsuario
               key={index}
-              nombre={viaje.conductor}
+              nombre={viaje.nombre}
               cantidadPersonas={viaje.cantidadDePasajeros}
               desde={viaje.origen}
               hacia={viaje.destino}
@@ -83,7 +83,7 @@ const Viajes = () => {
       {viajesRealizados.map((viaje, index) => (
         <CardUsuario
           key={index}
-          nombre={viaje.conductor}
+          nombre={viaje.nombre}
           cantidadPersonas={viaje.cantidadDePasajeros}
           desde={viaje.origen}
           hacia={viaje.destino}
