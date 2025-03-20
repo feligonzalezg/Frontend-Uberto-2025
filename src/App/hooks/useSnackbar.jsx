@@ -16,16 +16,24 @@ export const useMessageToast = () => {
         : status === undefined
         ? 'Ocurrió un error al conectarse al backend. Consulte al administrador del sistema'
         : message;
-    
+
     if (status >= INTERNAL_SERVER_ERROR) {
       console.error(error);
     }
-    
-    enqueueSnackbar(mensajeError, { variant: 'error', autoHideDuration: 5000, anchorOrigin: { vertical: 'bottom', horizontal: 'center' } });
+
+    enqueueSnackbar(mensajeError, {
+      variant: 'error',
+      autoHideDuration: 5000,
+      anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+    });
   };
 
   const successToast = (mensajeExitoso) => {
-    enqueueSnackbar(mensajeExitoso, { variant: 'success', autoHideDuration: 5000, anchorOrigin: { vertical: 'bottom', horizontal: 'center' } });
+    enqueueSnackbar(mensajeExitoso, {
+      variant: 'success',
+      autoHideDuration: 5000,
+      anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+    });
   };
 
   return { errorToast, successToast };
