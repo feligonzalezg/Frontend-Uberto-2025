@@ -57,7 +57,7 @@ export const Login = () => {
       })
       navigate('/Home')
     } catch (error) {
-      enqueueSnackbar('Error al iniciar sesión. Verifique sus credenciales', {
+      enqueueSnackbar('Error al iniciar sesión.', {
         variant: 'error',
         autoHideDuration: 5000,
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
