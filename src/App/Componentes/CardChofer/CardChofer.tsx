@@ -1,4 +1,4 @@
-import './CardChofer.css'
+import './CardChofer.css';
 import {
   Card,
   CardHeader,
@@ -6,16 +6,17 @@ import {
   Typography,
   Box,
   Avatar,
-} from '@mui/material'
-import StarIcon from '@mui/icons-material/Star'
+} from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import { useNavigate } from 'react-router-dom';
 
 interface CardChoferProps {
-  patente: string
-  nombre: string
-  modelo: string
-  año: number
-  tarifa: number
-  calificacion: number
+  patente: string;
+  nombre: string;
+  modelo: string;
+  año: number;
+  tarifa: number;
+  calificacion: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
@@ -26,8 +27,14 @@ const CardChofer: React.FC<CardChoferProps> = ({
   tarifa,
   calificacion,
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/Confirmar_viaje');
+  };
+
   return (
-    <div className="card-chofer">
+    <div className="card-chofer" onClick={handleClick}>
       <Card className="card-chofer__card">
         <CardHeader
           className="card-chofer__header"
@@ -62,7 +69,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default CardChofer
+export default CardChofer;
