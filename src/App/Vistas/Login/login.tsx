@@ -34,9 +34,10 @@ export const Login = () => {
 
   const iniciarSesion = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
+  
     if (!formValues.userName || !formValues.password) {
-      enqueueSnackbar('Usuario y contraseña son obligatorios', {
+      const errorMessage = 'Usuario y contraseña son obligatorios' 
+      enqueueSnackbar(errorMessage, {
         variant: 'error',
         autoHideDuration: 5000,
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
@@ -56,8 +57,9 @@ export const Login = () => {
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
       })
       navigate('/Home')
-    } catch (error) {
-      enqueueSnackbar('Error al iniciar sesión.', {
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message
+      enqueueSnackbar(errorMessage, {      
         variant: 'error',
         autoHideDuration: 5000,
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
