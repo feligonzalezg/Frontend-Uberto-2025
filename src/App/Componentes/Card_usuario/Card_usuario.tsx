@@ -10,26 +10,35 @@ import {
   Box,
   Button,
 } from "@mui/material";
+import perfilService from "../../Services/Perfil";
 
 interface CardUsuarioProps {
+  idViaje: number;
   nombre: string;
   cantidadPersonas: number;
   desde: string;
   hacia: string;
   horario: number;
   importe: number;
-  pendiente: boolean;
+  puedeCalificar: boolean;
   
 }
 
+interface Calificacion {
+  idViaje: string;
+  estrellas: number;
+  mensaje: string;
+}
+
 const CardUsuario: React.FC<CardUsuarioProps> = ({
+  idViaje: id,
   nombre,
   cantidadPersonas,
   desde,
   hacia,
   horario,
   importe,
-  pendiente
+  puedeCalificar
 }) => {
   const userStorage = localStorage.getItem('usuario')
   const userObject = JSON.parse(userStorage!!)
@@ -38,12 +47,17 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);
   const formatoHorario = `${horario < 10 ? "0" : ""}${horario}:00`;
 
-  const handleCalificar = (calificacion) => {
-    console.log("Calificación enviada:", {
-      ...calificacion,
-      //idChofer, hay que tomar el id del chofer 
-    });
-    setCalificacionEnviada(true); 
+  const handleCalificar = async (calificacion: Calificacion) => {
+    console.log(calificacion)
+    try{
+      const response = await perfilService.calificarViaje(userObject.id, calificacion)
+      setCalificacionEnviada(response.puedeCalificar);
+      console.log("Calificación enviada exisosamente:", {
+        ...response,
+      });
+    } catch (error) {
+      console.error('Error al calificar viaje:', error);
+    }
   };
   
   return (
@@ -83,7 +97,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
           </Typography>
       
 
-        {!esChofer && !pendiente && !calificacionEnviada && (
+        {!esChofer && puedeCalificar && !calificacionEnviada && (
           <> 
         <Box
           sx={{
@@ -111,6 +125,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
       <CalificarViajeModal
           open={modalAbierto}
           onClose={() => setModalAbierto(false)} // Cerrar el modal
+          idViaje={id}
           onCalificar={handleCalificar}
         />
         </>

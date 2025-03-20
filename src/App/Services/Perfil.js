@@ -177,6 +177,19 @@ class PerfilService {
       throw error;
     }
   }
+
+  async calificarViaje(userId, calificacion) {
+    try {
+      console.log('Llegué al service. Calificando viaje...');
+      const response = await axios.post(
+        `${REST_SERVER_URL}/calificar/${userId}`, calificacion
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Ocurrió un error al calificar viaje: ", error);
+    }
+  }
   
 }
 

@@ -11,22 +11,24 @@ import {
 
 interface CalificarViajeModalProps {
   open: boolean; 
-  onClose: () => void; 
+  onClose: () => void;
+  idViaje: number;
   onCalificar: (calificacion: {
+    idViaje: number;
     estrellas: number;
-    comentario: string;
-    fecha: string;
+    mensaje: string;
   }) => void;
 }
 
 const CalificarViajeModal: React.FC<CalificarViajeModalProps> = ({
   open,
   onClose,
+  idViaje,
   onCalificar,
 }) => {
 
   const [estrellas, setEstrellas] = useState<number | null>(null);
-  const [comentario, setComentario] = useState<string>("");
+  const [mensaje, setMensaje] = useState<string>("");
 
   const handleSubmit = () => {
     if (estrellas === null) {
@@ -34,14 +36,14 @@ const CalificarViajeModal: React.FC<CalificarViajeModalProps> = ({
       return;
     }
 
-    const fechaActual = new Date().toISOString().split("T")[0];
     onCalificar({
+      idViaje,
       estrellas,
-      comentario,
-      fecha: fechaActual,
+      mensaje: mensaje,
     });
+    
     setEstrellas(null);
-    setComentario("");
+    setMensaje("");
     onClose();
   };
 
@@ -75,15 +77,15 @@ const CalificarViajeModal: React.FC<CalificarViajeModalProps> = ({
             }}
           />
         </Stack>
-
-     
+      
+      
         <TextField
           label="Comentario"
           multiline
           rows={4}
           fullWidth
-          value={comentario}
-          onChange={(e) => setComentario(e.target.value)}
+          value={mensaje}
+          onChange={(e) => setMensaje(e.target.value)}
           sx={{ marginBottom: 2 }}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>

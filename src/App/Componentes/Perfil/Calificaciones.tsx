@@ -6,9 +6,9 @@ import perfilService from '../../Services/Perfil'
 
 
 interface Comentario {
-  autor: string,
+  nombre: string,
   fecha: string,
-  puntaje: number,
+  estrellas: number,
   mensaje: string
 }
 
@@ -42,9 +42,9 @@ const Calificaciones = () => {
       {comentarios.map((comentario: Comentario, index) => (
         <Box key={index}>
           <CardComentario 
-          nombre={comentario.autor}
+          nombre={comentario.nombre}
           fecha={comentario.fecha}
-          puntuacion={comentario.puntaje}
+          estrellas={comentario.estrellas}
           comentario={comentario.mensaje} 
           />
         </Box>
