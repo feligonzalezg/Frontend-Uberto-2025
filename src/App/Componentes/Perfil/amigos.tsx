@@ -68,9 +68,6 @@ const Amigos = ({ amigos: initialAmigos }: { amigos: Amigo[] }) => {
 
   return (
     <Box sx={{ marginTop: 3 }}>
-      <Typography variant="h5" fontWeight="bold" sx={{ marginBottom: 2 }}>
-        Amigos
-      </Typography>
 
       {amigos.map((amigo, index) => (
         <Box
