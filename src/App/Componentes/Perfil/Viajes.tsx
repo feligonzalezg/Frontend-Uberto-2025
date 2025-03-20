@@ -5,7 +5,7 @@ import perfilService from '../../Services/Perfil'
 
 interface Viaje {
   id: number;
-  conductor: string;
+  nombre: string;
   cantidadDePasajeros: number;
   origen: string;
   destino: string;
@@ -20,6 +20,8 @@ const Viajes = () => {
   const esChofer = userObject.esChofer
   const [viajesRealizados, setViajesRealizados] = useState<Viaje[]>([])
   const [viajesPendientes, setViajesPendientes] = useState<Viaje[]>([])
+  const [totalFacturacion, setTotalFacturacion] = useState<number>(0); 
+
 
   useEffect(() => {
     const fetchViajes = async () => {
@@ -28,6 +30,8 @@ const Viajes = () => {
         const responseRealizados = await perfilService.getViajesRealizados(userObject)
         setViajesRealizados(responseRealizados);
         console.log(responseRealizados);
+        const total = await perfilService.getTotalFacturacion(userObject)
+        setTotalFacturacion(total)
 
     
         if (!esChofer) {
@@ -38,6 +42,7 @@ const Viajes = () => {
         console.error(error)
       }
     }
+    
 
     fetchViajes()
   }, [])
@@ -54,7 +59,7 @@ const Viajes = () => {
             <CardUsuario
               key={index}
               idViaje={viaje.id}
-              nombre={viaje.conductor}
+              nombre={viaje.nombre}
               cantidadPersonas={viaje.cantidadDePasajeros}
               desde={viaje.origen}
               hacia={viaje.destino}
@@ -65,7 +70,6 @@ const Viajes = () => {
           ))}
         </>
       )}
-
      
       <Typography fontWeight="bold" variant="h5" sx={{ margin: 3 }}>
         Realizados
@@ -74,7 +78,7 @@ const Viajes = () => {
         <CardUsuario
           key={index}
           idViaje={viaje.id}
-          nombre={viaje.conductor}
+          nombre={viaje.nombre}
           cantidadPersonas={viaje.cantidadDePasajeros}
           desde={viaje.origen}
           hacia={viaje.destino}
@@ -84,6 +88,17 @@ const Viajes = () => {
         />
         
       ))}
+      
+
+      {esChofer && (
+        <>
+        <Box sx={{ margin: 3 }}>
+          <Typography fontWeight="bold" variant="h7">
+          Total Facturación: ${totalFacturacion.toFixed(2)}
+          </Typography>
+        </Box>
+        </>
+      )}  
     </Box>
   )
 }

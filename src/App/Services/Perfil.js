@@ -139,14 +139,28 @@ class PerfilService {
 
   async buscarUsuarios(query, userId) {
     try {
-      console.log('Llegué al service del perfil');
+      console.log('Llegué al service del perfil')
       const response = await axios.get(
         `${REST_SERVER_URL}/buscarAmigos/${userId}?query=${query}`
-      );
-      console.log(response.data);
-      return response.data;
+      )
+      console.log(response.data)
+      return response.data
     } catch (error) {
-      console.error(error);
+      console.error(error)
+    }
+  }
+
+  async getTotalFacturacion(userObject) {
+    try {
+      console.log('Llegue a service del perfil total de facturacion')
+      const totalFacturacion = await axios.get(
+        `${REST_SERVER_URL}/total-facturado/${userObject.id}`
+      )
+      console.log(totalFacturacion.data)
+      return totalFacturacion.data
+    } catch (error) {
+      console.error(error)
+      throw error 
     }
   }
 
