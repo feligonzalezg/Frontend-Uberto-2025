@@ -115,13 +115,8 @@ class PerfilService {
   async agregarAmigo(userId, amigoId) {
     try {
       console.log('agrego amigo')
-      const response = await axios.post(
-        `${REST_SERVER_URL}/agregarAmigo/${userId}`,
-        null,
-        {
-          params: { amigoId: amigoId },
-        },
-      )
+      const response = await axios.put(
+        `${REST_SERVER_URL}/agregarAmigo/${userId}/${amigoId}`)
       console.log(response.data)
       return response.data
     } catch (error) {
@@ -142,16 +137,16 @@ class PerfilService {
     }
   }
 
-  async buscarUsuarios(query) {
+  async buscarUsuarios(query, userId) {
     try {
-      console.log('llegue al service del perfil')
+      console.log('Llegué al service del perfil');
       const response = await axios.get(
-        `${REST_SERVER_URL}/usuarios/buscar?query=${query}`,
-      )
-      console.log(response.data)
-      return response.data
+        `${REST_SERVER_URL}/buscarAmigos/${userId}?query=${query}`
+      );
+      console.log(response.data);
+      return response.data;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 }
