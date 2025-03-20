@@ -144,7 +144,7 @@ const DatosUsuario = () => {
           Informacion Vehiculo
         </Typography>
         <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)} />
-        <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.descripcion ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
+        <TextField fullWidth label="descripcion" variant="outlined" margin="normal" value={usuario.descripcion ?? ''} onChange={(event) => actualizarCampo('descripcion', event.target.value)} />
         <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
       </>
       )}
