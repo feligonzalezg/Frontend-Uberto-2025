@@ -14,6 +14,7 @@
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   border: 1px solid black;
+  margin: 0.7rem;
 }
 
 .card-usuario__header {
@@ -51,4 +52,9 @@
 
 .card-usuario__content strong {
   color: #5508a7;
+  font-weight: bold;
+}
+
+.card-usuario__content p {
+  margin: 5px 0;
 }

@@ -58,7 +58,7 @@
 .confirmar-viaje__acciones {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 80px; /* Ajusta según la altura de .confirmar-viaje__acciones */
+  padding-bottom: 80px;
   border-top: 1px solid #ddd;
   position: fixed;
   bottom: 0;
@@ -78,7 +78,7 @@
 .confirmar-viaje__acciones {
   display: flex;
   justify-content: space-between;
-  background-color: #f0eff2; /* Fondo para que no se superponga con el contenido */
+  background-color: #f0eff2;
   border-top: 1px solid #ddd;
   position: fixed;
   bottom: 0;

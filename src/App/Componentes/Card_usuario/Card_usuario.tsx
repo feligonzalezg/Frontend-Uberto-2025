@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import CalificarViajeModal from "../Perfil/calificar"; // Asegúrate de que la ruta sea correcta
-import "./CardUsuario.css";
+import React, { useState } from 'react';
+import CalificarViajeModal from '../Perfil/calificar'; // Asegúrate de que la ruta sea correcta
+import './CardUsuario.css';
+import GroupIcon from '@mui/icons-material/Group';
+
 import {
   Card,
   CardHeader,
@@ -9,7 +11,7 @@ import {
   Typography,
   Box,
   Button,
-} from "@mui/material";
+} from '@mui/material';
 
 interface CardUsuarioProps {
   nombre: string;
@@ -19,7 +21,6 @@ interface CardUsuarioProps {
   horario: number;
   importe: number;
   pendiente: boolean;
-  
 }
 
 const CardUsuario: React.FC<CardUsuarioProps> = ({
@@ -29,23 +30,23 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   hacia,
   horario,
   importe,
-  pendiente
+  pendiente,
 }) => {
-  const userStorage = localStorage.getItem('usuario')
-  const userObject = JSON.parse(userStorage!!)
-  const esChofer = userObject.esChofer
+  const userStorage = localStorage.getItem('usuario');
+  const userObject = JSON.parse(userStorage!!);
+  const esChofer = userObject.esChofer;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);
-  const formatoHorario = `${horario < 10 ? "0" : ""}${horario}:00`;
+  const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
 
   const handleCalificar = (calificacion) => {
-    console.log("Calificación enviada:", {
+    console.log('Calificación enviada:', {
       ...calificacion,
-      //idChofer, hay que tomar el id del chofer 
+      //idChofer, hay que tomar el id del chofer
     });
-    setCalificacionEnviada(true); 
+    setCalificacionEnviada(true);
   };
-  
+
   return (
     <div className="card-usuario">
       <Card className="card-usuario__card">
@@ -56,10 +57,9 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
               <Typography variant="h6" className="card-usuario__name">
                 {nombre}
               </Typography>
-              <Typography
-                variant="body2"
-                className="card-usuario__people-count"
-              >{`Personas: ${cantidadPersonas}`}</Typography>
+              <Typography className="card-usuario__people-count">
+                {cantidadPersonas} <GroupIcon fontSize="small" />
+              </Typography>
             </Box>
           }
           action={
@@ -81,41 +81,39 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
           <Typography variant="body1">
             <strong>Importe:</strong> ${importe}
           </Typography>
-      
 
-        {!esChofer && !pendiente && !calificacionEnviada && (
-          <> 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 2,
-            marginBottom: 2,
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#8A2BE2", // Violeta
-              "&:hover": {
-                backgroundColor: "#7B1FA2", // Violeta más oscuro al pasar el mouse
-              },
-            }}
-            onClick={() => setModalAbierto(true)} // Abrir el modal
-          >
-            Calificar Viaje
-          </Button>
-        </Box>
+          {!esChofer && !pendiente && !calificacionEnviada && (
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: 2,
+                  marginBottom: 2,
+                }}
+              >
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: '#8A2BE2', // Violeta
+                    '&:hover': {
+                      backgroundColor: '#7B1FA2', // Violeta más oscuro al pasar el mouse
+                    },
+                  }}
+                  onClick={() => setModalAbierto(true)} // Abrir el modal
+                >
+                  Calificar Viaje
+                </Button>
+              </Box>
 
-
-      <CalificarViajeModal
-          open={modalAbierto}
-          onClose={() => setModalAbierto(false)} // Cerrar el modal
-          onCalificar={handleCalificar}
-        />
-        </>
-        )}
-    </CardContent>
+              <CalificarViajeModal
+                open={modalAbierto}
+                onClose={() => setModalAbierto(false)} // Cerrar el modal
+                onCalificar={handleCalificar}
+              />
+            </>
+          )}
+        </CardContent>
       </Card>
     </div>
   );
