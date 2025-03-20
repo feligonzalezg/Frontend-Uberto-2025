@@ -97,7 +97,7 @@ const DatosUsuario = () => {
   };
 
   const handleAgregarAmigo = async () => {
-    console.log("hola "+nuevoAmigo.id)
+    console.log("hola " + nuevoAmigo.id)
     if (!nuevoAmigo) {
       setError('Por favor, ingresa un nombre de usuario.');
       return;
@@ -106,7 +106,7 @@ const DatosUsuario = () => {
     setLoading(true);
 
     try {
-      await perfilService.agregarAmigo(userObject.id,nuevoAmigo.id)
+      await perfilService.agregarAmigo(userObject.id, nuevoAmigo.id)
       setMensaje('Amigo agregado exitosamente.');
       setSuccess(true);
       handleCloseAgregarAmigoModal();
@@ -185,14 +185,18 @@ const DatosUsuario = () => {
             {loading ? <CircularProgress size={24} /> : 'Agregar Saldo'}
           </Button>
 
-          {/* Botón para agregar amigo */}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <IconButton
-              onClick={handleOpenAgregarAmigoModal}
-              sx={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
-            >
-              <AddIcon />
-            </IconButton>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: '2em' }}>
+            <Typography variant="h5" fontWeight="bold">
+              Amigos
+            </Typography>
+            <Box>
+              <IconButton
+                onClick={handleOpenAgregarAmigoModal}
+                sx={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
           </Box>
 
           {usuario.amigos && <Amigos amigos={usuario.amigos} />}
@@ -226,7 +230,7 @@ const DatosUsuario = () => {
             freeSolo
             options={sugerencias}
             getOptionLabel={(option) => `${option.username} - ${option.nombreYApellido}`}
-            onChange={(event,newValue) => {setNuevoAmigo(newValue)}}
+            onChange={(event, newValue) => { setNuevoAmigo(newValue) }}
             onInputChange={(event, newValue) => {
               //setNuevoAmigo(newValue);
               buscarSugerencias(newValue);
