@@ -15,42 +15,55 @@ import {
 } from '@mui/icons-material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 import usuarioService from '../../Services/LoginService'
 
 export const Login = () => {
   const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar()
+
   const [formValues, setFormValues] = useState({
     userName: '',
     password: '',
     showPassword: false,
   })
-  const [usuario, setUsuario] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(false)
 
-  const iniciarSesion = async () => {
-    event?.preventDefault()
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValues({ ...formValues, [event.target.name]: event.target.value })
+  }
+
+  const iniciarSesion = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+  
+    if (!formValues.userName || !formValues.password) {
+      const errorMessage = 'Usuario y contraseña son obligatorios' 
+      enqueueSnackbar(errorMessage, {
+        variant: 'error',
+        autoHideDuration: 5000,
+        anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+      })
+      return
+    }
 
     try {
-      if (!usuario || !password) {
-        console.error('Usuario invalido')
-        setError(true)
-
-        return
-      }
       const usuarioObjeto = await usuarioService.validarUsuario(
-        usuario,
-        password,
+        formValues.userName,
+        formValues.password,
       )
-      console.log('Inicio de sesión exitoso. Usuario:', usuarioObjeto)
-      const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
       localStorage.setItem('usuario', JSON.stringify(usuarioObjeto))
-      console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
+      enqueueSnackbar('Inicio de sesión exitoso', {
+        variant: 'success',
+        autoHideDuration: 5000,
+        anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+      })
       navigate('/Home')
-
-      //setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
-    } catch (error) {
-      console.error('Error al iniciar sesión:')
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message
+      enqueueSnackbar(errorMessage, {      
+        variant: 'error',
+        autoHideDuration: 5000,
+        anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+      })
     }
   }
 
@@ -67,13 +80,9 @@ export const Login = () => {
         <h1>Uberto</h1>
       </Box>
       <Box className="login-form" component="form" onSubmit={iniciarSesion}>
-        <InputLabel
-          className="input-label input-label--login"
-          htmlFor="userName"
-        >
+        <InputLabel className="input-label input-label--login" htmlFor="userName">
           Usuario
         </InputLabel>
-
         <TextField
           className="text-field"
           fullWidth
@@ -81,25 +90,20 @@ export const Login = () => {
           name="userName"
           autoFocus
           required
-          onChange={(event) => setUsuario(event.target.value)}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              ),
-            },
+          value={formValues.userName}
+          onChange={handleChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>
+            ),
           }}
         />
 
-        <InputLabel
-          className="input-label input-label--login"
-          htmlFor="password"
-        >
+        <InputLabel className="input-label input-label--login" htmlFor="password">
           Contraseña
         </InputLabel>
-
         <TextField
           className="text-field"
           fullWidth
@@ -107,26 +111,21 @@ export const Login = () => {
           name="password"
           type={formValues.showPassword ? 'text' : 'password'}
           required
-          onChange={(event) => setPassword(event.target.value)}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Lock />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={togglePasswordVisibility}>
-                    {formValues.showPassword ? (
-                      <Visibility />
-                    ) : (
-                      <VisibilityOff />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
+          value={formValues.password}
+          onChange={handleChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={togglePasswordVisibility}>
+                  {formValues.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
         />
 
@@ -139,3 +138,4 @@ export const Login = () => {
 }
 
 export default Login
+
