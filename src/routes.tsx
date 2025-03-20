@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom'
 
 import Login from './App/Vistas/Login/login'
-import HomeUsuario from './App/Vistas/Home_Usuario/Home_usuario'
+import HomeUsuario from './App/Vistas/Home/Home'
 import Header from './App/Componentes/Header/Header'
 import Footer from './App/Componentes/Footer/Footer'
 import HomeChofer from './App/Vistas/Home_chofer/Home_chofer'

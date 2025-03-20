@@ -1,32 +1,77 @@
-import { Box, Typography, Avatar, IconButton } from '@mui/material'
+import { Box, Typography, Avatar, IconButton, Modal, Button, CircularProgress, Alert, Snackbar } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { useState } from 'react'
+import perfilService from '../../Services/Perfil'
+import { AxiosError } from 'axios'
 
-const amigos = [
-  {
-    id: 1,
-    nombre: 'Nombre Apellido',
-    info: 'Otro dato',
-    avatar:
-      'https://scontent.faep8-2.fna.fbcdn.net/v/t1.6435-9/98361598_3114874475297340_7504201618741526528_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=nvrVapNSPAsQ7kNvgHZcNt_&_nc_oc=Adi3tFTGUd6UwwyFEwgBEeolCi0jeYwDrSW5HIyzI5H_p_KX0ngL4faPIxO9OHP1PmA&_nc_zt=23&_nc_ht=scontent.faep8-2.fna&_nc_gid=A-iIqpoy2P5O1pD4e-4-6CF&oh=00_AYH4cftIAEOLWBOHadTo1HHfrvtyijCvW9D_SP5GnOnQkQ&oe=67F87D17',
-  },
-  {
-    id: 2,
-    nombre: 'Nombre Apellido',
-    info: 'Otro dato',
-    avatar:
-      'https://scontent.faep8-2.fna.fbcdn.net/v/t1.6435-9/98361598_3114874475297340_7504201618741526528_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=nvrVapNSPAsQ7kNvgHZcNt_&_nc_oc=Adi3tFTGUd6UwwyFEwgBEeolCi0jeYwDrSW5HIyzI5H_p_KX0ngL4faPIxO9OHP1PmA&_nc_zt=23&_nc_ht=scontent.faep8-2.fna&_nc_gid=A-iIqpoy2P5O1pD4e-4-6CF&oh=00_AYH4cftIAEOLWBOHadTo1HHfrvtyijCvW9D_SP5GnOnQkQ&oe=67F87D17',
-  },
-]
+interface Amigo {
+  nombreYApellido: string
+  username: string
+  avatar: string
+  id: number
+}
 
-const Amigos = () => {
+const Amigos = ({ amigos: initialAmigos }: { amigos: Amigo[] }) => {
+  const [amigos, setAmigos] = useState<Amigo[]>(initialAmigos)
+  const [openModal, setOpenModal] = useState(false)
+  const [amigoToDelete, setAmigoToDelete] = useState<Amigo | null>(null)
+  const [mensaje, setMensaje] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleOpenModal = (amigo: Amigo) => {
+    setAmigoToDelete(amigo)
+    setOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+    setAmigoToDelete(null)
+  }
+
+  const obtenerUsuario = () => {
+    try {
+      const userString = localStorage.getItem('usuario')
+      if (!userString) throw new Error('Usuario no encontrado en el localStorage')
+      return JSON.parse(userString)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.'
+      setError(errorMessage)
+    }
+  }
+
+  const handleConfirmDelete = async () => {
+    try {
+      setLoading(true)
+      if (!amigoToDelete) throw new Error('No se ha seleccionado un amigo para eliminar.')
+
+      console.log('Eliminando amigo:', amigoToDelete.username)
+      const userObject = obtenerUsuario()
+      await perfilService.eliminarAmigo(userObject.id, amigoToDelete.id)
+      setAmigos(amigos.filter(amigo => amigo.id !== amigoToDelete.id))
+      setMensaje(`${amigoToDelete.nombreYApellido} fue eliminado exitosamente.`)
+      setSuccess(true)
+      handleCloseModal()
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        setError(e.response?.data.message || 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.')
+      } else {
+        const err = e as Error
+        setError(err.message || 'Ocurrió un error inesperado.')
+      }
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Box sx={{ marginTop: 3 }}>
-      <Typography variant="h5" fontWeight="bold" sx={{ marginBottom: 2 }}>
-        Amigos
-      </Typography>
-      {amigos.map((amigo) => (
+
+      {amigos.map((amigo, index) => (
         <Box
-          key={amigo.id}
+          key={index}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -35,26 +80,75 @@ const Amigos = () => {
             borderBottom: '1px solid #ccc',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar
-              src={amigo.avatar}
-              sx={{ width: 56, height: 56, marginRight: 2 }}
-            />
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+            <Avatar src={amigo.avatar} sx={{ width: 56, height: 56, marginRight: 2 }} />
             <Box>
               <Typography variant="h6" fontWeight="bold">
-                {amigo.nombre}
+                {amigo.nombreYApellido}
               </Typography>
-              <Typography variant="body1">{amigo.info}</Typography>
+              <Typography variant="body1">{amigo.username}</Typography>
             </Box>
           </Box>
-          <IconButton>
-            <DeleteIcon
-              fontSize="large"
-              sx={{ color: 'var(--primary-color)' }}
-            />
+          <IconButton onClick={() => handleOpenModal(amigo)}>
+            <DeleteIcon fontSize="large" sx={{ color: 'var(--primary-color)' }} />
           </IconButton>
         </Box>
       ))}
+
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
+          <Typography id="modal-title" variant="h6" fontWeight="bold" sx={{ marginBottom: 2 }}>
+            ¿Estás seguro de eliminar a {amigoToDelete?.nombreYApellido}?
+          </Typography>
+          <Typography id="modal-description" variant="body1" sx={{ marginBottom: 3 }}>
+            Esta acción no se puede deshacer.
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button variant="outlined" onClick={handleCloseModal}>
+              Cancelar
+            </Button>
+            <Button variant="contained" color="error" onClick={handleConfirmDelete}>
+              {loading ? <CircularProgress size={24} /> : 'Eliminar'}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      <Snackbar
+        open={success || !!error}
+        autoHideDuration={6000}
+        onClose={() => {
+          setSuccess(false)
+          setError('')
+        }}
+      >
+        <Alert
+          severity={success ? 'success' : 'error'}
+          onClose={() => {
+            setSuccess(false)
+            setError('')
+          }}
+        >
+          {success ? mensaje : error}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }

@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import usuarioService from '../../Services/LoginService'
 
 export const Login = () => {
   const navigate = useNavigate()
@@ -23,6 +24,35 @@ export const Login = () => {
     password: '',
     showPassword: false,
   })
+  const [usuario, setUsuario] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(false)
+
+  const iniciarSesion = async () => {
+    event?.preventDefault()
+
+    try {
+      if (!usuario || !password) {
+        console.error('Usuario invalido')
+        setError(true)
+
+        return
+      }
+      const usuarioObjeto = await usuarioService.validarUsuario(
+        usuario,
+        password,
+      )
+      console.log('Inicio de sesión exitoso. Usuario:', usuarioObjeto)
+      const usuarioId = usuarioObjeto.id // Obtener el ID de usuario del objeto de usuario
+      localStorage.setItem('usuario', JSON.stringify(usuarioObjeto))
+      console.log('Inicio de sesión exitoso. ID de usuario:', usuarioId)
+      navigate('/Home')
+
+      //setUser(usuarioObjeto) // Puedes almacenar el objeto completo del usuario si lo necesitas
+    } catch (error) {
+      console.error('Error al iniciar sesión:')
+    }
+  }
 
   const togglePasswordVisibility = () => {
     setFormValues((prevValues) => ({
@@ -31,16 +61,12 @@ export const Login = () => {
     }))
   }
 
-  const handleSubmit = () => {
-    navigate('/Home')
-  }
-
   return (
     <div className="layout-content layout-content--login gradient">
       <Box className="logo">
         <h1>Uberto</h1>
       </Box>
-      <Box className="login-form" component="form" onSubmit={handleSubmit}>
+      <Box className="login-form" component="form" onSubmit={iniciarSesion}>
         <InputLabel
           className="input-label input-label--login"
           htmlFor="userName"
@@ -55,7 +81,7 @@ export const Login = () => {
           name="userName"
           autoFocus
           required
-          onChange={() => {}}
+          onChange={(event) => setUsuario(event.target.value)}
           slotProps={{
             input: {
               startAdornment: (
@@ -81,7 +107,7 @@ export const Login = () => {
           name="password"
           type={formValues.showPassword ? 'text' : 'password'}
           required
-          onChange={() => {}}
+          onChange={(event) => setPassword(event.target.value)}
           slotProps={{
             input: {
               startAdornment: (
