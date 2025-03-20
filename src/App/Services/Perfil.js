@@ -155,26 +155,34 @@ class PerfilService {
     }
   }
 
-  async confirmarViaje(idUsuario, idChofer, origen, destino, fecha, cantidadPasajeros, duracion, importe) {
+  async confirmarViaje(idViajero, idConductor, origen, destino, fechaInicio, cantidadDePasajeros, duracion, importe) {
     try {
       const payload = {
-        idUsuario,
-        idChofer,
+        idViajero, 
+        idConductor, 
         origen,
         destino,
-        fecha,
-        cantidadPasajeros,
+        fechaInicio: new Date(fechaInicio).toLocaleString('es-ES', { 
+          day: '2-digit', 
+          month: '2-digit', 
+          year: 'numeric', 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        }).replace(',', ''), 
+        cantidadDePasajeros, 
         duracion,
         importe
       };
-      const response = await axios.post(`${REST_SERVER_URL}/confirmarViaje`, payload);
-      console.log(response.data)
+  
+      const response = await axios.post(`${REST_SERVER_URL}/confirmar`, payload);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Error al confirmar el viaje:', error);
       throw error;
     }
   }
+  
 }
 
 
