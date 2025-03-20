@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
 
 interface Viaje {
+  id: number;
   nombre: string;
   cantidadDePasajeros: number;
   origen: string;
   destino: string;
   fechaInicio: number;
   importe: number;
-  pendiente: boolean;
+  puedeCalificar: boolean;
 }
 
 const Viajes = () => {
@@ -27,23 +28,15 @@ const Viajes = () => {
       try {
        
         const responseRealizados = await perfilService.getViajesRealizados(userObject)
+        setViajesRealizados(responseRealizados);
+        console.log(responseRealizados);
         const total = await perfilService.getTotalFacturacion(userObject)
-        const viajesRealizadosConPendiente = responseRealizados.map((viaje) => ({
-          ...viaje,
-          pendiente: false,
-        }))
-        setViajesRealizados(viajesRealizadosConPendiente)
         setTotalFacturacion(total)
-        console.log(viajesRealizadosConPendiente)
 
     
         if (!esChofer) {
           const responsePendientes = await perfilService.getViajesPendientes(userObject)
-          const viajesPendientesConPendiente = responsePendientes.map((viaje) => ({
-            ...viaje,
-            pendiente: true,
-          }));
-          setViajesPendientes(viajesPendientesConPendiente)
+          setViajesPendientes(responsePendientes);
         }
       } catch (error) {
         console.error(error)
@@ -65,12 +58,14 @@ const Viajes = () => {
           {viajesPendientes.map((viaje, index) => (
             <CardUsuario
               key={index}
+              idViaje={viaje.id}
               nombre={viaje.nombre}
               cantidadPersonas={viaje.cantidadDePasajeros}
               desde={viaje.origen}
               hacia={viaje.destino}
               horario={viaje.fechaInicio}
               importe={viaje.importe}
+              puedeCalificar ={viaje.puedeCalificar}
             />
           ))}
         </>
@@ -82,13 +77,14 @@ const Viajes = () => {
       {viajesRealizados.map((viaje, index) => (
         <CardUsuario
           key={index}
+          idViaje={viaje.id}
           nombre={viaje.nombre}
           cantidadPersonas={viaje.cantidadDePasajeros}
           desde={viaje.origen}
           hacia={viaje.destino}
           horario={viaje.fechaInicio}
           importe={viaje.importe}
-          pendiente ={viaje.pendiente}
+          puedeCalificar ={viaje.puedeCalificar}
         />
         
       ))}
