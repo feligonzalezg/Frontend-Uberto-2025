@@ -75,7 +75,6 @@ const Viajes = () => {
           ))}
         </>
       )}
-
      
       <Typography fontWeight="bold" variant="h5" sx={{ margin: 3 }}>
         Realizados
@@ -93,11 +92,17 @@ const Viajes = () => {
         />
         
       ))}
-    <Box sx={{ margin: 3 }}>
-        <Typography fontWeight="bold" variant="h7">
+      
+
+      {esChofer && (
+        <>
+        <Box sx={{ margin: 3 }}>
+          <Typography fontWeight="bold" variant="h7">
           Total Facturación: ${totalFacturacion.toFixed(2)}
-        </Typography>
-      </Box>
+          </Typography>
+        </Box>
+        </>
+      )}  
     </Box>
   )
 }
