@@ -19,18 +19,22 @@ const Viajes = () => {
   const esChofer = userObject.esChofer
   const [viajesRealizados, setViajesRealizados] = useState<Viaje[]>([])
   const [viajesPendientes, setViajesPendientes] = useState<Viaje[]>([])
+  const [totalFacturacion, setTotalFacturacion] = useState<number>(0); 
+
 
   useEffect(() => {
     const fetchViajes = async () => {
       try {
        
         const responseRealizados = await perfilService.getViajesRealizados(userObject)
+        const total = await perfilService.getTotalFacturacion(userObject)
         const viajesRealizadosConPendiente = responseRealizados.map((viaje) => ({
           ...viaje,
           pendiente: false,
-        }));
-        setViajesRealizados(viajesRealizadosConPendiente);
-        console.log(viajesRealizadosConPendiente);
+        }))
+        setViajesRealizados(viajesRealizadosConPendiente)
+        setTotalFacturacion(total)
+        console.log(viajesRealizadosConPendiente)
 
     
         if (!esChofer) {
@@ -39,12 +43,13 @@ const Viajes = () => {
             ...viaje,
             pendiente: true,
           }));
-          setViajesPendientes(viajesPendientesConPendiente);
+          setViajesPendientes(viajesPendientesConPendiente)
         }
       } catch (error) {
         console.error(error)
       }
     }
+    
 
     fetchViajes()
   }, [])
@@ -88,6 +93,11 @@ const Viajes = () => {
         />
         
       ))}
+    <Box sx={{ margin: 3 }}>
+        <Typography fontWeight="bold" variant="h7">
+          Total Facturación: ${totalFacturacion.toFixed(2)}
+        </Typography>
+      </Box>
     </Box>
   )
 }
