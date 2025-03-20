@@ -2,11 +2,11 @@
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
+  width: 85%;
 }
 
 .card-chofer__card {
   width: 100%;
-  max-width: 400px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   border: 1px solid black;

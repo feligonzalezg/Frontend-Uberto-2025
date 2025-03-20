@@ -13,7 +13,6 @@ interface CardChoferProps {
   patente: string
   nombre: string
   modelo: string
-  foto: string
   año: number
   tarifa: number
   calificacion: number
@@ -23,7 +22,6 @@ const CardChofer: React.FC<CardChoferProps> = ({
   patente,
   nombre,
   modelo,
-  foto,
   año,
   tarifa,
   calificacion,
@@ -59,11 +57,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
           </Box>
           <Box>
             {' '}
-            <Avatar
-              style={{ width: '5rem', height: '5rem' }}
-              src={foto}
-              alt={nombre}
-            />
+            <Avatar style={{ width: '5rem', height: '5rem' }} />
           </Box>
         </CardContent>
       </Card>
