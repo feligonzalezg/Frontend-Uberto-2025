@@ -16,7 +16,7 @@ import { format } from 'date-fns'
 
 const HomeUsuario: React.FC = () => {
   const [resultados, setResultados] = useState<any[]>([])
-  const [cantidadDePasajeros, setCantidadPasajeros] = useState(1)
+  const [cantidadDePasajeros, setCantidadPasajeros] = useState(0)
   const [origen, setOrigen] = useState('')
   const [destino, setDestino] = useState('')
   const [fecha, setFecha] = useState('')
@@ -28,7 +28,7 @@ const HomeUsuario: React.FC = () => {
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
     setCantidadPasajeros((prev) =>
-      increment ? prev + 1 : Math.max(1, prev - 1),
+      increment ? Math.min(4, prev + 1) : Math.max(0, prev - 1),
     )
   }
 
@@ -176,11 +176,11 @@ const HomeUsuario: React.FC = () => {
           esChofer ? (
             <CardUsuario
               key={index}
-              nombre={item.usernameViajero}
+              nombre={item.nombre}
               cantidadPersonas={item.cantidadDePasajeros}
               desde={item.origen}
               hacia={item.destino}
-              horario={item.horario}
+              horario={item.fechaInicio}
               importe={item.importe}
               pendiente={item.pendiente}
             />
@@ -188,7 +188,7 @@ const HomeUsuario: React.FC = () => {
             <CardChofer
               key={index}
               patente={item.patente}
-              nombre={item.nombreyApellido}
+              nombre={item.nombreYApellido}
               modelo={item.movil}
               año={item.año}
               tarifa={item.importe}
