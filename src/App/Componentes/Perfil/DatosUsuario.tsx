@@ -225,7 +225,7 @@ const DatosUsuario = () => {
           <Autocomplete
             freeSolo
             options={sugerencias}
-            getOptionLabel={(option) => option.nombreYApellido}
+            getOptionLabel={(option) => `${option.username} - ${option.nombreYApellido}`}
             onChange={(event,newValue) => {setNuevoAmigo(newValue)}}
             onInputChange={(event, newValue) => {
               //setNuevoAmigo(newValue);
