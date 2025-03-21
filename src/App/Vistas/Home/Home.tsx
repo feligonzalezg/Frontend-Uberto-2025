@@ -10,7 +10,7 @@ import {
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import homeService from '../../Services/HomeService'
-import CardChofer from '../../Componentes/cardChofer/CardChofer'
+import CardChofer from '../../Componentes/CardChofer/CardChofer'
 import CardUsuario from '../../Componentes/Card_usuario/Card_usuario'
 import { format } from 'date-fns'
 
