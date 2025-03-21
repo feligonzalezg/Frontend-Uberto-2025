@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import CalificarViajeModal from "../Perfil/calificar"; // Asegúrate de que la ruta sea correcta
-import "./CardUsuario.css";
+import React, { useState } from 'react';
+import CalificarViajeModal from '../Perfil/calificar'; // Asegúrate de que la ruta sea correcta
+import './CardUsuario.css';
+import GroupIcon from '@mui/icons-material/Group';
+
 import {
   Card,
   CardHeader,
@@ -21,7 +23,6 @@ interface CardUsuarioProps {
   horario: number;
   importe: number;
   puedeCalificar: boolean;
-  
 }
 
 interface Calificacion {
@@ -40,12 +41,12 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   importe,
   puedeCalificar
 }) => {
-  const userStorage = localStorage.getItem('usuario')
-  const userObject = JSON.parse(userStorage!!)
-  const esChofer = userObject.esChofer
+  const userStorage = localStorage.getItem('usuario');
+  const userObject = JSON.parse(userStorage!!);
+  const esChofer = userObject.esChofer;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);
-  const formatoHorario = `${horario < 10 ? "0" : ""}${horario}:00`;
+  const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
 
   const handleCalificar = async (calificacion: Calificacion) => {
     console.log(calificacion)
@@ -59,7 +60,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
       console.error('Error al calificar viaje:', error);
     }
   };
-  
+
   return (
     <div className="card-usuario">
       <Card className="card-usuario__card">
@@ -70,10 +71,9 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
               <Typography variant="h6" className="card-usuario__name">
                 {nombre}
               </Typography>
-              <Typography
-                variant="body2"
-                className="card-usuario__people-count"
-              >{`Personas: ${cantidadPersonas}`}</Typography>
+              <Typography className="card-usuario__people-count">
+                {cantidadPersonas} <GroupIcon fontSize="small" />
+              </Typography>
             </Box>
           }
           action={
@@ -95,7 +95,6 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
           <Typography variant="body1">
             <strong>Importe:</strong> ${importe}
           </Typography>
-      
 
         {!esChofer && puedeCalificar && !calificacionEnviada && (
           <> 
