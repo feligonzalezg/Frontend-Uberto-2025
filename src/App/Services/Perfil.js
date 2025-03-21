@@ -78,7 +78,7 @@ class PerfilService {
     try {
       console.log('llegue al service del perfil')
       console.log(usuario)
-      const actualizarUser = await axios.post(
+      const actualizarUser = await axios.patch(
         `${REST_SERVER_URL}/actualizarUsuario/${userObject.id}`,usuario)
       console.log(actualizarUser.data)
       return actualizarUser.data

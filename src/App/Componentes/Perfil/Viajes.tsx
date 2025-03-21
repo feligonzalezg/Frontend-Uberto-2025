@@ -9,9 +9,10 @@ interface Viaje {
   cantidadDePasajeros: number;
   origen: string;
   destino: string;
-  fechaInicio: number;
+  fechaInicio: string;
   importe: number;
   puedeCalificar: boolean;
+  fechaFin: string;
 }
 
 const Viajes = () => {
@@ -66,6 +67,7 @@ const Viajes = () => {
               horario={viaje.fechaInicio}
               importe={viaje.importe}
               puedeCalificar ={viaje.puedeCalificar}
+              fechaFin={viaje.fechaFin}
             />
           ))}
         </>
@@ -85,6 +87,7 @@ const Viajes = () => {
           horario={viaje.fechaInicio}
           importe={viaje.importe}
           puedeCalificar ={viaje.puedeCalificar}
+          fechaFin={viaje.fechaFin}
         />
         
       ))}
