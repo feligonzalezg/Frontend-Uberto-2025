@@ -100,13 +100,13 @@ const ConfirmarViaje = ({
         <CardComentario
           nombre="Blas Armando Giunta"
           fecha="1/1/2000"
-          puntuacion={4}
+          estrellas={4}
           comentario="Re lindo el viaje pero es la primera vez que lo escucho que los jugadores se quieren ir de Boca. Tanto yo como todos los compañeros que tuve si podemos nos quedabamos para siempre en Boca. Unicamente te vas a Europa si te dicen de pasar al Manchester United a Juventus, Real madrid, Barcelona, despues viene Boca es lo mas grande"
         />
         <CardComentario
           nombre="Blas Armando Giunta"
           fecha="1/1/2000"
-          puntuacion={4}
+          estrellas={4}
           comentario="Re lindo el viaje pero es la primera vez que lo escucho que los jugadores se quieren ir de Boca. Tanto yo como todos los compañeros que tuve si podemos nos quedabamos para siempre en Boca. Unicamente te vas a Europa si te dicen de pasar al Manchester United a Juventus, Real madrid, Barcelona, despues viene Boca es lo mas grande"
         />
       </Box>

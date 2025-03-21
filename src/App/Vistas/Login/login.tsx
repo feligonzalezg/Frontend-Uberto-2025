@@ -53,7 +53,7 @@ export const Login = () => {
       localStorage.setItem('usuario', JSON.stringify(usuarioObjeto))
       enqueueSnackbar('Inicio de sesión exitoso', {
         variant: 'success',
-        autoHideDuration: 5000,
+        autoHideDuration: 1000,
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
       })
       navigate('/Home')

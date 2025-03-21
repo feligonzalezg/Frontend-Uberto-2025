@@ -11,26 +11,35 @@ import {
   Typography,
   Box,
   Button,
-} from '@mui/material';
+} from "@mui/material";
+import perfilService from "../../Services/Perfil";
 
 interface CardUsuarioProps {
+  idViaje: number;
   nombre: string;
   cantidadPersonas: number;
   desde: string;
   hacia: string;
   horario: number;
   importe: number;
-  pendiente: boolean;
+  puedeCalificar: boolean;
+}
+
+interface Calificacion {
+  idViaje: string;
+  estrellas: number;
+  mensaje: string;
 }
 
 const CardUsuario: React.FC<CardUsuarioProps> = ({
+  idViaje: id,
   nombre,
   cantidadPersonas,
   desde,
   hacia,
   horario,
   importe,
-  pendiente,
+  puedeCalificar
 }) => {
   const userStorage = localStorage.getItem('usuario');
   const userObject = JSON.parse(userStorage!!);
@@ -39,12 +48,17 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);
   const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
 
-  const handleCalificar = (calificacion) => {
-    console.log('Calificación enviada:', {
-      ...calificacion,
-      //idChofer, hay que tomar el id del chofer
-    });
-    setCalificacionEnviada(true);
+  const handleCalificar = async (calificacion: Calificacion) => {
+    console.log(calificacion)
+    try{
+      const response = await perfilService.calificarViaje(userObject.id, calificacion)
+      setCalificacionEnviada(response.puedeCalificar);
+      console.log("Calificación enviada exisosamente:", {
+        ...response,
+      });
+    } catch (error) {
+      console.error('Error al calificar viaje:', error);
+    }
   };
 
   return (
@@ -82,38 +96,40 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
             <strong>Importe:</strong> ${importe}
           </Typography>
 
-          {!esChofer && !pendiente && !calificacionEnviada && (
-            <>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: 2,
-                  marginBottom: 2,
-                }}
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: '#8A2BE2', // Violeta
-                    '&:hover': {
-                      backgroundColor: '#7B1FA2', // Violeta más oscuro al pasar el mouse
-                    },
-                  }}
-                  onClick={() => setModalAbierto(true)} // Abrir el modal
-                >
-                  Calificar Viaje
-                </Button>
-              </Box>
+        {!esChofer && puedeCalificar && !calificacionEnviada && (
+          <> 
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: 2,
+            marginBottom: 2,
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#8A2BE2", // Violeta
+              "&:hover": {
+                backgroundColor: "#7B1FA2", // Violeta más oscuro al pasar el mouse
+              },
+            }}
+            onClick={() => setModalAbierto(true)} // Abrir el modal
+          >
+            Calificar Viaje
+          </Button>
+        </Box>
 
-              <CalificarViajeModal
-                open={modalAbierto}
-                onClose={() => setModalAbierto(false)} // Cerrar el modal
-                onCalificar={handleCalificar}
-              />
-            </>
-          )}
-        </CardContent>
+
+      <CalificarViajeModal
+          open={modalAbierto}
+          onClose={() => setModalAbierto(false)} // Cerrar el modal
+          idViaje={id}
+          onCalificar={handleCalificar}
+        />
+        </>
+        )}
+    </CardContent>
       </Card>
     </div>
   );
