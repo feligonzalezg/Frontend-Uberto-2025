@@ -1,4 +1,4 @@
-import { TextField, Button, Typography, Box, CircularProgress, Snackbar, Alert, IconButton, Modal, Autocomplete } from '@mui/material';
+import { InputLabel , MenuItem, FormControl, Select, TextField, Button, Typography, Box, CircularProgress, Snackbar, Alert, IconButton, Modal, Autocomplete } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
@@ -11,6 +11,8 @@ interface Usuario {
   saldo?: number;
   amigos?: string[];
   precioBase?: number;
+  tipo: string;
+  anio: number;
   dominio?: string;
   descripcion?: string;
   modelo?: string;
@@ -34,6 +36,16 @@ const DatosUsuario = () => {
   const [sugerencias, setSugerencias] = useState<[]>([]);
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
+    if (tipo === 'tipo') {
+      setUsuario((prevUsuario) => ({
+        ...prevUsuario,
+        [tipo]: value,
+        dominio : "",
+        modelo:"",
+        descripcion:"",
+      }));
+      
+    } 
     setUsuario((prevUsuario) => ({
       ...prevUsuario,
       [tipo]: value,
@@ -143,6 +155,20 @@ const DatosUsuario = () => {
         <Typography variant="h6" sx={{ mt: 3 }}>
           Informacion Vehiculo
         </Typography>
+        <FormControl fullWidth variant="outlined" margin="normal">
+      <InputLabel id="tipo-vehiculo-label">Tipo de Vehículo</InputLabel>
+      <Select
+        labelId="tipo-vehiculo-label"
+        id="tipo-vehiculo"
+        value={usuario.tipo ?? ''}
+        onChange={(event) => actualizarCampo('tipo', event.target.value)}
+        label="Tipo de Vehículo"
+      >
+        <MenuItem value="Auto">Auto</MenuItem>
+        <MenuItem value="Moto">Moto</MenuItem>
+      </Select>
+    </FormControl>
+            <TextField fullWidth label="año" variant="outlined" margin="normal" value={usuario.anio ?? ''} onChange={(event) => actualizarCampo('anio', event.target.value)} />
         <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)} />
         <TextField fullWidth label="descripcion" variant="outlined" margin="normal" value={usuario.descripcion ?? ''} onChange={(event) => actualizarCampo('descripcion', event.target.value)} />
         <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
