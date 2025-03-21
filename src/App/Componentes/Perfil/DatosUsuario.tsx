@@ -26,6 +26,11 @@ const DatosUsuario = () => {
     nombre: '',
     apellido: '',
   });
+  
+  const [usuarioOriginal, setUsuarioOriginal] = useState<Usuario>({
+    nombre: '',
+    apellido: '',
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [mensaje, setMensaje] = useState('');
@@ -53,6 +58,12 @@ const DatosUsuario = () => {
   };
 
   const handleGuardarCambios = async () => {
+    
+    if (JSON.stringify(usuario) === JSON.stringify(usuarioOriginal)) {
+      setError('No hay cambios para guardar.');
+      return;
+    }
+
     setLoading(true);
     console.log('usuario Modificado ', usuario);
 
@@ -60,6 +71,8 @@ const DatosUsuario = () => {
       await perfilService.actualizarUsuario(userObject, usuario);
       setMensaje('Cambios guardados exitosamente.');
       setSuccess(true);
+      
+      setUsuarioOriginal(usuario);
     } catch (error) {
       setError('Error al guardar los cambios. Por favor, inténtalo de nuevo.');
       console.error(error);
@@ -69,9 +82,15 @@ const DatosUsuario = () => {
   };
 
   const handleAgregarSaldo = async () => {
-    setLoading(true);
+    
     console.log('usuario Modificado ', monto);
+    
+    if(monto == ''){
+      setError('Ingrese un valor numerico mayor a 1000');
+      return;
+    }
 
+    setLoading(true);
     try {
       await perfilService.cargarSaldo(userObject, monto);
       setMensaje('Se cargó saldo exitosamente.');
@@ -135,6 +154,7 @@ const DatosUsuario = () => {
       try {
         const response = await perfilService.dataUsuario(userObject);
         setUsuario(response);
+        setUsuarioOriginal(response); // Guardar los datos originales
       } catch (error) {
         console.error(error);
       }
@@ -291,7 +311,7 @@ const DatosUsuario = () => {
       {/* Snackbar para mensajes de éxito y error */}
       <Snackbar
         open={success}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={() => setSuccess(false)}
       >
         <Alert onClose={() => setSuccess(false)} severity="success">
@@ -301,7 +321,7 @@ const DatosUsuario = () => {
 
       <Snackbar
         open={!!error}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={() => setError('')}
       >
         <Alert onClose={() => setError('')} severity="error">

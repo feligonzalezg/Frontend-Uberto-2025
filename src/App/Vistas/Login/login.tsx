@@ -61,7 +61,7 @@ export const Login = () => {
       const errorMessage = error.response?.data?.message
       enqueueSnackbar(errorMessage, {      
         variant: 'error',
-        autoHideDuration: 5000,
+        autoHideDuration: 1000,
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
       })
     }
