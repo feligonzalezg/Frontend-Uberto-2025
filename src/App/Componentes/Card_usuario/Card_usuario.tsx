@@ -20,9 +20,10 @@ interface CardUsuarioProps {
   cantidadPersonas: number;
   desde: string;
   hacia: string;
-  horario: number;
+  horario: string;
   importe: number;
   puedeCalificar: boolean;
+  fechaFin: string;
 }
 
 interface Calificacion {
@@ -39,14 +40,15 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   hacia,
   horario,
   importe,
-  puedeCalificar
+  puedeCalificar,
+  fechaFin
 }) => {
   const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!!);
+  const userObject = JSON.parse(userStorage!);
   const esChofer = userObject.esChofer;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);
-  const formatoHorario = `${horario < 10 ? '0' : ''}${horario}:00`;
+  const formatoHorario = `${horario < 10 ? '0' : ''}${horario} - ${fechaFin}`;
 
   const handleCalificar = async (calificacion: Calificacion) => {
     console.log(calificacion)

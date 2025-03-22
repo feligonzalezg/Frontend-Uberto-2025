@@ -1,4 +1,4 @@
-import { TextField, Button, Typography, Box, CircularProgress, Snackbar, Alert, IconButton, Modal, Autocomplete } from '@mui/material';
+import { InputLabel , MenuItem, FormControl, Select, TextField, Button, Typography, Box, CircularProgress, Snackbar, Alert, IconButton, Modal, Autocomplete } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
@@ -11,6 +11,8 @@ interface Usuario {
   saldo?: number;
   amigos?: string[];
   precioBase?: number;
+  tipo: string;
+  anio: number;
   dominio?: string;
   descripcion?: string;
   modelo?: string;
@@ -18,9 +20,14 @@ interface Usuario {
 
 const DatosUsuario = () => {
   const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!!);
+  const userObject = JSON.parse(userStorage!);
   const esChofer = userObject.esChofer;
   const [usuario, setUsuario] = useState<Usuario>({
+    nombre: '',
+    apellido: '',
+  });
+  
+  const [usuarioOriginal, setUsuarioOriginal] = useState<Usuario>({
     nombre: '',
     apellido: '',
   });
@@ -34,6 +41,17 @@ const DatosUsuario = () => {
   const [sugerencias, setSugerencias] = useState<[]>([]);
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
+    if (tipo === 'tipo') {
+      setUsuario((prevUsuario) => ({
+        ...prevUsuario,
+        [tipo]: value,
+        dominio : "",
+        modelo:"",
+        descripcion:"",
+        anio:""
+      }));
+      
+    } 
     setUsuario((prevUsuario) => ({
       ...prevUsuario,
       [tipo]: value,
@@ -41,6 +59,12 @@ const DatosUsuario = () => {
   };
 
   const handleGuardarCambios = async () => {
+    
+    if (JSON.stringify(usuario) === JSON.stringify(usuarioOriginal)) {
+      setError('No hay cambios para guardar.');
+      return;
+    }
+
     setLoading(true);
     console.log('usuario Modificado ', usuario);
 
@@ -48,6 +72,8 @@ const DatosUsuario = () => {
       await perfilService.actualizarUsuario(userObject, usuario);
       setMensaje('Cambios guardados exitosamente.');
       setSuccess(true);
+      
+      setUsuarioOriginal(usuario);
     } catch (error) {
       setError('Error al guardar los cambios. Por favor, inténtalo de nuevo.');
       console.error(error);
@@ -57,9 +83,15 @@ const DatosUsuario = () => {
   };
 
   const handleAgregarSaldo = async () => {
-    setLoading(true);
+    
     console.log('usuario Modificado ', monto);
+    
+    if(monto == ''){
+      setError('Ingrese un valor numerico mayor a 1000');
+      return;
+    }
 
+    setLoading(true);
     try {
       await perfilService.cargarSaldo(userObject, monto);
       setMensaje('Se cargó saldo exitosamente.');
@@ -123,6 +155,7 @@ const DatosUsuario = () => {
       try {
         const response = await perfilService.dataUsuario(userObject);
         setUsuario(response);
+        setUsuarioOriginal(response); // Guardar los datos originales
       } catch (error) {
         console.error(error);
       }
@@ -143,6 +176,22 @@ const DatosUsuario = () => {
         <Typography variant="h6" sx={{ mt: 3 }}>
           Informacion Vehiculo
         </Typography>
+        <FormControl fullWidth variant="outlined" margin="normal">
+      <InputLabel id="tipo-vehiculo-label">Tipo de Vehículo</InputLabel>
+      <Select
+        labelId="tipo-vehiculo-label"
+        id="tipo-vehiculo"
+        value={usuario.tipo ?? ''}
+        onChange={(event) => actualizarCampo('tipo', event.target.value)}
+        label="Tipo de Vehículo"
+        aria-placeholder='seleccione un tipo de vehiculo'
+      >
+        <MenuItem value="Simple">Auto</MenuItem>
+        <MenuItem value="Ejecutivo">Auto Ejectuivo</MenuItem>
+        <MenuItem value="Moto">Moto</MenuItem>
+      </Select>
+    </FormControl>
+            <TextField fullWidth label="año" variant="outlined" margin="normal" value={usuario.anio ?? ''} onChange={(event) => actualizarCampo('anio', event.target.value)} />
         <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)} />
         <TextField fullWidth label="descripcion" variant="outlined" margin="normal" value={usuario.descripcion ?? ''} onChange={(event) => actualizarCampo('descripcion', event.target.value)} />
         <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
@@ -265,7 +314,7 @@ const DatosUsuario = () => {
       {/* Snackbar para mensajes de éxito y error */}
       <Snackbar
         open={success}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={() => setSuccess(false)}
       >
         <Alert onClose={() => setSuccess(false)} severity="success">
@@ -275,7 +324,7 @@ const DatosUsuario = () => {
 
       <Snackbar
         open={!!error}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={() => setError('')}
       >
         <Alert onClose={() => setError('')} severity="error">

@@ -77,16 +77,11 @@ class PerfilService {
   async actualizarUsuario(userObject, usuario) {
     try {
       console.log('llegue al service del perfil')
-      const viajesPendientes = await axios.post(
-        `${REST_SERVER_URL}/actualizarUsuario/${userObject.id}`,
-        {
-          params: {
-            esChofer: userObject.esChofer,
-          },
-        },
-      )
-      console.log(viajesPendientes.data)
-      return viajesPendientes.data
+      console.log(usuario)
+      const actualizarUser = await axios.patch(
+        `${REST_SERVER_URL}/actualizarUsuario/${userObject.id}`,usuario)
+      console.log(actualizarUser.data)
+      return actualizarUser.data
     } catch (error) {
       console.error(error)
     }
@@ -202,6 +197,19 @@ class PerfilService {
       return response.data;
     } catch (error) {
       console.error("Ocurrió un error al calificar viaje: ", error);
+    }
+  }
+
+
+  async deleteComentario(idUsuario, idComentario) {
+    try {
+      console.log('llegue al service del perfil')
+      const comentario = await axios.delete(
+        `${REST_SERVER_URL}/eliminarComentario/${idUsuario}/${idComentario}`)
+      console.log(comentario.data)
+      return comentario.data
+    } catch (error) {
+      console.error(error)
     }
   }
   

@@ -9,14 +9,15 @@ interface Viaje {
   cantidadDePasajeros: number;
   origen: string;
   destino: string;
-  fechaInicio: number;
+  fechaInicio: string;
   importe: number;
   puedeCalificar: boolean;
+  fechaFin: string;
 }
 
 const Viajes = () => {
   const userStorage = localStorage.getItem("usuario")
-  const userObject = JSON.parse(userStorage!!)
+  const userObject = JSON.parse(userStorage!)
   const esChofer = userObject.esChofer
   const [viajesRealizados, setViajesRealizados] = useState<Viaje[]>([])
   const [viajesPendientes, setViajesPendientes] = useState<Viaje[]>([])
@@ -66,6 +67,7 @@ const Viajes = () => {
               horario={viaje.fechaInicio}
               importe={viaje.importe}
               puedeCalificar ={viaje.puedeCalificar}
+              fechaFin={viaje.fechaFin}
             />
           ))}
         </>
@@ -85,6 +87,7 @@ const Viajes = () => {
           horario={viaje.fechaInicio}
           importe={viaje.importe}
           puedeCalificar ={viaje.puedeCalificar}
+          fechaFin={viaje.fechaFin}
         />
         
       ))}
