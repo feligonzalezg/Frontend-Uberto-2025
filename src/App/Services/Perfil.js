@@ -94,23 +94,23 @@ class PerfilService {
 
   async cargarSaldo(userObject, monto) {
     try {
-      console.log('llegue al service del perfil')
-
-      const cargarSaldo = await axios.post(
-        `${REST_SERVER_URL}/cargarSaldo/${userObject.id}`,
-        {
-          params: {
-            esChofer: userObject.esChofer,
-            monto: monto,
-          },
-        },
-      )
-      console.log(cargarSaldo.data)
-      return cargarSaldo.data
+        const response = await axios.post(
+            `${REST_SERVER_URL}/cargarSaldo/${userObject.id}`,
+            null,
+            {
+                params: {
+                    esChofer: userObject.esChofer,
+                    monto: monto,
+                },
+            }
+        )
+        console.log(response.data)
+        return response.data
     } catch (error) {
-      console.error(error)
+        console.error(error)
+        throw error
     }
-  }
+}
 
   async agregarAmigo(userId, amigoId) {
     try {

@@ -174,13 +174,13 @@ const DatosUsuario = () => {
             onChange={(event) => setMonto(event.target.value)}
           />
 
-          <Button
+<Button
             className="button-primary"
             variant="contained"
             fullWidth
             sx={{ mt: 2, backgroundColor: 'purple' }}
             onClick={handleAgregarSaldo}
-            disabled={loading}
+            disabled={loading || !monto} 
           >
             {loading ? <CircularProgress size={24} /> : 'Agregar Saldo'}
           </Button>
