@@ -201,11 +201,11 @@ class PerfilService {
   }
 
 
-  async deleteComentario(id) {
+  async deleteComentario(idUsuario, idComentario) {
     try {
       console.log('llegue al service del perfil')
       const comentario = await axios.delete(
-        `${REST_SERVER_URL}/comentario/${id}`)
+        `${REST_SERVER_URL}/eliminarComentario/${idUsuario}/${idComentario}`)
       console.log(comentario.data)
       return comentario.data
     } catch (error) {

@@ -44,7 +44,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   fechaFin
 }) => {
   const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!!);
+  const userObject = JSON.parse(userStorage!);
   const esChofer = userObject.esChofer;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);

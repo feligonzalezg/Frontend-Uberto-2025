@@ -20,7 +20,7 @@ interface Usuario {
 
 const DatosUsuario = () => {
   const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!!);
+  const userObject = JSON.parse(userStorage!);
   const esChofer = userObject.esChofer;
   const [usuario, setUsuario] = useState<Usuario>({
     nombre: '',
