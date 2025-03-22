@@ -48,6 +48,7 @@ const DatosUsuario = () => {
         dominio : "",
         modelo:"",
         descripcion:"",
+        anio:""
       }));
       
     } 
@@ -183,8 +184,10 @@ const DatosUsuario = () => {
         value={usuario.tipo ?? ''}
         onChange={(event) => actualizarCampo('tipo', event.target.value)}
         label="Tipo de Vehículo"
+        aria-placeholder='seleccione un tipo de vehiculo'
       >
-        <MenuItem value="Auto">Auto</MenuItem>
+        <MenuItem value="Simple">Auto</MenuItem>
+        <MenuItem value="Ejecutivo">Auto Ejectuivo</MenuItem>
         <MenuItem value="Moto">Moto</MenuItem>
       </Select>
     </FormControl>
