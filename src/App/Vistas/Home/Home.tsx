@@ -21,7 +21,7 @@ const HomeUsuario: React.FC = () => {
   const [destino, setDestino] = useState('');
   const [fecha, setFecha] = useState('');
   const [usernameViajero, setUsernameViajero] = useState('');
-  const [duracion, setDuracion] = useState<number | null>(null);
+  const [duracion, setDuracion] = useState(0);
 
   const userStorage = localStorage.getItem('usuario');
   const userObject = JSON.parse(userStorage || '{}');
@@ -33,7 +33,6 @@ const HomeUsuario: React.FC = () => {
     );
   };
 
-  // Función para generar duración aleatoria entre 5 y 60 minutos
   const generarDuracionRandom = () => {
     return Math.floor(Math.random() * (60 - 5 + 1)) + 5;
   };
@@ -100,6 +99,7 @@ const HomeUsuario: React.FC = () => {
         <TextField
           fullWidth
           variant="outlined"
+          label="Usuario"
           placeholder="Nombre usuario"
           value={usernameViajero}
           onChange={(e) => setUsernameViajero(e.target.value)}
@@ -111,6 +111,7 @@ const HomeUsuario: React.FC = () => {
         fullWidth
         variant="outlined"
         placeholder="Origen"
+        label="Origen"
         value={origen}
         onChange={(e) => setOrigen(e.target.value)}
         sx={{ marginBottom: 2 }}
@@ -118,6 +119,7 @@ const HomeUsuario: React.FC = () => {
       <TextField
         fullWidth
         variant="outlined"
+        label="Destino"
         placeholder="Destino"
         value={destino}
         onChange={(e) => setDestino(e.target.value)}
@@ -128,6 +130,7 @@ const HomeUsuario: React.FC = () => {
         <TextField
           fullWidth
           variant="outlined"
+          label="Fecha"
           type="datetime-local" // Permite seleccionar fecha y hora
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
@@ -139,6 +142,7 @@ const HomeUsuario: React.FC = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
         <TextField
           value={cantidadDePasajeros}
+          label="Cantidad de Pasajeros"
           variant="outlined"
           fullWidth
           InputProps={{ readOnly: true }}
@@ -189,10 +193,10 @@ const HomeUsuario: React.FC = () => {
             />
           ) : (
             <CardChofer
+              id={item.id}
               patente={item.patente}
               nombre={item.nombreYApellido}
               modelo={item.movil}
-              año={item.año}
               tarifa={item.importe}
               calificacion={item.calificacion}
               origen={origen} // Enviar datos del viaje
