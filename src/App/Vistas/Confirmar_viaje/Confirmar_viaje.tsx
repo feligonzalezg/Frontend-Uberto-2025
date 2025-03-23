@@ -8,7 +8,7 @@ const ConfirmarViaje = () => {
   const location = useLocation();
   const userStorage = localStorage.getItem('usuario');
   const userObject = JSON.parse(userStorage!);
-  const { origen, destino, fecha, duracion, cantidadPasajeros, chofer } =
+  const { origen, destino, fecha, duracion, cantidadDePasajeros, chofer } =
     location.state || {};
   const navigate = useNavigate();
 
@@ -28,12 +28,12 @@ const ConfirmarViaje = () => {
       : '';
     const viajedata = {
       idViajero: userObject?.id || 0,
-      idConductor: chofer?.id,
+      idConductor: chofer?.idConductor,
       nombre: chofer?.nombre,
       origen,
       destino,
       fechaInicio: fechaFormateada,
-      cantidadPasajeros,
+      cantidadDePasajeros,
       duracion,
       importe: chofer?.tarifa,
       puedeCalificar: true,
@@ -86,7 +86,7 @@ const ConfirmarViaje = () => {
         <Typography variant="body1" className="info-text">
           Pasajeros:
         </Typography>
-        <Typography variant="body1">{cantidadPasajeros}</Typography>
+        <Typography variant="body1">{cantidadDePasajeros}</Typography>
       </Box>
       <Divider className="divider" />
 

@@ -189,12 +189,12 @@ const HomeUsuario: React.FC = () => {
               hacia={item.destino}
               horario={item.fechaInicio}
               importe={item.importe}
-              pendiente={item.pendiente}
+              fechaFin={item.fechaFin}
             />
           ) : (
             <CardChofer
               key={index}
-              id={item.id}
+              idConductor={item.idConductor}
               patente={item.patente}
               nombre={item.nombreYApellido}
               modelo={item.movil}
@@ -204,7 +204,7 @@ const HomeUsuario: React.FC = () => {
               destino={destino}
               duracion={duracion}
               fecha={fecha}
-              cantidadPasajeros={cantidadDePasajeros}
+              cantidadDePasajeros={cantidadDePasajeros}
             />
           )
         )}
