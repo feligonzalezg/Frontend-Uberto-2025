@@ -193,6 +193,7 @@ const HomeUsuario: React.FC = () => {
             />
           ) : (
             <CardChofer
+              key={index}
               id={item.id}
               patente={item.patente}
               nombre={item.nombreYApellido}
