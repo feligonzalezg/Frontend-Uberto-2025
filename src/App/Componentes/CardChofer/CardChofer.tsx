@@ -17,11 +17,11 @@ interface CardChoferProps {
   modelo: string;
   tarifa: number;
   calificacion: number;
-  origen: string; // Agregar
-  destino: string; // Agregar
-  fecha: string; // Agregar
-  duracion: number; // Agregar aquí
-  cantidadPasajeros: number; // Agregar
+  origen: string;
+  destino: string;
+  fecha: string;
+  duracion: number;
+  cantidadPasajeros: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
@@ -34,30 +34,18 @@ const CardChofer: React.FC<CardChoferProps> = ({
   origen,
   destino,
   fecha,
-  duracion, // Agregar aquí
+  duracion,
   cantidadPasajeros,
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log('Datos enviados a ConfirmarViaje:', {
-      id,
-      origen,
-      destino,
-      fecha,
-      cantidadPasajeros,
-      patente,
-      nombre,
-      modelo,
-      tarifa,
-      calificacion,
-    });
     navigate('/Confirmar_viaje', {
       state: {
         origen,
         destino,
         fecha,
-        duracion, // Agregar aquí
+        duracion,
         cantidadPasajeros,
         chofer: { id, patente, nombre, modelo, tarifa, calificacion },
       },

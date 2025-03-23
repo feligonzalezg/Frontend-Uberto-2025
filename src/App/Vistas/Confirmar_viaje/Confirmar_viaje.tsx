@@ -2,22 +2,47 @@ import './ConfirmarViaje.css';
 import { Box, Typography, Divider, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import perfilService from '../../Services/Perfil';
-import { useState } from 'react';
+import { format } from 'date-fns';
 
 const ConfirmarViaje = () => {
-  const [viaje, setViaje] = useState<[]>([]);
   const location = useLocation();
   const userStorage = localStorage.getItem('usuario');
   const userObject = JSON.parse(userStorage!);
   const { origen, destino, fecha, duracion, cantidadPasajeros, chofer } =
-    location.state || {}; // Desestructurar los datos
+    location.state || {};
   const navigate = useNavigate();
-  console.log('Datos recibidos en ConfirmarViaje:', location.state);
 
-  const handleConfirmarViaje = async () => {
+  const calcularHoraFin = (fechaInicio: string, duracion: number) => {
+    const [dia, mes, anio, hora, min] = fechaInicio.match(/\d+/g)!.map(Number);
+    const fechaObj = new Date(2000 + anio, mes - 1, dia, hora, min);
+    fechaObj.setMinutes(fechaObj.getMinutes() + duracion);
+    const horaFin = String(fechaObj.getHours()).padStart(2, '0');
+    const minFin = String(fechaObj.getMinutes()).padStart(2, '0');
+    return `${horaFin}:${minFin}`;
+  };
+
+  const handleConfirmarViaje = async (fechaInicio: string) => {
+    const fechaFin = calcularHoraFin(fecha, duracion);
+    const fechaFormateada = fechaInicio
+      ? format(new Date(fecha), 'dd/MM/yyyy HH:mm')
+      : '';
+    const viajedata = {
+      idViajero: userObject?.id || 0,
+      idConductor: chofer?.id,
+      nombre: chofer?.nombre,
+      origen,
+      destino,
+      fechaInicio: fechaFormateada,
+      cantidadPasajeros,
+      duracion,
+      importe: chofer?.tarifa,
+      puedeCalificar: true,
+      fechaFin,
+    };
     try {
-      const response = await perfilService.confirmarViaje();
-      setViaje(response);
+      console.log('antes de ir al service', viajedata);
+      await perfilService.confirmarViaje(viajedata);
+      navigate('/Home');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -103,10 +128,7 @@ const ConfirmarViaje = () => {
         <Button className="boton-volver" onClick={() => navigate('/home')}>
           Volver
         </Button>
-        <Button
-          className="boton-confirmar"
-          onClick={() => alert('Viaje confirmado')}
-        >
+        <Button className="boton-confirmar" onClick={handleConfirmarViaje}>
           Confirmar
         </Button>
       </Box>

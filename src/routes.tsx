@@ -27,7 +27,6 @@ export const ReadAppRoutes = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="/Home" element={<HomeUsuario />} />
-                  <Route path="/Home_Chofer" element={<HomeChofer />} />
                   <Route path="/Perfil_Usuario" element={<Perfil />} />
                   <Route path="/Confirmar_viaje" element={<ConfirmarViaje />} />
                 </Routes>
