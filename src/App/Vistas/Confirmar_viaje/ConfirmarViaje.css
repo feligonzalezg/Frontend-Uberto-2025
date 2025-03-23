@@ -74,6 +74,16 @@
   margin-right: 1rem;
   margin-top: 0.5rem;
 }
+/* Nueva estructura para los datos */
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.info-text {
+  font-weight: bold;
+}
 
 .confirmar-viaje__acciones {
   display: flex;
