@@ -11,19 +11,21 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
 interface CardChoferProps {
-  patente: string;
+  dominio: string;
   nombre: string;
+  marca: string;
   modelo: string;
-  año: number;
+  anio: number;
   tarifa: number;
   calificacion: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
-  patente,
+  dominio,
   nombre,
+  marca,
   modelo,
-  año,
+  anio,
   tarifa,
   calificacion,
 }) => {
@@ -40,8 +42,8 @@ const CardChofer: React.FC<CardChoferProps> = ({
           className="card-chofer__header"
           title={
             <Box className="card-chofer__title">
-              <Typography className="card-chofer__patente">
-                {patente}
+              <Typography className="card-chofer__dominio">
+                {dominio}
               </Typography>
               <Typography variant="body2" className="card-chofer__calificacion">
                 {calificacion}
@@ -54,7 +56,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
           <Box>
             <Typography className="card-chofer__nombre">{nombre}</Typography>
             <Typography className="card-chofer__modelo">
-              {modelo} • {año}
+              {marca} | {modelo} • {anio}
             </Typography>
             <Box className="card-chofer__info">
               <Typography className="card-chofer__tarifa">

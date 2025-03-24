@@ -9,13 +9,20 @@ interface Usuario {
   apellido: string;
   telefono?: number;
   saldo?: number;
-  amigos?: string[];
+  amigos?: Amigo[];
   precioBase?: number;
-  tipo: string;
-  anio: number;
+  tipo?: string | number;
+  anio?: number | string;
   dominio?: string;
-  descripcion?: string;
+  marca?: string;
   modelo?: string;
+}
+
+interface Amigo {
+  nombreYApellido: string
+  username: string
+  avatar: string
+  id: number
 }
 
 const DatosUsuario = () => {
@@ -37,7 +44,7 @@ const DatosUsuario = () => {
   const [success, setSuccess] = useState(false);
   const [monto, setMonto] = useState('');
   const [openAgregarAmigoModal, setOpenAgregarAmigoModal] = useState(false);
-  const [nuevoAmigo, setNuevoAmigo] = useState('');
+  const [nuevoAmigo, setNuevoAmigo] = useState<Amigo | null>();
   const [sugerencias, setSugerencias] = useState<[]>([]);
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
@@ -47,7 +54,7 @@ const DatosUsuario = () => {
         [tipo]: value,
         dominio : "",
         modelo:"",
-        descripcion:"",
+        marca:"",
         anio:""
       }));
       
@@ -125,11 +132,11 @@ const DatosUsuario = () => {
 
   const handleCloseAgregarAmigoModal = () => {
     setOpenAgregarAmigoModal(false);
-    setNuevoAmigo('');
+    setNuevoAmigo(null);
   };
 
   const handleAgregarAmigo = async () => {
-    console.log("hola " + nuevoAmigo.id)
+    console.log("hola " + nuevoAmigo?.id)
     if (!nuevoAmigo) {
       setError('Por favor, ingresa un nombre de usuario.');
       return;
@@ -162,7 +169,7 @@ const DatosUsuario = () => {
     };
 
     fetchDatosUsuario();
-  }, []);
+  }, [userObject]);
 
   return (
     <Box>
@@ -187,13 +194,13 @@ const DatosUsuario = () => {
         aria-placeholder='seleccione un tipo de vehiculo'
       >
         <MenuItem value="Simple">Auto</MenuItem>
-        <MenuItem value="Ejecutivo">Auto Ejectuivo</MenuItem>
+        <MenuItem value="Ejecutivo">Auto Ejecutivo</MenuItem>
         <MenuItem value="Moto">Moto</MenuItem>
       </Select>
     </FormControl>
-            <TextField fullWidth label="año" variant="outlined" margin="normal" value={usuario.anio ?? ''} onChange={(event) => actualizarCampo('anio', event.target.value)} />
+            <TextField fullWidth label="Año" variant="outlined" margin="normal" value={usuario.anio ?? ''} onChange={(event) => actualizarCampo('anio', event.target.value)} />
         <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)} />
-        <TextField fullWidth label="descripcion" variant="outlined" margin="normal" value={usuario.descripcion ?? ''} onChange={(event) => actualizarCampo('descripcion', event.target.value)} />
+        <TextField fullWidth label="Marca" variant="outlined" margin="normal" value={usuario.marca ?? ''} onChange={(event) => actualizarCampo('marca', event.target.value)} />
         <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
       </>
       )}
@@ -278,9 +285,13 @@ const DatosUsuario = () => {
           <Autocomplete
             freeSolo
             options={sugerencias}
-            getOptionLabel={(option) => `${option.username} - ${option.nombreYApellido}`}
-            onChange={(event, newValue) => { setNuevoAmigo(newValue) }}
-            onInputChange={(event, newValue) => {
+            getOptionLabel={(option: Amigo | string) => typeof option === "string" ? option : `${option.username} - ${option.nombreYApellido}`}
+            onChange={(_, newValue) => {
+              if (newValue !== null && typeof newValue !== 'string') {
+                setNuevoAmigo(newValue);
+              }
+            }}
+            onInputChange={(_, newValue) => {
               //setNuevoAmigo(newValue);
               buscarSugerencias(newValue);
             }}

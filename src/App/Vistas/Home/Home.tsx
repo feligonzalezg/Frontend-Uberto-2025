@@ -187,10 +187,11 @@ const HomeUsuario: React.FC = () => {
           ) : (
             <CardChofer
               key={index}
-              patente={item.patente}
+              dominio={item.dominio}
               nombre={item.nombreYApellido}
-              modelo={item.movil}
-              año={item.año}
+              marca={item.marca}
+              modelo={item.modelo}
+              anio={item.anio}
               tarifa={item.importe}
               calificacion={item.calificacion}
             />
