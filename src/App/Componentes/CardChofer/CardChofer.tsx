@@ -12,27 +12,48 @@ import { useNavigate } from 'react-router-dom';
 
 interface CardChoferProps {
   dominio: string;
+  idConductor: number;
   nombre: string;
   marca: string;
   modelo: string;
   anio: number;
   tarifa: number;
   calificacion: number;
+  origen: string;
+  destino: string;
+  fecha: string;
+  duracion: number;
+  cantidadDePasajeros: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
   dominio,
+  idConductor,
   nombre,
   marca,
   modelo,
   anio,
   tarifa,
   calificacion,
+  origen,
+  destino,
+  fecha,
+  duracion,
+  cantidadDePasajeros,
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/Confirmar_viaje');
+    navigate('/Confirmar_viaje', {
+      state: {
+        origen,
+        destino,
+        fecha,
+        duracion,
+        cantidadDePasajeros,
+        chofer: { idConductor, dominio, nombre, modelo, tarifa, calificacion },
+      },
+    });
   };
 
   return (
@@ -55,6 +76,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
         <CardContent className="card-chofer__content">
           <Box>
             <Typography className="card-chofer__nombre">{nombre}</Typography>
+
             <Typography className="card-chofer__modelo">
               {marca} | {modelo} • {anio}
             </Typography>

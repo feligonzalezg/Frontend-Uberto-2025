@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -6,45 +6,45 @@ import {
   Button,
   IconButton,
   Divider,
-} from '@mui/material'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
-import homeService from '../../Services/HomeService'
-import CardChofer from '../../Componentes/CardChofer/CardChofer'
-import CardUsuario from '../../Componentes/Card_usuario/Card_usuario'
-import { format } from 'date-fns'
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import homeService from '../../Services/HomeService';
+import CardChofer from '../../Componentes/CardChofer/CardChofer';
+import CardUsuario from '../../Componentes/Card_usuario/Card_usuario';
+import { format } from 'date-fns';
 
 const HomeUsuario: React.FC = () => {
-  const [resultados, setResultados] = useState<any[]>([])
-  const [cantidadDePasajeros, setCantidadPasajeros] = useState(0)
-  const [origen, setOrigen] = useState('')
-  const [destino, setDestino] = useState('')
-  const [fecha, setFecha] = useState('')
-  const [usernameViajero, setUsernameViajero] = useState('')
+  const [resultados, setResultados] = useState<any[]>([]);
+  const [cantidadDePasajeros, setCantidadPasajeros] = useState(0);
+  const [origen, setOrigen] = useState('');
+  const [destino, setDestino] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [usernameViajero, setUsernameViajero] = useState('');
+  const [duracion, setDuracion] = useState(0);
 
-  const userStorage = localStorage.getItem('usuario')
-  const userObject = JSON.parse(userStorage || '{}')
-  const esChofer = userObject.esChofer
+  const userStorage = localStorage.getItem('usuario');
+  const userObject = JSON.parse(userStorage || '{}');
+  const esChofer = userObject.esChofer;
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
     setCantidadPasajeros((prev) =>
-      increment ? Math.min(4, prev + 1) : Math.max(0, prev - 1),
-    )
-  }
+      increment ? Math.min(4, prev + 1) : Math.max(0, prev - 1)
+    );
+  };
 
-  // Función para generar duración aleatoria entre 5 y 60 minutos
   const generarDuracionRandom = () => {
-    return Math.floor(Math.random() * (60 - 5 + 1)) + 5
-  }
+    return Math.floor(Math.random() * (60 - 5 + 1)) + 5;
+  };
 
   const handleBuscar = async () => {
-    const id = userObject.id
+    const id = userObject.id;
 
     try {
-      let response
+      let response;
       const fechaFormateada = fecha
         ? format(new Date(fecha), 'dd/MM/yyyy HH:mm')
-        : ''
+        : '';
 
       if (esChofer) {
         const busquedaViajes = {
@@ -52,23 +52,25 @@ const HomeUsuario: React.FC = () => {
           origen,
           destino,
           cantidadDePasajeros,
-        }
-        console.log('antes de')
-        response = await homeService.BuscarViajes(busquedaViajes, id)
+        };
+        console.log('antes de');
+        response = await homeService.BuscarViajes(busquedaViajes, id);
       } else {
+        const duracionAleatoria = generarDuracionRandom(); // Generamos duración
+        setDuracion(duracionAleatoria); // Guardamos en el estado
         const busquedaDTO = {
           fecha: fechaFormateada,
-          duracion: generarDuracionRandom(),
+          duracion: duracionAleatoria,
           cantidadDePasajeros,
-        }
-        response = await homeService.ChoferesDisponibles(busquedaDTO)
+        };
+        response = await homeService.ChoferesDisponibles(busquedaDTO);
       }
 
-      setResultados(response || [])
+      setResultados(response || []);
     } catch (error) {
-      console.error('Error en la búsqueda:', error)
+      console.error('Error en la búsqueda:', error);
     }
-  }
+  };
 
   return (
     <Box
@@ -97,6 +99,7 @@ const HomeUsuario: React.FC = () => {
         <TextField
           fullWidth
           variant="outlined"
+          label="Usuario"
           placeholder="Nombre usuario"
           value={usernameViajero}
           onChange={(e) => setUsernameViajero(e.target.value)}
@@ -108,6 +111,7 @@ const HomeUsuario: React.FC = () => {
         fullWidth
         variant="outlined"
         placeholder="Origen"
+        label="Origen"
         value={origen}
         onChange={(e) => setOrigen(e.target.value)}
         sx={{ marginBottom: 2 }}
@@ -115,6 +119,7 @@ const HomeUsuario: React.FC = () => {
       <TextField
         fullWidth
         variant="outlined"
+        label="Destino"
         placeholder="Destino"
         value={destino}
         onChange={(e) => setDestino(e.target.value)}
@@ -125,6 +130,7 @@ const HomeUsuario: React.FC = () => {
         <TextField
           fullWidth
           variant="outlined"
+          label="Fecha"
           type="datetime-local" // Permite seleccionar fecha y hora
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
@@ -136,6 +142,7 @@ const HomeUsuario: React.FC = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
         <TextField
           value={cantidadDePasajeros}
+          label="Cantidad de Pasajeros"
           variant="outlined"
           fullWidth
           InputProps={{ readOnly: true }}
@@ -182,7 +189,7 @@ const HomeUsuario: React.FC = () => {
               hacia={item.destino}
               horario={item.fechaInicio}
               importe={item.importe}
-              pendiente={item.pendiente}
+              fechaFin={item.fechaFin}
             />
           ) : (
             <CardChofer
@@ -192,14 +199,20 @@ const HomeUsuario: React.FC = () => {
               marca={item.marca}
               modelo={item.modelo}
               anio={item.anio}
+              idConductor={item.idConductor}
               tarifa={item.importe}
               calificacion={item.calificacion}
+              origen={origen} 
+              destino={destino}
+              duracion={duracion}
+              fecha={fecha}
+              cantidadDePasajeros={cantidadDePasajeros}
             />
-          ),
+          )
         )}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default HomeUsuario
+export default HomeUsuario;
