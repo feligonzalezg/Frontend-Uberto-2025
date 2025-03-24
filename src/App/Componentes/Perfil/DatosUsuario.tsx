@@ -201,7 +201,7 @@ const DatosUsuario = () => {
             <TextField fullWidth label="Año" variant="outlined" margin="normal" value={usuario.anio ?? ''} onChange={(event) => actualizarCampo('anio', event.target.value)} />
         <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)} />
         <TextField fullWidth label="Marca" variant="outlined" margin="normal" value={usuario.marca ?? ''} onChange={(event) => actualizarCampo('marca', event.target.value)} />
-        <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
+        <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} sx={{mb:2}} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
       </>
       )}
       <Button
