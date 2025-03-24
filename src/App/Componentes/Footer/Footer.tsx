@@ -16,7 +16,7 @@ const Footer = () => {
   }
 
   const logout = () => {
-    localStorage.clear()
+    localStorage.removeItem('usuario')
     }
 
   return (
