@@ -169,7 +169,7 @@ const DatosUsuario = () => {
     };
 
     fetchDatosUsuario();
-  }, [userObject]);
+  }, []);
 
   return (
     <Box>
