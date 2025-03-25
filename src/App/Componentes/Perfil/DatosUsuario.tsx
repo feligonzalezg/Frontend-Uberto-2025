@@ -81,8 +81,9 @@ const DatosUsuario = () => {
       setSuccess(true);
       
       setUsuarioOriginal(usuario);
-    } catch (error) {
-      setError('Error al guardar los cambios. Por favor, inténtalo de nuevo.');
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message
+      setError(errorMessage);
       console.error(error);
     } finally {
       setLoading(false);
