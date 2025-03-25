@@ -44,7 +44,7 @@ class PerfilService {
     try {
       console.log('llegue al service');
       const comentarios = await axios.get(
-        `${REST_SERVER_URL}/comentario/${chofer.id}`,
+        `${REST_SERVER_URL}/comentario/${chofer.idConductor}`,
         {
           params: {
             esChofer: true,

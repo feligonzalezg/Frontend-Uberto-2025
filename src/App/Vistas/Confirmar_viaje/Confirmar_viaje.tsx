@@ -52,6 +52,7 @@ const ConfirmarViaje = () => {
   };
   useEffect(() => {
     const fetchComentarios = async () => {
+      console.log(chofer)
       try {
         const response = await perfilService.getComentariosChofer(chofer);
         setComentarios(response);
@@ -119,7 +120,7 @@ const ConfirmarViaje = () => {
         <Typography variant="body1" className="info-text">
           Dominio:
         </Typography>
-        <Typography variant="body1">{chofer?.patente}</Typography>
+        <Typography variant="body1">{chofer?.dominio}</Typography>
       </Box>
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
