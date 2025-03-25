@@ -75,11 +75,7 @@
         
         setResultados(response || [])
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message)
-        } else {
-          setError('Ocurrió un error inesperado')
-        }
+      
         console.error('Error en la búsqueda:', error)
       }
     }
