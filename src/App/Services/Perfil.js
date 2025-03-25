@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { REST_SERVER_URL } from './configuracion'
+import { ImageNotSupported } from '@mui/icons-material'
 
 class PerfilService {
   async dataUsuario(userObject) {
@@ -149,6 +150,25 @@ class PerfilService {
       console.error(error);
     }
   }
+
+  async actualizarImagen(userObject, imagen) {
+    try {
+      console.log('llegue al service del perfil')
+      console.log(userObject)
+      console.log(imagen)
+      const actualizarImagen = await axios.patch(
+        `${REST_SERVER_URL}/actualizarImagen/${userObject.id}?esChofer=${userObject.esChofer}&imagen=${imagen}`,
+      
+      )
+      console.log(actualizarImagen.data)
+      return actualizarImagen.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+
 }
 
 const perfilService = new PerfilService()
