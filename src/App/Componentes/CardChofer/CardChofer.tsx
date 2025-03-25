@@ -11,7 +11,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
 interface CardChoferProps {
-  id: number;
+  idConductor: number;
   patente: string;
   nombre: string;
   modelo: string;
@@ -21,11 +21,11 @@ interface CardChoferProps {
   destino: string;
   fecha: string;
   duracion: number;
-  cantidadPasajeros: number;
+  cantidadDePasajeros: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
-  id,
+  idConductor,
   patente,
   nombre,
   modelo,
@@ -35,7 +35,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
   destino,
   fecha,
   duracion,
-  cantidadPasajeros,
+  cantidadDePasajeros,
 }) => {
   const navigate = useNavigate();
 
@@ -46,8 +46,8 @@ const CardChofer: React.FC<CardChoferProps> = ({
         destino,
         fecha,
         duracion,
-        cantidadPasajeros,
-        chofer: { id, patente, nombre, modelo, tarifa, calificacion },
+        cantidadDePasajeros,
+        chofer: { idConductor, patente, nombre, modelo, tarifa, calificacion },
       },
     });
   };
