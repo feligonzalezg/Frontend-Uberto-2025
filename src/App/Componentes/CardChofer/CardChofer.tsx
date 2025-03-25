@@ -1,4 +1,4 @@
-import './CardChofer.css'
+import './CardChofer.css';
 import {
   Card,
   CardHeader,
@@ -6,37 +6,65 @@ import {
   Typography,
   Box,
   Avatar,
-} from '@mui/material'
-import StarIcon from '@mui/icons-material/Star'
+} from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import { useNavigate } from 'react-router-dom';
 
 interface CardChoferProps {
-  patente: string
-  nombre: string
-  modelo: string
-  foto: string
-  año: number
-  tarifa: number
-  calificacion: number
+  dominio: string;
+  idConductor: number;
+  nombre: string;
+  marca: string;
+  modelo: string;
+  anio: number;
+  tarifa: number;
+  calificacion: number;
+  origen: string;
+  destino: string;
+  fecha: string;
+  duracion: number;
+  cantidadDePasajeros: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
-  patente,
+  dominio,
+  idConductor,
   nombre,
+  marca,
   modelo,
-  foto,
-  año,
+  anio,
   tarifa,
   calificacion,
+  origen,
+  destino,
+  fecha,
+  duracion,
+  cantidadDePasajeros,
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/Confirmar_viaje', {
+      state: {
+        origen,
+        destino,
+        fecha,
+        duracion,
+        cantidadDePasajeros,
+        chofer: { idConductor, dominio, nombre, modelo, tarifa, calificacion },
+      },
+    });
+  };
+
   return (
-    <div className="card-chofer">
+    <div className="card-chofer" onClick={handleClick}>
       <Card className="card-chofer__card">
         <CardHeader
           className="card-chofer__header"
           title={
             <Box className="card-chofer__title">
-              <Typography className="card-chofer__patente">
-                {patente}
+              <Typography className="card-chofer__dominio">
+                {dominio}
               </Typography>
               <Typography variant="body2" className="card-chofer__calificacion">
                 {calificacion}
@@ -48,8 +76,9 @@ const CardChofer: React.FC<CardChoferProps> = ({
         <CardContent className="card-chofer__content">
           <Box>
             <Typography className="card-chofer__nombre">{nombre}</Typography>
+
             <Typography className="card-chofer__modelo">
-              {modelo} • {año}
+              {marca} | {modelo} • {anio}
             </Typography>
             <Box className="card-chofer__info">
               <Typography className="card-chofer__tarifa">
@@ -59,16 +88,12 @@ const CardChofer: React.FC<CardChoferProps> = ({
           </Box>
           <Box>
             {' '}
-            <Avatar
-              style={{ width: '5rem', height: '5rem' }}
-              src={foto}
-              alt={nombre}
-            />
+            <Avatar style={{ width: '5rem', height: '5rem' }} />
           </Box>
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default CardChofer
+export default CardChofer;

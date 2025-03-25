@@ -1,4 +1,4 @@
-import { TextField, Button, Typography, Box, CircularProgress, Snackbar, Alert, IconButton, Modal, Autocomplete } from '@mui/material';
+import { InputLabel , MenuItem, FormControl, Select, TextField, Button, Typography, Box, CircularProgress, Snackbar, Alert, IconButton, Modal, Autocomplete } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
@@ -9,18 +9,34 @@ interface Usuario {
   apellido: string;
   telefono?: number;
   saldo?: number;
-  amigos?: string[];
+  amigos?: Amigo[];
   precioBase?: number;
+  tipo?: string | number;
+  anio?: number | string;
   dominio?: string;
-  descripcion?: string;
+  marca?: string;
   modelo?: string;
 }
 
+
+interface Amigo {
+  nombreYApellido: string
+  username: string
+  avatar: string
+  id: number
+}
+
 const DatosUsuario = ({setImage}) => {
+
   const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!!);
+  const userObject = JSON.parse(userStorage!);
   const esChofer = userObject.esChofer;
   const [usuario, setUsuario] = useState<Usuario>({
+    nombre: '',
+    apellido: '',
+  });
+  
+  const [usuarioOriginal, setUsuarioOriginal] = useState<Usuario>({
     nombre: '',
     apellido: '',
   });
@@ -30,10 +46,21 @@ const DatosUsuario = ({setImage}) => {
   const [success, setSuccess] = useState(false);
   const [monto, setMonto] = useState('');
   const [openAgregarAmigoModal, setOpenAgregarAmigoModal] = useState(false);
-  const [nuevoAmigo, setNuevoAmigo] = useState('');
+  const [nuevoAmigo, setNuevoAmigo] = useState<Amigo | null>();
   const [sugerencias, setSugerencias] = useState<[]>([]);
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
+    if (tipo === 'tipo') {
+      setUsuario((prevUsuario) => ({
+        ...prevUsuario,
+        [tipo]: value,
+        dominio : "",
+        modelo:"",
+        marca:"",
+        anio:""
+      }));
+      
+    } 
     setUsuario((prevUsuario) => ({
       ...prevUsuario,
       [tipo]: value,
@@ -41,6 +68,12 @@ const DatosUsuario = ({setImage}) => {
   };
 
   const handleGuardarCambios = async () => {
+    
+    if (JSON.stringify(usuario) === JSON.stringify(usuarioOriginal)) {
+      setError('No hay cambios para guardar.');
+      return;
+    }
+
     setLoading(true);
     console.log('usuario Modificado ', usuario);
 
@@ -48,8 +81,11 @@ const DatosUsuario = ({setImage}) => {
       await perfilService.actualizarUsuario(userObject, usuario);
       setMensaje('Cambios guardados exitosamente.');
       setSuccess(true);
-    } catch (error) {
-      setError('Error al guardar los cambios. Por favor, inténtalo de nuevo.');
+      
+      setUsuarioOriginal(usuario);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message
+      setError(errorMessage);
       console.error(error);
     } finally {
       setLoading(false);
@@ -57,9 +93,15 @@ const DatosUsuario = ({setImage}) => {
   };
 
   const handleAgregarSaldo = async () => {
-    setLoading(true);
+    
     console.log('usuario Modificado ', monto);
+    
+    if(monto == ''){
+      setError('Ingrese un valor numerico mayor a 1000');
+      return;
+    }
 
+    setLoading(true);
     try {
       await perfilService.cargarSaldo(userObject, monto);
       setMensaje('Se cargó saldo exitosamente.');
@@ -93,11 +135,11 @@ const DatosUsuario = ({setImage}) => {
 
   const handleCloseAgregarAmigoModal = () => {
     setOpenAgregarAmigoModal(false);
-    setNuevoAmigo('');
+    setNuevoAmigo(null);
   };
 
   const handleAgregarAmigo = async () => {
-    console.log("hola " + nuevoAmigo.id)
+    console.log("hola " + nuevoAmigo?.id)
     if (!nuevoAmigo) {
       setError('Por favor, ingresa un nombre de usuario.');
       return;
@@ -124,6 +166,8 @@ const DatosUsuario = ({setImage}) => {
         const response = await perfilService.dataUsuario(userObject);
         setUsuario(response);
         setImage(response.foto)
+        setUsuarioOriginal(response); 
+
       } catch (error) {
         console.error(error);
       }
@@ -144,9 +188,25 @@ const DatosUsuario = ({setImage}) => {
         <Typography variant="h6" sx={{ mt: 3 }}>
           Informacion Vehiculo
         </Typography>
+        <FormControl fullWidth variant="outlined" margin="normal">
+      <InputLabel id="tipo-vehiculo-label">Tipo de Vehículo</InputLabel>
+      <Select
+        labelId="tipo-vehiculo-label"
+        id="tipo-vehiculo"
+        value={usuario.tipo ?? ''}
+        onChange={(event) => actualizarCampo('tipo', event.target.value)}
+        label="Tipo de Vehículo"
+        aria-placeholder='seleccione un tipo de vehiculo'
+      >
+        <MenuItem value="Simple">Auto</MenuItem>
+        <MenuItem value="Ejecutivo">Auto Ejecutivo</MenuItem>
+        <MenuItem value="Moto">Moto</MenuItem>
+      </Select>
+    </FormControl>
+            <TextField fullWidth label="Año" variant="outlined" margin="normal" value={usuario.anio ?? ''} onChange={(event) => actualizarCampo('anio', event.target.value)} />
         <TextField fullWidth label="Dominio" variant="outlined" margin="normal" value={usuario.dominio ?? ''} onChange={(event) => actualizarCampo('dominio', event.target.value)} />
-        <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.descripcion ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
-        <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
+        <TextField fullWidth label="Marca" variant="outlined" margin="normal" value={usuario.marca ?? ''} onChange={(event) => actualizarCampo('marca', event.target.value)} />
+        <TextField fullWidth label="Modelo" variant="outlined" margin="normal" value={usuario.modelo ?? ''} sx={{mb:2}} onChange={(event) => actualizarCampo('modelo', event.target.value)} />
       </>
       )}
       <Button
@@ -175,13 +235,13 @@ const DatosUsuario = ({setImage}) => {
             onChange={(event) => setMonto(event.target.value)}
           />
 
-          <Button
+<Button
             className="button-primary"
             variant="contained"
             fullWidth
             sx={{ mt: 2, backgroundColor: 'purple' }}
             onClick={handleAgregarSaldo}
-            disabled={loading}
+            disabled={loading || !monto} 
           >
             {loading ? <CircularProgress size={24} /> : 'Agregar Saldo'}
           </Button>
@@ -230,9 +290,13 @@ const DatosUsuario = ({setImage}) => {
           <Autocomplete
             freeSolo
             options={sugerencias}
-            getOptionLabel={(option) => `${option.username} - ${option.nombreYApellido}`}
-            onChange={(event, newValue) => { setNuevoAmigo(newValue) }}
-            onInputChange={(event, newValue) => {
+            getOptionLabel={(option: Amigo | string) => typeof option === "string" ? option : `${option.username} - ${option.nombreYApellido}`}
+            onChange={(_, newValue) => {
+              if (newValue !== null && typeof newValue !== 'string') {
+                setNuevoAmigo(newValue);
+              }
+            }}
+            onInputChange={(_, newValue) => {
               //setNuevoAmigo(newValue);
               buscarSugerencias(newValue);
             }}
@@ -266,7 +330,7 @@ const DatosUsuario = ({setImage}) => {
       {/* Snackbar para mensajes de éxito y error */}
       <Snackbar
         open={success}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={() => setSuccess(false)}
       >
         <Alert onClose={() => setSuccess(false)} severity="success">
@@ -276,7 +340,7 @@ const DatosUsuario = ({setImage}) => {
 
       <Snackbar
         open={!!error}
-        autoHideDuration={6000}
+        autoHideDuration={2000}
         onClose={() => setError('')}
       >
         <Alert onClose={() => setError('')} severity="error">

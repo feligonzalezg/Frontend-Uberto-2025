@@ -6,6 +6,7 @@ import Calificaciones from '../../Componentes/Perfil/Calificaciones';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import perfilService from '../../Services/Perfil';
 
+
 const Perfil = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [image, setImage] = useState("");

@@ -7,17 +7,28 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import Paper from '@mui/material/Paper'
 import { Link } from 'react-router-dom'
 
+
 const Footer = () => {
   const [value, setValue] = React.useState('')
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
+
+  const logout = () => {
+    localStorage.removeItem('usuario')
+    }
 
   return (
     <>
       <Paper
-        sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
+        sx={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
         elevation={3}
       >
         <BottomNavigation
@@ -50,6 +61,7 @@ const Footer = () => {
             icon={<ExitToAppIcon />}
             component={Link}
             to="/Login"
+            onClick={logout}
           />
         </BottomNavigation>
       </Paper>

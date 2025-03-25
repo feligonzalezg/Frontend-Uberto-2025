@@ -1,26 +1,16 @@
-import { Box, Typography } from '@mui/material'
+import { Alert, Box, Button, CircularProgress, Modal, Snackbar, Typography } from '@mui/material'
 import CardComentario from '../Card_comentarios/Card_comentarios'
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
 
 
-
-interface Comentario {
-  autor: string,
-  fecha: string,
-  puntaje: number,
-  mensaje: string
-}
-
-
-
 const Calificaciones = () => {
 
-  const [comentarios, setComentarios] = useState<Comentario[]>([])
+  const [comentarios, setComentarios] = useState<[]>([])
   const userStorage = localStorage.getItem("usuario")
-  const userObject = JSON.parse(userStorage!!)
+  const userObject = JSON.parse(userStorage!)
+  
   console.log(userObject)
-
 
   useEffect(() => {
 
@@ -37,19 +27,21 @@ const Calificaciones = () => {
     fetchComentarios()
   },[])
 
+  const handleDeleteComentario = (idComentario: number) => {
+    setComentarios(comentarios.filter((comentario: any) => comentario.idComentario !== idComentario));
+  };
+
   return (
-    <div>
-      {comentarios.map((comentario: Comentario, index) => (
+    <Box>
+      {comentarios.map((comentario, index) => (
         <Box key={index}>
           <CardComentario 
-          nombre={comentario.autor}
-          fecha={comentario.fecha}
-          puntuacion={comentario.puntaje}
-          comentario={comentario.mensaje} 
+            comentario={comentario}
+            onDeleteComentario={handleDeleteComentario}
           />
         </Box>
       ))}
-    </div>
+    </Box>
   )
 }
 
