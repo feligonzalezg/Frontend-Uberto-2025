@@ -9,6 +9,7 @@ interface Amigo {
   username: string
   avatar: string
   id: number
+  foto: string
 }
 
 const Amigos = ({ amigos: initialAmigos }: { amigos: Amigo[] }) => {
@@ -81,7 +82,7 @@ const Amigos = ({ amigos: initialAmigos }: { amigos: Amigo[] }) => {
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <Avatar src={amigo.avatar} sx={{ width: 56, height: 56, marginRight: 2 }} />
+            <Avatar src={amigo.foto} sx={{ width: 56, height: 56, marginRight: 2 }} />
             <Box>
               <Typography variant="h6" fontWeight="bold">
                 {amigo.nombreYApellido}
