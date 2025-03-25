@@ -3,7 +3,6 @@ import { Tabs, Tab, Box, Container, Avatar } from '@mui/material'
 import DatosUsuario from '../../Componentes/Perfil/DatosUsuario'
 import Viajes from '../../Componentes/Perfil/Viajes'
 import Calificaciones from '../../Componentes/Perfil/Calificaciones'
-import Amigos from '../../Componentes/Perfil/amigos'
 
 const Perfil = () => {
   const [tabIndex, setTabIndex] = useState(0)

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import CardUsuario from '../Card_usuario/Card_usuario'
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
@@ -27,13 +27,10 @@ const Viajes = () => {
   useEffect(() => {
     const fetchViajes = async () => {
       try {
-       
         const responseRealizados = await perfilService.getViajesRealizados(userObject)
-        setViajesRealizados(responseRealizados);
+        setViajesRealizados(responseRealizados.viajesRealizados);
+        setTotalFacturacion(responseRealizados.totalFacturado)
         console.log(responseRealizados);
-        const total = await perfilService.getTotalFacturacion(userObject)
-        setTotalFacturacion(total)
-
     
         if (!esChofer) {
           const responsePendientes = await perfilService.getViajesPendientes(userObject)
@@ -43,13 +40,11 @@ const Viajes = () => {
         console.error(error)
       }
     }
-    
-
     fetchViajes()
   }, [])
 
   return (
-    <Box>
+    <Box sx={{ paddingBottom: '50px'}}>
   
       {!esChofer && (
         <>
@@ -72,7 +67,7 @@ const Viajes = () => {
           ))}
         </>
       )}
-     
+      
       <Typography fontWeight="bold" variant="h5" sx={{ margin: 3 }}>
         Realizados
       </Typography>
@@ -95,9 +90,18 @@ const Viajes = () => {
 
       {esChofer && (
         <>
-        <Box sx={{ margin: 3 }}>
+        <Box sx={{
+          position: 'fixed',
+          bottom: 83,
+          left: 0,
+          width: '100%',
+          backgroundColor: '#fcfaff',
+          padding: '10px 15px',
+          borderTop: '1px solid #ddd',
+        }}>
+          <Divider sx={{ marginBottom: 1, borderColor: 'black', height: '2px' }} />
           <Typography fontWeight="bold" variant="h7">
-          Total Facturación: ${totalFacturacion.toFixed(2)}
+            Total Facturación: ${totalFacturacion?.toFixed(2)}
           </Typography>
         </Box>
         </>
