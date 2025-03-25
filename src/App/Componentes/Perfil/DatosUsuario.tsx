@@ -16,7 +16,7 @@ interface Usuario {
   modelo?: string;
 }
 
-const DatosUsuario = () => {
+const DatosUsuario = ({setImage}) => {
   const userStorage = localStorage.getItem('usuario');
   const userObject = JSON.parse(userStorage!!);
   const esChofer = userObject.esChofer;
@@ -123,6 +123,7 @@ const DatosUsuario = () => {
       try {
         const response = await perfilService.dataUsuario(userObject);
         setUsuario(response);
+        setImage(response.foto)
       } catch (error) {
         console.error(error);
       }
