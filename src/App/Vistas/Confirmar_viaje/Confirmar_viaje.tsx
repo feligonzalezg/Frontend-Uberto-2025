@@ -3,6 +3,8 @@ import { Box, Typography, Divider, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import perfilService from '../../Services/Perfil';
 import { format } from 'date-fns';
+import CardComentario from '../../Componentes/Card_comentarios/Card_comentarios';
+import { useEffect, useState } from 'react';
 
 const ConfirmarViaje = () => {
   const location = useLocation();
@@ -11,6 +13,7 @@ const ConfirmarViaje = () => {
   const { origen, destino, fecha, duracion, cantidadDePasajeros, chofer } =
     location.state || {};
   const navigate = useNavigate();
+  const [comentarios, setComentarios] = useState<[]>([]);
 
   const calcularHoraFin = (fechaInicio: string, duracion: number) => {
     const [dia, mes, anio, hora, min] = fechaInicio.match(/\d+/g)!.map(Number);
@@ -47,41 +50,48 @@ const ConfirmarViaje = () => {
       console.error('Error:', error);
     }
   };
+  useEffect(() => {
+    const fetchComentarios = async () => {
+      try {
+        const response = await perfilService.getComentariosChofer(chofer);
+        setComentarios(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchComentarios();
+  }, []);
 
   return (
     <div className="confirmar-viaje">
       <Typography variant="h5" className="confirmar-viaje__title">
         Confirmar Viaje
       </Typography>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Origen:
         </Typography>
         <Typography variant="body1">{origen}</Typography>
       </Box>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Destino:
         </Typography>
         <Typography variant="body1">{destino}</Typography>
       </Box>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Fecha:
         </Typography>
         <Typography variant="body1">{fecha}</Typography>
       </Box>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Duración:
         </Typography>
         <Typography variant="body1">{duracion} min</Typography>
       </Box>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Pasajeros:
@@ -89,33 +99,28 @@ const ConfirmarViaje = () => {
         <Typography variant="body1">{cantidadDePasajeros}</Typography>
       </Box>
       <Divider className="divider" />
-
       {/* Información del chofer */}
       <Typography variant="h5" className="confirmar-viaje__title">
         Chofer
       </Typography>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Nombre:
         </Typography>
         <Typography variant="body1">{chofer?.nombre}</Typography>
       </Box>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Móvil:
         </Typography>
         <Typography variant="body1">{chofer?.modelo}</Typography>
       </Box>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Dominio:
         </Typography>
         <Typography variant="body1">{chofer?.patente}</Typography>
       </Box>
-
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
           Calificación:
@@ -123,6 +128,21 @@ const ConfirmarViaje = () => {
         <Typography variant="body1">⭐ {chofer?.calificacion}</Typography>
       </Box>
       <Divider className="divider" />
+      <Box className="comentarios-container">
+        {comentarios.length > 0 ? (
+          comentarios.map((comentario) => (
+            <CardComentario
+              key={comentario.idComentario}
+              comentario={comentario}
+              onDeleteComentario={() => {}}
+            />
+          ))
+        ) : (
+          <Typography variant="body2">
+            Este chofer aún no tiene comentarios.
+          </Typography>
+        )}
+      </Box>
 
       <Box className="confirmar-viaje__acciones">
         <Button className="boton-volver" onClick={() => navigate('/home')}>

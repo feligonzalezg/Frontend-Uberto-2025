@@ -38,6 +38,24 @@ class PerfilService {
     }
   }
 
+  async getComentariosChofer(chofer) {
+    try {
+      console.log('llegue al service');
+      const comentarios = await axios.get(
+        `${REST_SERVER_URL}/comentario/${chofer.id}`,
+        {
+          params: {
+            esChofer: true,
+          },
+        }
+      );
+      console.log(comentarios.data);
+      return comentarios.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async getViajesRealizados(userObject) {
     try {
       console.log('llegue al service del perfil');
