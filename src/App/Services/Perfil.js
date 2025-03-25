@@ -95,7 +95,6 @@ class PerfilService {
   }
 
   async actualizarUsuario(userObject, usuario) {
-    try {
       console.log('llegue al service del perfil');
       console.log(usuario);
       const actualizarUser = await axios.patch(
@@ -104,9 +103,6 @@ class PerfilService {
       );
       console.log(actualizarUser.data);
       return actualizarUser.data;
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   async cargarSaldo(userObject, monto) {
