@@ -24,6 +24,7 @@ interface CardUsuarioProps {
   importe: number;
   puedeCalificar: boolean;
   fechaFin: string;
+  foto: string;
 }
 
 interface Calificacion {
@@ -42,6 +43,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   importe,
   puedeCalificar,
   fechaFin,
+  foto,
 }) => {
   const userStorage = localStorage.getItem('usuario');
   const userObject = JSON.parse(userStorage!);
@@ -83,7 +85,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
           }
           action={
             <Box className="card-usuario__avatar-container">
-              <Avatar alt={nombre} />
+              <Avatar src={foto} alt={nombre} />
             </Box>
           }
         />

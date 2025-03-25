@@ -215,6 +215,7 @@
                 idConductor={item.idConductor}
                 tarifa={item.importe}
                 calificacion={item.calificacion}
+                foto={item.foto}
                 origen={origen} 
                 destino={destino}
                 duracion={duracion}

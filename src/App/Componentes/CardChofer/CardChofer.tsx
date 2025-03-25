@@ -19,6 +19,7 @@ interface CardChoferProps {
   anio: number;
   tarifa: number;
   calificacion: number;
+  foto: string;
   origen: string;
   destino: string;
   fecha: string;
@@ -35,6 +36,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
   anio,
   tarifa,
   calificacion,
+  foto,
   origen,
   destino,
   fecha,
@@ -88,7 +90,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
           </Box>
           <Box>
             {' '}
-            <Avatar style={{ width: '5rem', height: '5rem' }} />
+            <Avatar src={foto} style={{ width: '5rem', height: '5rem' }} />
           </Box>
         </CardContent>
       </Card>

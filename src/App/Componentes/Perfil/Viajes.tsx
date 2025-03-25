@@ -13,6 +13,7 @@ interface Viaje {
   importe: number;
   puedeCalificar: boolean;
   fechaFin: string;
+  foto: string;
 }
 
 const Viajes = () => {
@@ -63,6 +64,7 @@ const Viajes = () => {
               importe={viaje.importe}
               puedeCalificar ={viaje.puedeCalificar}
               fechaFin={viaje.fechaFin}
+              foto={viaje.foto}
             />
           ))}
         </>
@@ -83,6 +85,7 @@ const Viajes = () => {
           importe={viaje.importe}
           puedeCalificar ={viaje.puedeCalificar}
           fechaFin={viaje.fechaFin}
+          foto={viaje.foto}
         />
         
       ))}
