@@ -14,8 +14,6 @@ const Perfil = () => {
   const userObject = JSON.parse(userStorage!!);
 
 
-
-
   const handleChange = (_: React.SyntheticEvent, newIndex: number) => {
     setTabIndex(newIndex);
   };
@@ -55,9 +53,9 @@ const Perfil = () => {
       console.log(userObject.id)
       const backendResponse = await perfilService.actualizarImagen(userObject, imageUrl);
       console.log('Backend response:', backendResponse); 
-      
       // 4. Confirmar la imagen definitiva
-      setImage(imageUrl);
+      setImage(backendResponse);
+      console.log('Backend response2:', image); 
       
   
     } catch (error) {
