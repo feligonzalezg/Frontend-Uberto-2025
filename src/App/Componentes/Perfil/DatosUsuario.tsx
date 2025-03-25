@@ -18,6 +18,7 @@ interface Usuario {
   modelo?: string;
 }
 
+
 interface Amigo {
   nombreYApellido: string
   username: string
@@ -25,7 +26,8 @@ interface Amigo {
   id: number
 }
 
-const DatosUsuario = () => {
+const DatosUsuario = ({setImage}) => {
+
   const userStorage = localStorage.getItem('usuario');
   const userObject = JSON.parse(userStorage!);
   const esChofer = userObject.esChofer;
@@ -163,7 +165,9 @@ const DatosUsuario = () => {
       try {
         const response = await perfilService.dataUsuario(userObject);
         setUsuario(response);
-        setUsuarioOriginal(response); // Guardar los datos originales
+        setImage(response.foto)
+        setUsuarioOriginal(response); 
+
       } catch (error) {
         console.error(error);
       }

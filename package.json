@@ -12,6 +12,8 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.14.1",
+    "@cloudinary/url-gen": "^1.21.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource-variable/raleway": "^5.2.5",
