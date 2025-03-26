@@ -110,7 +110,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
                   display: 'flex',
                   justifyContent: 'center',
                   marginTop: 2,
-                  marginBottom: 2,
+                  
                 }}
               >
                 <Button

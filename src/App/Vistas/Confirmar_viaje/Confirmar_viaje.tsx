@@ -47,7 +47,7 @@ const ConfirmarViaje = () => {
       await perfilService.confirmarViaje(viajedata);
       navigate('/Home');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.);
     }
   };
   useEffect(() => {
