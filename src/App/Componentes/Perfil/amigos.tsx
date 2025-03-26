@@ -12,8 +12,12 @@ interface Amigo {
   foto: string
 }
 
-const Amigos = ({ amigos: initialAmigos }: { amigos: Amigo[] }) => {
-  const [amigos, setAmigos] = useState<Amigo[]>(initialAmigos)
+type AmigosProps = {
+  amigos: Amigo[],
+  handleAmigoToDelete: (id: number) => void
+}
+
+const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
   const [openModal, setOpenModal] = useState(false)
   const [amigoToDelete, setAmigoToDelete] = useState<Amigo | null>(null)
   const [mensaje, setMensaje] = useState('')
@@ -50,7 +54,7 @@ const Amigos = ({ amigos: initialAmigos }: { amigos: Amigo[] }) => {
       console.log('Eliminando amigo:', amigoToDelete.username)
       const userObject = obtenerUsuario()
       await perfilService.eliminarAmigo(userObject.id, amigoToDelete.id)
-      setAmigos(amigos.filter(amigo => amigo.id !== amigoToDelete.id))
+      handleAmigoToDelete(amigoToDelete.id)
       setMensaje(`${amigoToDelete.nombreYApellido} fue eliminado exitosamente.`)
       setSuccess(true)
       handleCloseModal()

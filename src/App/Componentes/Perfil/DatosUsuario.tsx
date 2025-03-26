@@ -46,6 +46,7 @@ const DatosUsuario = ({setImage}) => {
   const [success, setSuccess] = useState(false);
   const [monto, setMonto] = useState('');
   const [openAgregarAmigoModal, setOpenAgregarAmigoModal] = useState(false);
+  const [amigos, setAmigos] = useState<Amigo[] | null>([]);
   const [nuevoAmigo, setNuevoAmigo] = useState<Amigo | null>();
   const [sugerencias, setSugerencias] = useState<[]>([]);
 
@@ -139,18 +140,19 @@ const DatosUsuario = ({setImage}) => {
   };
 
   const handleAgregarAmigo = async () => {
-    console.log("hola " + nuevoAmigo?.id)
+    console.log(nuevoAmigo)
     if (!nuevoAmigo) {
       setError('Por favor, ingresa un nombre de usuario.');
       return;
     }
-
     setLoading(true);
-
     try {
-      await perfilService.agregarAmigo(userObject.id, nuevoAmigo.id)
+      const amigoNuevo = await perfilService.agregarAmigo(userObject.id, nuevoAmigo.id)
       setMensaje('Amigo agregado exitosamente.');
       setSuccess(true);
+      setAmigos(prevAmigos => [...prevAmigos, amigoNuevo])
+      console.log(amigos)
+      console.log(usuario.amigos)
       handleCloseAgregarAmigoModal();
     } catch (error) {
       setError('Error al agregar amigo. Por favor, inténtalo de nuevo.');
@@ -160,14 +162,18 @@ const DatosUsuario = ({setImage}) => {
     }
   };
 
+  const removeAmigo = (id: number) => {
+    setAmigos(amigos!!.filter(amigo => amigo.id !== id))
+  }
+
   useEffect(() => {
     const fetchDatosUsuario = async () => {
       try {
         const response = await perfilService.dataUsuario(userObject);
         setUsuario(response);
         setImage(response.foto)
-        setUsuarioOriginal(response); 
-
+        setUsuarioOriginal(response);
+        setAmigos(response.amigos)
       } catch (error) {
         console.error(error);
       }
@@ -235,7 +241,7 @@ const DatosUsuario = ({setImage}) => {
             onChange={(event) => setMonto(event.target.value)}
           />
 
-<Button
+          <Button
             className="button-primary"
             variant="contained"
             fullWidth
@@ -260,7 +266,7 @@ const DatosUsuario = ({setImage}) => {
             </Box>
           </Box>
 
-          {usuario.amigos && <Amigos amigos={usuario.amigos} />}
+          {usuario.amigos && <Amigos amigos={amigos} handleAmigoToDelete={removeAmigo}  />}
         </>
       )}
 
