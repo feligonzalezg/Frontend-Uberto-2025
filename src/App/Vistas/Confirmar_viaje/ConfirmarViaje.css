@@ -68,7 +68,7 @@
 }
 
 .boton-confirmar {
-  background-color: '#8A2BE2';
+  background-color: var(--primary-color);
   color: white;
   font-size: 1.0rem;
   margin-right: 1rem;
