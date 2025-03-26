@@ -203,10 +203,6 @@ class PerfilService {
     return response.data;
   }
 
-  catch(error) {
-    console.error('Error al confirmar el viaje:', error);
-    throw error;
-  }
 
   async calificarViaje(userId, calificacion) {
     try {
