@@ -119,7 +119,7 @@ const ConfirmarViaje = () => {
         <Typography variant="body1" className="info-text">
           Dominio:
         </Typography>
-        <Typography variant="body1">{chofer?.patente}</Typography>
+        <Typography variant="body1">{chofer?.dominio}</Typography>
       </Box>
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
@@ -138,7 +138,7 @@ const ConfirmarViaje = () => {
             />
           ))
         ) : (
-          <Typography variant="body2">
+          <Typography variant="body2" className="Chofer-sin-comentarios">
             Este chofer aún no tiene comentarios.
           </Typography>
         )}
