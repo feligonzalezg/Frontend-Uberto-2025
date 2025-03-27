@@ -92,7 +92,9 @@ const ConfirmarViaje = () => {
         <Typography variant="body1" className="info-text">
           Fecha:
         </Typography>
-        <Typography variant="body1">{fecha}</Typography>
+        <Typography variant="body1">
+          {fecha ? format(new Date(fecha), 'dd/MM/yyyy HH:mm') : ''}
+        </Typography>
       </Box>
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
@@ -162,7 +164,6 @@ const ConfirmarViaje = () => {
           }}
         >
           <Button
-            //className="boton-volver"
             variant="contained"
             sx={{
               backgroundColor: 'White',
@@ -177,7 +178,6 @@ const ConfirmarViaje = () => {
           </Button>
 
           <Button
-            //className="boton-confirmar"
             variant="contained"
             sx={{
               backgroundColor: '#8A2BE2',
