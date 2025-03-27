@@ -42,7 +42,7 @@ class PerfilService {
 
   async getComentariosChofer(chofer) {
     try {
-      console.log('llegue al service');
+      console.log('llegue al service', chofer.idConductor);
       const comentarios = await axios.get(
         `${REST_SERVER_URL}/comentario/${chofer.idConductor}`,
         {
@@ -198,6 +198,7 @@ class PerfilService {
   }
 
   async confirmarViaje(viaje) {
+    console.log('llegue al service', viaje);
     const response = await axios.post(`${REST_SERVER_URL}/confirmar`, viaje);
     console.log(response.data);
     return response.data;

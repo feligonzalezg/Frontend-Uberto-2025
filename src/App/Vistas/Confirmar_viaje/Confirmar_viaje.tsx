@@ -146,7 +146,7 @@ const ConfirmarViaje = () => {
             />
           ))
         ) : (
-          <Typography variant="body2">
+          <Typography variant="body2" className="Chofer-sin-comentarios">
             Este chofer aún no tiene comentarios.
           </Typography>
         )}

@@ -107,3 +107,7 @@
 .comentarios-container {
   margin-bottom: 5rem;
 }
+.Chofer-sin-comentarios {
+  display: flex;
+  justify-content: center;
+}
