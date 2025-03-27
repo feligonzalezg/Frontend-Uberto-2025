@@ -173,7 +173,7 @@ const HomeUsuario: React.FC = () => {
           InputLabelProps={{ shrink: true }}
           sx={{ marginBottom: 2 }}
           error={!!error && !fecha.trim()}
-          inputProps={{ min: getTodayMinDatetime() }} // Bloquea fechas pasadas
+          inputProps={{ min: getTodayMinDatetime() }}
         />
       )}
 
@@ -199,7 +199,7 @@ const HomeUsuario: React.FC = () => {
         variant="contained"
         sx={{ width: '100%', backgroundColor: '#9348e4', color: '#fff' }}
         onClick={handleBuscar}
-        disabled={!validarCamposLlenos()} // Deshabilita hasta que todos los campos estén llenos
+        disabled={!validarCamposLlenos()}
       >
         {esChofer ? 'Filtrar' : 'Buscar'}
       </Button>
