@@ -5,7 +5,7 @@ import perfilService from '../../Services/Perfil';
 import { format } from 'date-fns';
 import CardComentario from '../../Componentes/Card_comentarios/Card_comentarios';
 import { useEffect, useState } from 'react';
-import { useSnackbar } from 'notistack'
+import { useSnackbar } from 'notistack';
 
 const ConfirmarViaje = () => {
   const location = useLocation();
@@ -15,7 +15,7 @@ const ConfirmarViaje = () => {
     location.state || {};
   const navigate = useNavigate();
   const [comentarios, setComentarios] = useState<[]>([]);
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar();
 
   const calcularHoraFin = (fechaInicio: string, duracion: number) => {
     const [dia, mes, anio, hora, min] = fechaInicio.match(/\d+/g)!.map(Number);
@@ -49,17 +49,17 @@ const ConfirmarViaje = () => {
       await perfilService.confirmarViaje(viajedata);
       navigate('/Home');
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message
-      enqueueSnackbar(errorMessage, {      
+      const errorMessage = error.response?.data?.message;
+      enqueueSnackbar(errorMessage, {
         variant: 'error',
         autoHideDuration: 1000,
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
-      })
-      }
+      });
+    }
   };
   useEffect(() => {
     const fetchComentarios = async () => {
-      console.log(chofer)
+      console.log(chofer);
       try {
         const response = await perfilService.getComentariosChofer(chofer);
         setComentarios(response);
@@ -153,46 +153,43 @@ const ConfirmarViaje = () => {
       </Box>
 
       <Box className="confirmar-viaje__acciones">
-        
-      <Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'center',
-    gap: 2, // Esto añade espacio entre los botones
-    marginTop: 2,
-  }}
->
-  <Button
-    //className="boton-volver"
-    variant="contained"
-    sx={{
-      backgroundColor: 'White', 
-      color:'black',
-      fontSize:"1.2rem",
-      mb:2,
-      ml:4
-    }}
-    onClick={() => navigate('/home')}
-  >
-    Volver
-  </Button>
-  
-  <Button
-    //className="boton-confirmar"
-    variant="contained"
-    sx={{
-      backgroundColor: '#8A2BE2', 
-      fontSize:"1.2rem",
-      mb:2,
-      ml:14,
-    }}
-    onClick={handleConfirmarViaje}
-  >
-    Confirmar
-  </Button>
-</Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 2,
+            marginTop: 2,
+          }}
+        >
+          <Button
+            //className="boton-volver"
+            variant="contained"
+            sx={{
+              backgroundColor: 'White',
+              color: 'black',
+              fontSize: '1.2rem',
+              mb: 2,
+              ml: 4,
+            }}
+            onClick={() => navigate('/home')}
+          >
+            Volver
+          </Button>
 
-
+          <Button
+            //className="boton-confirmar"
+            variant="contained"
+            sx={{
+              backgroundColor: '#8A2BE2',
+              fontSize: '1.2rem',
+              mb: 2,
+              ml: 14,
+            }}
+            onClick={handleConfirmarViaje}
+          >
+            Confirmar
+          </Button>
+        </Box>
       </Box>
     </div>
   );

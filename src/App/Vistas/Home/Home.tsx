@@ -61,7 +61,7 @@ const HomeUsuario: React.FC = () => {
       } else {
         const duracionAleatoria = generarDuracionRandom();
         setDuracion(duracionAleatoria);
-        
+
         if (!origen.trim() || !destino.trim() || !fecha.trim()) {
           throw new Error('Debe completar todos los campos');
         }
@@ -73,7 +73,7 @@ const HomeUsuario: React.FC = () => {
         };
         response = await homeService.ChoferesDisponibles(busquedaDTO);
       }
-      
+
       setResultados(response || []);
     } catch (error) {
       if (error instanceof Error) {
@@ -83,6 +83,27 @@ const HomeUsuario: React.FC = () => {
       }
       console.error('Error en la búsqueda:', error);
     }
+  };
+  const validarCamposLlenos = () => {
+    if (esChofer) {
+      return (
+        usernameViajero.trim() !== '' &&
+        origen.trim() !== '' &&
+        destino.trim() !== ''
+      );
+    }
+    return origen.trim() !== '' && destino.trim() !== '' && fecha.trim() !== '';
+  };
+
+  const getTodayMinDatetime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Mes en formato 2 dígitos
+    const day = String(now.getDate()).padStart(2, '0'); // Día en formato 2 dígitos
+    const hours = String(now.getHours()).padStart(2, '0'); // Hora actual
+    const minutes = String(now.getMinutes()).padStart(2, '0'); // Minutos actuales
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   return (
@@ -152,6 +173,7 @@ const HomeUsuario: React.FC = () => {
           InputLabelProps={{ shrink: true }}
           sx={{ marginBottom: 2 }}
           error={!!error && !fecha.trim()}
+          inputProps={{ min: getTodayMinDatetime() }} // Bloquea fechas pasadas
         />
       )}
 
@@ -163,18 +185,21 @@ const HomeUsuario: React.FC = () => {
           fullWidth
           InputProps={{ readOnly: true }}
         />
-        <IconButton onClick={() => handleCantidadPasajerosChange(true)}>
-          <AddCircleIcon sx={{ color: '#9348e4' }} />
-        </IconButton>
-        <IconButton onClick={() => handleCantidadPasajerosChange(false)}>
-          <RemoveCircleIcon sx={{ color: '#9348e4' }} />
-        </IconButton>
+        <Box>
+          <IconButton onClick={() => handleCantidadPasajerosChange(true)}>
+            <AddCircleIcon sx={{ color: '#9348e4' }} />
+          </IconButton>
+          <IconButton onClick={() => handleCantidadPasajerosChange(false)}>
+            <RemoveCircleIcon sx={{ color: '#9348e4' }} />
+          </IconButton>
+        </Box>
       </Box>
 
       <Button
         variant="contained"
         sx={{ width: '100%', backgroundColor: '#9348e4', color: '#fff' }}
         onClick={handleBuscar}
+        disabled={!validarCamposLlenos()} // Deshabilita hasta que todos los campos estén llenos
       >
         {esChofer ? 'Filtrar' : 'Buscar'}
       </Button>
@@ -236,7 +261,7 @@ const HomeUsuario: React.FC = () => {
           )
         ) : (
           <Typography sx={{ mt: 2 }}>
-            { 'No hay resultados disponibles'}
+            {'No hay resultados disponibles'}
           </Typography>
         )}
       </Box>
