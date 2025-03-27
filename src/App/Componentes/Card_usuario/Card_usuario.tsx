@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import CalificarViajeModal from '../Perfil/calificar'; // Asegúrate de que la ruta sea correcta
 import './CardUsuario.css';
 import GroupIcon from '@mui/icons-material/Group';
@@ -59,7 +59,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
         userObject.id,
         calificacion
       );
-      setCalificacionEnviada(response.puedeCalificar);
+      setCalificacionEnviada(true);
       console.log('Calificación enviada exisosamente:', {
         ...response,
       });
