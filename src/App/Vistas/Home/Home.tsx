@@ -171,7 +171,11 @@ const HomeUsuario: React.FC = () => {
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
           InputLabelProps={{ shrink: true }}
-          sx={{ marginBottom: 2 }}
+          sx={{ 
+            marginBottom: 2,
+            '& .MuiInputBase-input::-webkit-calendar-picker-indicator': {
+              filter: 'invert(0.5)' 
+            }}}
           error={!!error && !fecha.trim()}
           inputProps={{ min: getTodayMinDatetime() }}
         />

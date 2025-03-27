@@ -18,6 +18,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
+import { MuiTelInput } from 'mui-tel-input'
 
 interface Usuario {
   nombre: string;
@@ -199,6 +200,8 @@ const DatosUsuario = ({ setImage }) => {
     fetchDatosUsuario();
   }, []);
 
+  
+
   return (
     <Box>
       <TextField
@@ -224,9 +227,8 @@ const DatosUsuario = ({ setImage }) => {
           variant="outlined"
           margin="normal"
           value={usuario.telefono ?? ''}
-          onChange={(event) =>
-            actualizarCampo('telefono', Number(event.target.value))
-          }
+           onChange={(event) =>{const number =event.target.value; if (/^\d*$/.test(number)&& number.length<=9)
+           {actualizarCampo('telefono', Number(number))}}} 
         />
       )}
       {esChofer && (

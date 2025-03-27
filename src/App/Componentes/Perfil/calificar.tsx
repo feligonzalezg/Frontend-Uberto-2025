@@ -30,11 +30,9 @@ const CalificarViajeModal: React.FC<CalificarViajeModalProps> = ({
   const [estrellas, setEstrellas] = useState<number | null>(null);
   const [mensaje, setMensaje] = useState<string>("");
 
+  const isFormValid = estrellas != null && mensaje.trim() !== "";
+
   const handleSubmit = () => {
-    if (estrellas === null) {
-      alert("Por favor, selecciona una calificación de estrellas.");
-      return;
-    }
 
     onCalificar({
       idViaje,
@@ -92,7 +90,7 @@ const CalificarViajeModal: React.FC<CalificarViajeModalProps> = ({
           <Button variant="outlined" onClick={onClose}>
             Cancelar
           </Button>
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button variant="contained" onClick={handleSubmit}disabled={!isFormValid}>
             Enviar Calificación
           </Button>
         </Box>
