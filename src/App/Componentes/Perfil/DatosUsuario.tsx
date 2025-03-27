@@ -3,6 +3,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
+import { MuiTelInput } from 'mui-tel-input'
 
 interface Usuario {
   nombre: string;
@@ -182,15 +183,26 @@ const DatosUsuario = ({setImage}) => {
     fetchDatosUsuario();
   }, []);
 
+  
+
   return (
     <Box>
-      <TextField fullWidth label="Nombre" variant="outlined" margin="normal" value={usuario.nombre} onChange={(event) => actualizarCampo('nombre', event.target.value)} />
-      <TextField fullWidth label="Apellido" variant="outlined" margin="normal" value={usuario.apellido} onChange={(event) => actualizarCampo('apellido', event.target.value)} />
+      <TextField fullWidth label="Nombre" variant="outlined" margin="normal" value={usuario.nombre} 
+      onChange={(event) => actualizarCampo('nombre', event.target.value)} 
+      />
+      <TextField fullWidth label="Apellido" variant="outlined" margin="normal" value={usuario.apellido} 
+      onChange={(event) => actualizarCampo('apellido', event.target.value)} 
+      />
       {!esChofer && (
-        <TextField fullWidth label="Teléfono" variant="outlined" margin="normal" value={usuario.telefono ?? ''} onChange={(event) => actualizarCampo('telefono', Number(event.target.value))} />
+        <TextField fullWidth label="Teléfono" variant="outlined" margin="normal" value={usuario.telefono ?? ''} 
+        onChange={(event) =>{const number =event.target.value; if (/^\d*$/.test(number)&& number.length<=9)
+           {actualizarCampo('telefono', Number(number))}}} 
+           />
       )}
       {esChofer && (<>
-        <TextField fullWidth label="Precio base" variant="outlined" margin="normal" value={usuario.precioBase ?? ''} onChange={(event) => actualizarCampo('precioBase', Number(event.target.value))} />
+        <TextField fullWidth label="Precio base" variant="outlined" margin="normal" value={usuario.precioBase ?? ''} 
+        onChange={(event) => actualizarCampo('precioBase', Number(event.target.value))} 
+        />
         <Typography variant="h6" sx={{ mt: 3 }}>
           Informacion Vehiculo
         </Typography>
