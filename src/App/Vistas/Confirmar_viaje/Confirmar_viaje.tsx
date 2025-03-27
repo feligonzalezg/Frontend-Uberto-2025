@@ -48,6 +48,11 @@ const ConfirmarViaje = () => {
       console.log('antes de ir al service', viajedata);
       await perfilService.confirmarViaje(viajedata);
       navigate('/Home');
+      enqueueSnackbar("Viaje Confirmado", {
+        variant: 'success',
+        autoHideDuration: 1000,
+        anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+      });
     } catch (error: any) {
       const errorMessage = error.response?.data?.message;
       enqueueSnackbar(errorMessage, {
