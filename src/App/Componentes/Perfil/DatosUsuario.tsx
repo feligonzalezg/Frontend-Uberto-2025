@@ -1,8 +1,4 @@
 import {
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
   TextField,
   Button,
   Typography,
@@ -18,7 +14,6 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
-import { MuiTelInput } from 'mui-tel-input'
 
 interface Usuario {
   nombre: string;
@@ -27,7 +22,6 @@ interface Usuario {
   saldo?: number;
   amigos?: Amigo[];
   precioBase?: number;
-  tipo?: string | number;
   anio?: number | string;
   dominio?: string;
   marca?: string;
@@ -65,16 +59,6 @@ const DatosUsuario = ({ setImage }) => {
   const [sugerencias, setSugerencias] = useState<[]>([]);
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
-    if (tipo === 'tipo') {
-      setUsuario((prevUsuario) => ({
-        ...prevUsuario,
-        [tipo]: value,
-        dominio: '',
-        modelo: '',
-        marca: '',
-        anio: '',
-      }));
-    }
     setUsuario((prevUsuario) => ({
       ...prevUsuario,
       [tipo]: value,
@@ -227,8 +211,8 @@ const DatosUsuario = ({ setImage }) => {
           variant="outlined"
           margin="normal"
           value={usuario.telefono ?? ''}
-           onChange={(event) =>{const number =event.target.value; if (/^\d*$/.test(number)&& number.length<=9)
-           {actualizarCampo('telefono', Number(number))}}} 
+          onChange={(event) =>{const number =event.target.value; if (/^\d*$/.test(number)&& number.length<=9)
+            {actualizarCampo('telefono', Number(number))}}} 
         />
       )}
       {esChofer && (
@@ -246,21 +230,6 @@ const DatosUsuario = ({ setImage }) => {
           <Typography variant="h6" sx={{ mt: 3 }}>
             Informacion Vehiculo
           </Typography>
-          <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel id="tipo-vehiculo-label">Tipo de Vehículo</InputLabel>
-            <Select
-              labelId="tipo-vehiculo-label"
-              id="tipo-vehiculo"
-              value={usuario.tipo ?? ''}
-              onChange={(event) => actualizarCampo('tipo', event.target.value)}
-              label="Tipo de Vehículo"
-              aria-placeholder="seleccione un tipo de vehiculo"
-            >
-              <MenuItem value="Simple">Auto</MenuItem>
-              <MenuItem value="Ejecutivo">Auto Ejecutivo</MenuItem>
-              <MenuItem value="Moto">Moto</MenuItem>
-            </Select>
-          </FormControl>
           <TextField
             fullWidth
             label="Año"
