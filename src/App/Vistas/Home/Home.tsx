@@ -203,7 +203,7 @@ const HomeUsuario: React.FC = () => {
         variant="contained"
         sx={{ width: '100%', backgroundColor: '#9348e4', color: '#fff' }}
         onClick={handleBuscar}
-        disabled={!validarCamposLlenos()}
+        disabled={!esChofer && !validarCamposLlenos()}
       >
         {esChofer ? 'Filtrar' : 'Buscar'}
       </Button>
