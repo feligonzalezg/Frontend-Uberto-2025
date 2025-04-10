@@ -6,7 +6,6 @@ import { ImageNotSupported } from '@mui/icons-material'
 class PerfilService {
   async dataUsuario(userObject) {
     try {
-      console.log('llegue al service del perfil');
       const usuario = await axios.get(
         `${REST_SERVER_URL}/perfil/${userObject.id}`,
         {
@@ -15,7 +14,6 @@ class PerfilService {
           },
         }
       );
-      console.log(usuario.data);
       return usuario.data;
     } catch (error) {
       console.error(error);
@@ -24,7 +22,6 @@ class PerfilService {
 
   async getComentarios(userObject) {
     try {
-      console.log('llegue al service del perfil');
       const comentarios = await axios.get(
         `${REST_SERVER_URL}/comentario/${userObject.id}`,
         {
@@ -33,25 +30,6 @@ class PerfilService {
           },
         }
       );
-      console.log(comentarios.data);
-      return comentarios.data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async getComentariosChofer(chofer) {
-    try {
-      console.log('llegue al service', chofer.idConductor);
-      const comentarios = await axios.get(
-        `${REST_SERVER_URL}/comentario/${chofer.idConductor}`,
-        {
-          params: {
-            esChofer: true,
-          },
-        }
-      );
-      console.log(comentarios.data);
       return comentarios.data;
     } catch (error) {
       console.error(error);
@@ -60,7 +38,6 @@ class PerfilService {
 
   async getViajesRealizados(userObject) {
     try {
-      console.log('llegue al service del perfil');
       const viajesRealizados = await axios.get(
         `${REST_SERVER_URL}/viajesRealizados/${userObject.id}`,
         {
@@ -69,7 +46,6 @@ class PerfilService {
           },
         }
       );
-      console.log(viajesRealizados.data);
       return viajesRealizados.data;
     } catch (error) {
       console.error(error);
@@ -78,7 +54,6 @@ class PerfilService {
 
   async getViajesPendientes(userObject) {
     try {
-      console.log('llegue al service del perfil');
       const viajesPendientes = await axios.get(
         `${REST_SERVER_URL}/viajesPendientes/${userObject.id}`,
         {
@@ -87,7 +62,6 @@ class PerfilService {
           },
         }
       );
-      console.log(viajesPendientes.data);
       return viajesPendientes.data;
     } catch (error) {
       console.error(error);
@@ -95,13 +69,10 @@ class PerfilService {
   }
 
   async actualizarUsuario(userObject, usuario) {
-      console.log('llegue al service del perfil');
-      console.log(usuario);
       const actualizarUser = await axios.patch(
         `${REST_SERVER_URL}/actualizarUsuario/${userObject.id}`,
         usuario
       );
-      console.log(actualizarUser.data);
       return actualizarUser.data;
   }
 
@@ -117,7 +88,6 @@ class PerfilService {
           },
         }
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -127,11 +97,9 @@ class PerfilService {
 
   async agregarAmigo(userId, amigoId) {
     try {
-      console.log('agrego amigo');
       const response = await axios.put(
         `${REST_SERVER_URL}/agregarAmigo/${userId}/${amigoId}`
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -140,11 +108,9 @@ class PerfilService {
 
   async eliminarAmigo(userId, amigoId) {
     try {
-      console.log('elimino a un amigo');
       const response = await axios.delete(
         `${REST_SERVER_URL}/eliminarAmigo/${userId}/${amigoId}`
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -153,11 +119,9 @@ class PerfilService {
 
   async buscarUsuarios(query, userId) {
     try {
-      console.log('Llegué al service del perfil');
       const response = await axios.get(
         `${REST_SERVER_URL}/buscarAmigos/${userId}?query=${query}`
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -167,52 +131,28 @@ class PerfilService {
 
   async actualizarImagen(userObject, imagen) {
     try {
-      console.log('llegue al service del perfil')
-      console.log(userObject)
-      console.log(imagen)
       const actualizarImagen = await axios.patch(
         `${REST_SERVER_URL}/actualizarImagen/${userObject.id}?esChofer=${userObject.esChofer}&imagen=${imagen}`,
       
       )
-      console.log(actualizarImagen.data)
       return actualizarImagen.data
     } catch (error) {
       console.error(error)
     }
   }
 
-
-
-  async getTotalFacturacion(userObject) {
-    try {
-      console.log('Llegue a service del perfil total de facturacion');
-      const totalFacturacion = await axios.get(
-        `${REST_SERVER_URL}/total-facturado/${userObject.id}`
-      );
-      console.log(totalFacturacion.data);
-      return totalFacturacion.data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-
   async confirmarViaje(viaje) {
-    console.log('llegue al service', viaje);
     const response = await axios.post(`${REST_SERVER_URL}/confirmar`, viaje);
-    console.log(response.data);
     return response.data;
   }
 
 
   async calificarViaje(userId, calificacion) {
     try {
-      console.log('Llegué al service. Calificando viaje...');
       const response = await axios.post(
         `${REST_SERVER_URL}/calificar/${userId}`,
         calificacion
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error('Ocurrió un error al calificar viaje: ', error);
@@ -221,11 +161,9 @@ class PerfilService {
 
   async deleteComentario(idUsuario, idComentario) {
     try {
-      console.log('llegue al service del perfil');
       const comentario = await axios.delete(
         `${REST_SERVER_URL}/eliminarComentario/${idUsuario}/${idComentario}`
       );
-      console.log(comentario.data);
       return comentario.data;
     } catch (error) {
       console.error(error);

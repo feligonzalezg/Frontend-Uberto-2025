@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface CardChoferProps {
   dominio: string;
-  idConductor: number;
+  id: number;
   nombre: string;
   marca: string;
   modelo: string;
@@ -25,11 +25,12 @@ interface CardChoferProps {
   fecha: string;
   duracion: number;
   cantidadDePasajeros: number;
+  esChofer:boolean;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
   dominio,
-  idConductor,
+  id,
   nombre,
   marca,
   modelo,
@@ -42,6 +43,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
   fecha,
   duracion,
   cantidadDePasajeros,
+  esChofer
 }) => {
   const navigate = useNavigate();
 
@@ -53,7 +55,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
         fecha,
         duracion,
         cantidadDePasajeros,
-        chofer: { idConductor, dominio, nombre, modelo, tarifa, calificacion },
+        chofer: { id, dominio, nombre, modelo, tarifa, calificacion, esChofer },
       },
     });
   };

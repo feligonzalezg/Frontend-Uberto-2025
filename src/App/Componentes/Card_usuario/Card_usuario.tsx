@@ -13,6 +13,7 @@ import {
   Button,
 } from '@mui/material';
 import perfilService from '../../Services/Perfil';
+import { enqueueSnackbar } from 'notistack';
 
 interface CardUsuarioProps {
   idViaje: number;
@@ -63,8 +64,13 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
       console.log('Calificación enviada exisosamente:', {
         ...response,
       });
-    } catch (error) {
-      console.error('Error al calificar viaje:', error);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message
+      enqueueSnackbar(errorMessage, {      
+        variant: 'error',
+        autoHideDuration: 1000,
+        anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
+      })
     }
   };
 

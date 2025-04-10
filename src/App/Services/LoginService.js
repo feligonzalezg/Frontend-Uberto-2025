@@ -3,16 +3,8 @@ import { REST_SERVER_URL } from './configuracion'
 
   class UsuarioService  {
     async validarUsuario(usuario,contrasenia) {
-      try {
-      console.log("llegue al service")
       const usuarioId = await axios.post(`${REST_SERVER_URL}/usuarioLogin`, { contrasenia: contrasenia, usuario: usuario})
-      console.log(usuarioId.data)
-      return usuarioId.data  
-      }
-      catch (error) {
-        console.error('Error de inicio de sesión:', error)
-        throw error// Lanza el error para que pueda ser manejado en el componente que llama a esta función
-      }
+      return usuarioId.data
     }
 
     cerrarSession(){

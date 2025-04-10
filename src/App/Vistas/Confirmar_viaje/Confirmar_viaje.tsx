@@ -33,7 +33,7 @@ const ConfirmarViaje = () => {
       : '';
     const viajedata = {
       idViajero: userObject?.id || 0,
-      idConductor: chofer?.idConductor,
+      idConductor: chofer?.id,
       nombre: chofer?.nombre,
       origen,
       destino,
@@ -45,7 +45,6 @@ const ConfirmarViaje = () => {
       fechaFin,
     };
     try {
-      console.log('antes de ir al service', viajedata);
       await perfilService.confirmarViaje(viajedata);
       navigate('/Home');
       enqueueSnackbar("Viaje Confirmado", {
@@ -64,9 +63,8 @@ const ConfirmarViaje = () => {
   };
   useEffect(() => {
     const fetchComentarios = async () => {
-      console.log(chofer);
       try {
-        const response = await perfilService.getComentariosChofer(chofer);
+        const response = await perfilService.getComentarios(chofer);
         setComentarios(response);
       } catch (error) {
         console.error(error);

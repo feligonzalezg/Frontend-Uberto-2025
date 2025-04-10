@@ -251,10 +251,11 @@ const HomeUsuario: React.FC = () => {
                 marca={item.marca}
                 modelo={item.modelo}
                 anio={item.anio}
-                idConductor={item.idConductor}
+                id={item.id}
                 tarifa={item.importe}
                 calificacion={item.calificacion}
                 foto={item.foto}
+                esChofer={item.esChofer}
                 origen={origen}
                 destino={destino}
                 duracion={duracion}
