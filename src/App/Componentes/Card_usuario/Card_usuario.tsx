@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import perfilService from '../../Services/Perfil';
 import { enqueueSnackbar } from 'notistack';
+import usuarioService from '../../Services/LoginService';
 
 interface CardUsuarioProps {
   idViaje: number;
@@ -46,8 +47,8 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
   fechaFin,
   foto,
 }) => {
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!);
+
+  const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);

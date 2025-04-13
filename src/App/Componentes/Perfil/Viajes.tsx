@@ -2,6 +2,7 @@ import { Box, Divider, Typography } from '@mui/material'
 import CardUsuario from '../Card_usuario/Card_usuario'
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
+import usuarioService from '../../Services/LoginService';
 
 interface Viaje {
   id: number;
@@ -17,8 +18,7 @@ interface Viaje {
 }
 
 const Viajes = () => {
-  const userStorage = localStorage.getItem("usuario")
-  const userObject = JSON.parse(userStorage!)
+  const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer
   const [viajesRealizados, setViajesRealizados] = useState<Viaje[]>([])
   const [viajesPendientes, setViajesPendientes] = useState<Viaje[]>([])

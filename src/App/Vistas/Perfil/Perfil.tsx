@@ -5,14 +5,14 @@ import Viajes from '../../Componentes/Perfil/Viajes';
 import Calificaciones from '../../Componentes/Perfil/Calificaciones';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import perfilService from '../../Services/Perfil';
+import usuarioService from '../../Services/LoginService';
 
 
 const Perfil = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!!);
+  const userObject = usuarioService.getUsuarioLogeado()
   
   const fetchImage = (image: string) => {
     setImage(image)

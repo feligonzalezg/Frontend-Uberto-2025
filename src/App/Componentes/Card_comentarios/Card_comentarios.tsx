@@ -39,8 +39,7 @@ const CardComentario = ({
   comentario,
   onDeleteComentario,
 }: CardComentarioProps) => {
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!);
+  const userObject = getUsuarioLogeado()
   const esChofer = userObject.esChofer;
 
   const [openModal, setOpenModal] = useState(false);

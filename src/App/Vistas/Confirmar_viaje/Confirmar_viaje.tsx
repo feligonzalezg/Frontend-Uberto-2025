@@ -6,11 +6,11 @@ import { format } from 'date-fns';
 import CardComentario from '../../Componentes/Card_comentarios/Card_comentarios';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
+import usuarioService from '../../Services/LoginService';
 
 const ConfirmarViaje = () => {
   const location = useLocation();
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!);
+  const userObject = usuarioService.getUsuarioLogeado()
   const { origen, destino, fecha, duracion, cantidadDePasajeros, chofer } =
     location.state || {};
   const navigate = useNavigate();

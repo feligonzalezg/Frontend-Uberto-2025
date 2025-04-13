@@ -14,6 +14,7 @@ import homeService from '../../Services/HomeService';
 import CardChofer from '../../Componentes/CardChofer/CardChofer';
 import CardUsuario from '../../Componentes/Card_usuario/Card_usuario';
 import { format } from 'date-fns';
+import usuarioService from '../../Services/LoginService';
 
 const HomeUsuario: React.FC = () => {
   const [resultados, setResultados] = useState<any[]>([]);
@@ -25,8 +26,7 @@ const HomeUsuario: React.FC = () => {
   const [duracion, setDuracion] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage || '{}');
+  const userObject =usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
 
   const handleCantidadPasajerosChange = (increment: boolean) => {

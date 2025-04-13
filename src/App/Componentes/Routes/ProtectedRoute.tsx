@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import usuarioService from '../../Services/LoginService';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -6,7 +7,7 @@ type ProtectedRouteProps = {
 
 
 const ProtectedRoute = ({children}: ProtectedRouteProps) => {
-    const isAuthenticated = localStorage.getItem('usuario'); 
+    const isAuthenticated =usuarioService.getUsuarioLogeado() 
     
     if (!isAuthenticated) {
       return <Navigate to="/login" replace />
