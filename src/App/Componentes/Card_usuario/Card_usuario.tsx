@@ -122,12 +122,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
               >
                 <Button
                   variant="contained"
-                  sx={{
-                    backgroundColor: '#8A2BE2', // Violeta
-                    '&:hover': {
-                      backgroundColor: '#7B1FA2', // Violeta más oscuro al pasar el mouse
-                    },
-                  }}
+                  sx={{backgroundColor:'#5508a7',width:'100%'}}
                   onClick={() => setModalAbierto(true)} // Abrir el modal
                 >
                   Calificar Viaje

@@ -201,7 +201,7 @@ const HomeUsuario: React.FC = () => {
 
       <Button
         variant="contained"
-        sx={{ width: '100%', backgroundColor: '#9348e4', color: '#fff' }}
+        className="button-primary"
         onClick={handleBuscar}
         disabled={!esChofer && !validarCamposLlenos()}
       >

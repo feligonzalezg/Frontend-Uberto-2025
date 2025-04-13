@@ -295,7 +295,6 @@ const DatosUsuario = ({ setImage }) => {
             className="button-primary"
             variant="contained"
             fullWidth
-            sx={{ mt: 2, backgroundColor: 'purple' }}
             onClick={handleAgregarSaldo}
             disabled={loading || !monto}
           >
