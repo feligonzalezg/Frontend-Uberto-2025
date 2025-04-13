@@ -40,7 +40,7 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
     try {
       const userString = usuarioService.getUsuarioLogeado()
       if (!userString) throw new Error('Usuario no encontrado en el localStorage')
-      return JSON.parse(userString)
+      return userString
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.'
       setError(errorMessage)
