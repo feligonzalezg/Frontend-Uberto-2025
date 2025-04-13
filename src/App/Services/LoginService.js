@@ -10,8 +10,15 @@ import { REST_SERVER_URL } from './configuracion'
     cerrarSession(){
       return usuarioId (null)
     }
+
+    getUsuarioLogeado = () =>{ 
+      const userStorage = localStorage.getItem('usuario')
+      return JSON.parse(userStorage || '{}')
+    }
   
   }
+
+  
 
   const usuarioService = new UsuarioService()
   export default usuarioService

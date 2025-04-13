@@ -14,6 +14,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
+import usuarioService from '../../Services/LoginService';
 
 interface Usuario {
   nombre: string;
@@ -36,8 +37,7 @@ interface Amigo {
 }
 
 const DatosUsuario = ({ setImage }) => {
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!);
+  const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
   const [usuario, setUsuario] = useState<Usuario>({
     nombre: '',

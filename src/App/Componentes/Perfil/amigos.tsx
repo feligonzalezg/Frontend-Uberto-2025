@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from 'react'
 import perfilService from '../../Services/Perfil'
 import { AxiosError } from 'axios'
+import usuarioService from '../../Services/LoginService'
 
 interface Amigo {
   nombreYApellido: string
@@ -37,7 +38,7 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
 
   const obtenerUsuario = () => {
     try {
-      const userString = localStorage.getItem('usuario')
+      const userString = usuarioService.getUsuarioLogeado()
       if (!userString) throw new Error('Usuario no encontrado en el localStorage')
       return JSON.parse(userString)
     } catch (error) {
