@@ -16,13 +16,13 @@ import perfilService from '../../Services/Perfil';
 import { enqueueSnackbar } from 'notistack';
 import usuarioService from '../../Services/LoginService';
 
-interface CardUsuarioProps {
+interface Viaje {
   idViaje: number;
   nombre: string;
-  cantidadPersonas: number;
-  desde: string;
-  hacia: string;
-  horario: string;
+  cantidadDePasajeros: number;
+  origen: string;
+  destino: string;
+  fechaInicio: string;
   importe: number;
   puedeCalificar: boolean;
   fechaFin: string;
@@ -35,24 +35,18 @@ interface Calificacion {
   mensaje: string;
 }
 
-const CardUsuario: React.FC<CardUsuarioProps> = ({
-  idViaje: id,
-  nombre,
-  cantidadPersonas,
-  desde,
-  hacia,
-  horario,
-  importe,
-  puedeCalificar,
-  fechaFin,
-  foto,
-}) => {
+interface CardUsuarioProps {
+viaje: Viaje
+}
+
+const CardUsuario: React.FC<CardUsuarioProps> = ({ viaje }) => {
+
 
   const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
   const [modalAbierto, setModalAbierto] = useState(false);
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);
-  const formatoHorario = `${horario < 10 ? '0' : ''}${horario} - ${fechaFin}`;
+  const formatoHorario = `${viaje.fechaInicio < 10 ? '0' : ''}${viaje.fechaInicio} - ${viaje.fechaFin}`;
 
   const handleCalificar = async (calificacion: Calificacion) => {
     console.log(calificacion);
@@ -83,34 +77,34 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
           title={
             <Box className="card-usuario__header-content">
               <Typography variant="h6" className="card-usuario__name">
-                {nombre}
+                {viaje.nombre}
               </Typography>
               <Typography className="card-usuario__people-count">
-                {cantidadPersonas} <GroupIcon fontSize="small" />
+                {viaje.cantidadDePasajeros} <GroupIcon fontSize="small" />
               </Typography>
             </Box>
           }
           action={
             <Box className="card-usuario__avatar-container">
-              <Avatar src={foto} alt={nombre} />
+              <Avatar src={viaje.foto} alt={viaje.nombre} />
             </Box>
           }
         />
         <CardContent className="card-usuario__content">
           <Typography variant="body1">
-            <strong>Desde:</strong> {desde}
+            <strong>Desde:</strong> {viaje.origen}
           </Typography>
           <Typography variant="body1">
-            <strong>Hacia:</strong> {hacia}
+            <strong>Hacia:</strong> {viaje.destino}
           </Typography>
           <Typography variant="body1">
             <strong>Horario:</strong> {formatoHorario}
           </Typography>
           <Typography variant="body1">
-            <strong>Importe:</strong> ${importe}
+            <strong>Importe:</strong> ${viaje.importe}
           </Typography>
 
-          {!esChofer && puedeCalificar && !calificacionEnviada && (
+          {!esChofer && viaje.puedeCalificar && !calificacionEnviada && (
             <>
               <Box
                 sx={{
@@ -132,7 +126,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({
               <CalificarViajeModal
                 open={modalAbierto}
                 onClose={() => setModalAbierto(false)} // Cerrar el modal
-                idViaje={id}
+                idViaje={viaje.idViaje}
                 onCalificar={handleCalificar}
               />
             </>
