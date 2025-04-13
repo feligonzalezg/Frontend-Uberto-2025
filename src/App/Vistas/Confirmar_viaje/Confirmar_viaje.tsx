@@ -183,10 +183,10 @@ const ConfirmarViaje = () => {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: '#8A2BE2',
+              backgroundColor: 'var(--primary-color)',
               fontSize: '1.2rem',
               mb: 2,
-              ml: 14,
+              ml: 11,
             }}
             onClick={handleConfirmarViaje}
           >
