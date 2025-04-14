@@ -235,27 +235,12 @@ const HomeUsuario: React.FC = () => {
             esChofer ? (
               <CardUsuario
                 key={index}
-                nombre={item.nombre}
-                cantidadPersonas={item.cantidadDePasajeros}
-                desde={item.origen}
-                hacia={item.destino}
-                horario={item.fechaInicio}
-                importe={item.importe}
-                fechaFin={item.fechaFin}
+                viaje={item}
               />
             ) : (
               <CardChofer
                 key={index}
-                dominio={item.dominio}
-                nombre={item.nombreYApellido}
-                marca={item.marca}
-                modelo={item.modelo}
-                anio={item.anio}
-                id={item.id}
-                tarifa={item.importe}
-                calificacion={item.calificacion}
-                foto={item.foto}
-                esChofer={item.esChofer}
+                chofer={item}
                 origen={origen}
                 destino={destino}
                 duracion={duracion}

@@ -34,17 +34,18 @@ const ConfirmarViaje = () => {
     const viajedata = {
       idViajero: userObject?.id || 0,
       idConductor: chofer?.id,
-      nombre: chofer?.nombre,
+      nombre: chofer?.nombreYApellido,
       origen,
       destino,
       fechaInicio: fechaFormateada,
       cantidadDePasajeros,
       duracion,
-      importe: chofer?.tarifa,
+      importe: chofer?.importe,
       puedeCalificar: true,
       fechaFin,
     };
     try {
+      console.log(viajedata)
       await perfilService.confirmarViaje(viajedata);
       navigate('/Home');
       enqueueSnackbar("Viaje Confirmado", {
@@ -120,7 +121,7 @@ const ConfirmarViaje = () => {
         <Typography variant="body1" className="info-text">
           Nombre:
         </Typography>
-        <Typography variant="body1">{chofer?.nombre}</Typography>
+        <Typography variant="body1">{chofer?.nombreYApellido}</Typography>
       </Box>
       <Box className="info-item">
         <Typography variant="body1" className="info-text">

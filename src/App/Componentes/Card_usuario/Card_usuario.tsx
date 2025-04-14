@@ -30,7 +30,7 @@ interface Viaje {
 }
 
 interface Calificacion {
-  idViaje: string;
+  idViaje: number;
   estrellas: number;
   mensaje: string;
 }
@@ -40,7 +40,6 @@ viaje: Viaje
 }
 
 const CardUsuario: React.FC<CardUsuarioProps> = ({ viaje }) => {
-
 
   const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
