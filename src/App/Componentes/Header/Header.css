@@ -1,0 +1,30 @@
+header {
+  z-index: 1000;
+}
+
+.header {
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  height: 9vh;
+  overflow-y: hidden;
+  z-index: 1000; /* Asegura que quede sobre otros elementos */
+}
+
+.header__icon__container {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+}
+
+.header__icon {
+  justify-self: start;
+  font-weight: 800;
+  font-size: 1.6rem;
+}

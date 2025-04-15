@@ -1,0 +1,113 @@
+.confirmar-viaje {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #f0eff2;
+}
+
+.confirmar-viaje__header {
+  text-align: center;
+}
+
+.confirmar-viaje__title {
+  font-weight: bold;
+  color: #5508a7;
+}
+
+.confirmar-viaje__label {
+  font-weight: bold;
+  text-align: left;
+  color: #000000;
+}
+
+.confirmar-viaje__value {
+  text-align: right;
+}
+
+.divider {
+  margin: 20px 0;
+  background-color: #5508a7;
+}
+
+.chofer-info {
+  text-align: center;
+}
+
+.chofer-info__title {
+  font-weight: bold;
+  color: #5508a7;
+}
+
+.chofer-info__label {
+  font-weight: bold;
+  text-align: left;
+  color: #000000;
+}
+
+.chofer-info__value {
+  text-align: right;
+}
+
+.comentarios {
+  margin-top: 20px;
+  margin-bottom: 4rem;
+}
+.confirmar-viaje__acciones {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 80px;
+  border-top: 1px solid #ddd;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fcfaff;
+}
+
+.boton-confirmar {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1.0rem;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+}
+/* Nueva estructura para los datos */
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.info-text {
+  font-weight: bold;
+}
+
+.confirmar-viaje__acciones {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f0eff2;
+  border-top: 1px solid #ddd;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.boton-volver {
+  background-color: #fdfcff;
+  color: #000000;
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.comentarios-container {
+  margin-bottom: 5rem;
+}
+.Chofer-sin-comentarios {
+  display: flex;
+  justify-content: center;
+}
