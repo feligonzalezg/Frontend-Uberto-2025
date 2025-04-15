@@ -84,13 +84,17 @@ const CalificarViajeModal: React.FC<CalificarViajeModalProps> = ({
           fullWidth
           value={mensaje}
           onChange={(e) => setMensaje(e.target.value)}
-          sx={{ marginBottom: 2 }}
+          sx={{ marginBottom: 2}}
         />
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
-          <Button variant="outlined" onClick={onClose}>
+          <Button variant="outlined" 
+                  sx={{color:'var(--primary-color)',borderColor:'var(--primary-color)'}}
+                  onClick={onClose}>
             Cancelar
           </Button>
-          <Button variant="contained" onClick={handleSubmit}disabled={!isFormValid}>
+          <Button variant="contained" 
+                  sx={{backgroundColor:'var(--primary-color)'}}
+                  onClick={handleSubmit}disabled={!isFormValid}>
             Enviar Calificación
           </Button>
         </Box>

@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from 'react'
 import perfilService from '../../Services/Perfil'
 import { AxiosError } from 'axios'
+import usuarioService from '../../Services/LoginService'
 
 interface Amigo {
   nombreYApellido: string
@@ -37,9 +38,9 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
 
   const obtenerUsuario = () => {
     try {
-      const userString = localStorage.getItem('usuario')
+      const userString = usuarioService.getUsuarioLogeado()
       if (!userString) throw new Error('Usuario no encontrado en el localStorage')
-      return JSON.parse(userString)
+      return userString
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error al eliminar el amigo. Por favor, inténtalo de nuevo.'
       setError(errorMessage)
@@ -51,7 +52,6 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
       setLoading(true)
       if (!amigoToDelete) throw new Error('No se ha seleccionado un amigo para eliminar.')
 
-      console.log('Eliminando amigo:', amigoToDelete.username)
       const userObject = obtenerUsuario()
       await perfilService.eliminarAmigo(userObject.id, amigoToDelete.id)
       handleAmigoToDelete(amigoToDelete.id)

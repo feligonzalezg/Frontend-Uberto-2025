@@ -11,15 +11,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 
 interface CardChoferProps {
-  dominio: string;
-  id: number;
-  nombre: string;
-  marca: string;
-  modelo: string;
-  anio: number;
-  tarifa: number;
-  calificacion: number;
-  foto: string;
+  chofer:Chofer;
   origen: string;
   destino: string;
   fecha: string;
@@ -28,22 +20,26 @@ interface CardChoferProps {
   esChofer:boolean;
 }
 
+interface Chofer {
+  dominio: string;
+  id: number;
+  nombreYApellido: string;
+  marca: string;
+  modelo: string;
+  anio: number;
+  importe: number;
+  calificacion: number;
+  foto: string;
+  esChofer: boolean;
+}
+
 const CardChofer: React.FC<CardChoferProps> = ({
-  dominio,
-  id,
-  nombre,
-  marca,
-  modelo,
-  anio,
-  tarifa,
-  calificacion,
-  foto,
+  chofer,
   origen,
   destino,
   fecha,
   duracion,
   cantidadDePasajeros,
-  esChofer
 }) => {
   const navigate = useNavigate();
 
@@ -55,7 +51,7 @@ const CardChofer: React.FC<CardChoferProps> = ({
         fecha,
         duracion,
         cantidadDePasajeros,
-        chofer: { id, dominio, nombre, modelo, tarifa, calificacion, esChofer },
+        chofer,
       },
     });
   };
@@ -68,10 +64,10 @@ const CardChofer: React.FC<CardChoferProps> = ({
           title={
             <Box className="card-chofer__title">
               <Typography className="card-chofer__dominio">
-                {dominio}
+                {chofer.dominio}
               </Typography>
               <Typography variant="body2" className="card-chofer__calificacion">
-                {calificacion}
+                {chofer.calificacion}
                 <StarIcon />
               </Typography>
             </Box>
@@ -79,20 +75,20 @@ const CardChofer: React.FC<CardChoferProps> = ({
         />
         <CardContent className="card-chofer__content">
           <Box>
-            <Typography className="card-chofer__nombre">{nombre}</Typography>
+            <Typography className="card-chofer__nombre">{chofer.nombreYApellido}</Typography>
 
             <Typography className="card-chofer__modelo">
-              {marca} | {modelo} • {anio}
+              {chofer.marca} | {chofer.modelo} • {chofer.anio}
             </Typography>
             <Box className="card-chofer__info">
               <Typography className="card-chofer__tarifa">
-                Valor <strong>${tarifa}</strong>
+                Valor <strong>${chofer.importe}</strong>
               </Typography>
             </Box>
           </Box>
           <Box>
             {' '}
-            <Avatar src={foto} style={{ width: '5rem', height: '5rem' }} />
+            <Avatar src={chofer.foto} style={{ width: '5rem', height: '5rem' }} />
           </Box>
         </CardContent>
       </Card>

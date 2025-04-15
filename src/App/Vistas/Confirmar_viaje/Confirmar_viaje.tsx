@@ -6,11 +6,11 @@ import { format } from 'date-fns';
 import CardComentario from '../../Componentes/Card_comentarios/Card_comentarios';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
+import usuarioService from '../../Services/LoginService';
 
 const ConfirmarViaje = () => {
   const location = useLocation();
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!);
+  const userObject = usuarioService.getUsuarioLogeado()
   const { origen, destino, fecha, duracion, cantidadDePasajeros, chofer } =
     location.state || {};
   const navigate = useNavigate();
@@ -34,13 +34,13 @@ const ConfirmarViaje = () => {
     const viajedata = {
       idViajero: userObject?.id || 0,
       idConductor: chofer?.id,
-      nombre: chofer?.nombre,
+      nombre: chofer?.nombreYApellido,
       origen,
       destino,
       fechaInicio: fechaFormateada,
       cantidadDePasajeros,
       duracion,
-      importe: chofer?.tarifa,
+      importe: chofer?.importe,
       puedeCalificar: true,
       fechaFin,
     };
@@ -120,7 +120,7 @@ const ConfirmarViaje = () => {
         <Typography variant="body1" className="info-text">
           Nombre:
         </Typography>
-        <Typography variant="body1">{chofer?.nombre}</Typography>
+        <Typography variant="body1">{chofer?.nombreYApellido}</Typography>
       </Box>
       <Box className="info-item">
         <Typography variant="body1" className="info-text">
@@ -183,10 +183,10 @@ const ConfirmarViaje = () => {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: '#8A2BE2',
+              backgroundColor: 'var(--primary-color)',
               fontSize: '1.2rem',
               mb: 2,
-              ml: 14,
+              ml: 11,
             }}
             onClick={handleConfirmarViaje}
           >

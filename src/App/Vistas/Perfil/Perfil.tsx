@@ -5,14 +5,14 @@ import Viajes from '../../Componentes/Perfil/Viajes';
 import Calificaciones from '../../Componentes/Perfil/Calificaciones';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import perfilService from '../../Services/Perfil';
+import usuarioService from '../../Services/LoginService';
 
 
 const Perfil = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!!);
+  const userObject = usuarioService.getUsuarioLogeado()
   
   const fetchImage = (image: string) => {
     setImage(image)
@@ -29,16 +29,13 @@ const Perfil = () => {
     setLoading(true);
   
     try {
-      // 1. Mostrar vista previa inmediata
       const previewUrl = URL.createObjectURL(file);
       setImage(previewUrl);
       
-      // 2. Subir a Cloudinary
       const cloudinaryFormData = new FormData();
       cloudinaryFormData.append('file', file);
       cloudinaryFormData.append('upload_preset', 'Uberto-2025');
       
-      console.log('Iniciando subida a Cloudinary...'); // Debug
       const cloudinaryResponse = await fetch(
         'https://api.cloudinary.com/v1_1/diezou2of/image/upload',
         { method: 'POST', body: cloudinaryFormData }
@@ -50,16 +47,9 @@ const Perfil = () => {
       
       const cloudinaryData = await cloudinaryResponse.json();
       const imageUrl = cloudinaryData.secure_url;
-      console.log('Cloudinary success, URL:', imageUrl); 
       
-      // 3. Actualizar en el backend
-      console.log('Iniciando actualización en backend...'); 
-      console.log(userObject.id)
       const backendResponse = await perfilService.actualizarImagen(userObject, imageUrl);
-      console.log('Backend response:', backendResponse); 
-      // 4. Confirmar la imagen definitiva
       setImage(backendResponse);
-      console.log('Backend response2:', image);
       
     } catch (error) {
       console.error('Error completo:', error);

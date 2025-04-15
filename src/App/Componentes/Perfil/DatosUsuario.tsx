@@ -14,6 +14,7 @@ import { Add as AddIcon } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
+import usuarioService from '../../Services/LoginService';
 
 interface Usuario {
   nombre: string;
@@ -36,8 +37,7 @@ interface Amigo {
 }
 
 const DatosUsuario = ({ setImage }) => {
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!);
+  const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
   const [usuario, setUsuario] = useState<Usuario>({
     nombre: '',
@@ -72,7 +72,6 @@ const DatosUsuario = ({ setImage }) => {
     }
 
     setLoading(true);
-    console.log('usuario Modificado ', usuario);
 
     try {
       await perfilService.actualizarUsuario(userObject, usuario);
@@ -90,8 +89,6 @@ const DatosUsuario = ({ setImage }) => {
   };
 
   const handleAgregarSaldo = async () => {
-    console.log('usuario Modificado ', monto);
-
     if (monto == '') {
       setError('Ingrese un valor numerico mayor a 1000');
       return;
@@ -139,7 +136,6 @@ const DatosUsuario = ({ setImage }) => {
   };
 
   const handleAgregarAmigo = async () => {
-    console.log(nuevoAmigo);
     if (!nuevoAmigo) {
       setError('Por favor, ingresa un nombre de usuario.');
       return;
@@ -153,8 +149,6 @@ const DatosUsuario = ({ setImage }) => {
       setMensaje('Amigo agregado exitosamente.');
       setSuccess(true);
       setAmigos((prevAmigos) => [...prevAmigos, amigoNuevo]);
-      console.log(amigos);
-      console.log(usuario.amigos);
       handleCloseAgregarAmigoModal();
     } catch (error) {
       setError('Error al agregar amigo. Por favor, inténtalo de nuevo.');
@@ -295,7 +289,6 @@ const DatosUsuario = ({ setImage }) => {
             className="button-primary"
             variant="contained"
             fullWidth
-            sx={{ mt: 2, backgroundColor: 'purple' }}
             onClick={handleAgregarSaldo}
             disabled={loading || !monto}
           >

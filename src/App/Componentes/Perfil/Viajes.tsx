@@ -2,26 +2,13 @@ import { Box, Divider, Typography } from '@mui/material'
 import CardUsuario from '../Card_usuario/Card_usuario'
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
-
-interface Viaje {
-  id: number;
-  nombre: string;
-  cantidadDePasajeros: number;
-  origen: string;
-  destino: string;
-  fechaInicio: string;
-  importe: number;
-  puedeCalificar: boolean;
-  fechaFin: string;
-  foto: string;
-}
+import usuarioService from '../../Services/LoginService';
 
 const Viajes = () => {
-  const userStorage = localStorage.getItem("usuario")
-  const userObject = JSON.parse(userStorage!)
+  const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer
-  const [viajesRealizados, setViajesRealizados] = useState<Viaje[]>([])
-  const [viajesPendientes, setViajesPendientes] = useState<Viaje[]>([])
+  const [viajesRealizados, setViajesRealizados] = useState<[]>([])
+  const [viajesPendientes, setViajesPendientes] = useState<[]>([])
   const [totalFacturacion, setTotalFacturacion] = useState<number>(0); 
 
 
@@ -31,7 +18,6 @@ const Viajes = () => {
         const responseRealizados = await perfilService.getViajesRealizados(userObject)
         setViajesRealizados(responseRealizados.viajesRealizados);
         setTotalFacturacion(responseRealizados.totalFacturado)
-        console.log(responseRealizados);
     
         if (!esChofer) {
           const responsePendientes = await perfilService.getViajesPendientes(userObject)
@@ -55,16 +41,7 @@ const Viajes = () => {
           {viajesPendientes.map((viaje, index) => (
             <CardUsuario
               key={index}
-              idViaje={viaje.id}
-              nombre={viaje.nombre}
-              cantidadPersonas={viaje.cantidadDePasajeros}
-              desde={viaje.origen}
-              hacia={viaje.destino}
-              horario={viaje.fechaInicio}
-              importe={viaje.importe}
-              puedeCalificar ={viaje.puedeCalificar}
-              fechaFin={viaje.fechaFin}
-              foto={viaje.foto}
+              viaje={viaje}
             />
           ))}
         </>
@@ -76,16 +53,7 @@ const Viajes = () => {
       {viajesRealizados.map((viaje, index) => (
         <CardUsuario
           key={index}
-          idViaje={viaje.id}
-          nombre={viaje.nombre}
-          cantidadPersonas={viaje.cantidadDePasajeros}
-          desde={viaje.origen}
-          hacia={viaje.destino}
-          horario={viaje.fechaInicio}
-          importe={viaje.importe}
-          puedeCalificar ={viaje.puedeCalificar}
-          fechaFin={viaje.fechaFin}
-          foto={viaje.foto}
+          viaje={viaje}
         />
         
       ))}

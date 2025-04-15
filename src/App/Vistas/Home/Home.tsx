@@ -14,6 +14,7 @@ import homeService from '../../Services/HomeService';
 import CardChofer from '../../Componentes/CardChofer/CardChofer';
 import CardUsuario from '../../Componentes/Card_usuario/Card_usuario';
 import { format } from 'date-fns';
+import usuarioService from '../../Services/LoginService';
 
 const HomeUsuario: React.FC = () => {
   const [resultados, setResultados] = useState<any[]>([]);
@@ -25,8 +26,7 @@ const HomeUsuario: React.FC = () => {
   const [duracion, setDuracion] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage || '{}');
+  const userObject =usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
@@ -201,7 +201,7 @@ const HomeUsuario: React.FC = () => {
 
       <Button
         variant="contained"
-        sx={{ width: '100%', backgroundColor: '#9348e4', color: '#fff' }}
+        className="button-primary"
         onClick={handleBuscar}
         disabled={!esChofer && !validarCamposLlenos()}
       >
@@ -235,27 +235,12 @@ const HomeUsuario: React.FC = () => {
             esChofer ? (
               <CardUsuario
                 key={index}
-                nombre={item.nombre}
-                cantidadPersonas={item.cantidadDePasajeros}
-                desde={item.origen}
-                hacia={item.destino}
-                horario={item.fechaInicio}
-                importe={item.importe}
-                fechaFin={item.fechaFin}
+                viaje={item}
               />
             ) : (
               <CardChofer
                 key={index}
-                dominio={item.dominio}
-                nombre={item.nombreYApellido}
-                marca={item.marca}
-                modelo={item.modelo}
-                anio={item.anio}
-                id={item.id}
-                tarifa={item.importe}
-                calificacion={item.calificacion}
-                foto={item.foto}
-                esChofer={item.esChofer}
+                chofer={item}
                 origen={origen}
                 destino={destino}
                 duracion={duracion}

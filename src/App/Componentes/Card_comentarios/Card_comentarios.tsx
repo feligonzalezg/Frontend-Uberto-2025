@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import perfilService from '../../Services/Perfil';
+import usuarioService from '../../Services/LoginService';
 
 interface Comentario {
   idComentario: number;
@@ -39,8 +40,7 @@ const CardComentario = ({
   comentario,
   onDeleteComentario,
 }: CardComentarioProps) => {
-  const userStorage = localStorage.getItem('usuario');
-  const userObject = JSON.parse(userStorage!);
+  const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer;
 
   const [openModal, setOpenModal] = useState(false);
@@ -190,12 +190,14 @@ const CardComentario = ({
             Esta acción no se puede deshacer.
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-            <Button variant="outlined" onClick={handleCloseModal}>
+            <Button variant="outlined" 
+                    sx={{color:'var(--primary-color)',borderColor:'var(--primary-color)'}}
+                    onClick={handleCloseModal}>
               Cancelar
             </Button>
             <Button
               variant="contained"
-              color="error"
+              sx={{backgroundColor:'var(--primary-color)'}}
               onClick={handleConfirmDelete}
             >
               {loading ? <CircularProgress size={24} /> : 'Eliminar'}

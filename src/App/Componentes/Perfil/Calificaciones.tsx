@@ -2,18 +2,15 @@ import { Alert, Box, Button, CircularProgress, Modal, Snackbar, Typography } fro
 import CardComentario from '../Card_comentarios/Card_comentarios'
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'
+import usuarioService from '../../Services/LoginService'
 
 
 const Calificaciones = () => {
 
   const [comentarios, setComentarios] = useState<[]>([])
-  const userStorage = localStorage.getItem("usuario")
-  const userObject = JSON.parse(userStorage!)
+  const userObject = usuarioService.getUsuarioLogeado()
   
-  console.log(userObject)
-
-  useEffect(() => {
-
+  useEffect(() => {    
     const fetchComentarios = async ()=> {
       try {
         const response = await perfilService.getComentarios(userObject)
