@@ -1,0 +1,59 @@
+.card-chofer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 85%;
+}
+
+.card-chofer__card {
+  width: 100%;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid black;
+}
+
+.card-chofer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #5508a7;
+}
+
+.card-chofer__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: aliceblue;
+}
+
+.card-chofer__dominio {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.card-chofer__calificacion {
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+.card-chofer__content {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.card-chofer__nombre {
+  font-weight: bold;
+}
+
+.card-chofer__modelo {
+  color: #666;
+}
+
+.card-chofer__tarifa {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #673ab7;
+}

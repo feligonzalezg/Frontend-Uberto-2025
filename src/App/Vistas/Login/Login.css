@@ -1,0 +1,58 @@
+.login-form {
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 25px;
+  margin: 0 auto;
+}
+
+.logo {
+  margin-bottom: 20px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(20deg, #e0e0e0, #d8b3bcf8, #dbf10c);
+  background-size: 200% 200%;
+  animation: gradient-animation 10s ease infinite;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.logo h1 {
+  font-size: 3.5rem;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.layout-content--login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 0;
+}
+
+.gradient {
+  background: linear-gradient(
+    30deg,
+    #231c56e7 0%,
+    #32055ce3 33%,
+    #100e15e7 66%,
+    #17066be3 100%
+  );
+  background-size: 800% 800%;
+  animation: transition 5s linear infinite;
+  height: 100vh;
+}
+@keyframes transition {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 20% 75%;
+  }
+}
