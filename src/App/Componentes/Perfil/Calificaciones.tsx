@@ -10,10 +10,7 @@ const Calificaciones = () => {
   const [comentarios, setComentarios] = useState<[]>([])
   const userObject = usuarioService.getUsuarioLogeado()
   
-  console.log(userObject)
-
-  useEffect(() => {
-
+  useEffect(() => {    
     const fetchComentarios = async ()=> {
       try {
         const response = await perfilService.getComentarios(userObject)

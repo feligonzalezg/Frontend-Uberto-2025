@@ -72,7 +72,6 @@ const DatosUsuario = ({ setImage }) => {
     }
 
     setLoading(true);
-    console.log('usuario Modificado ', usuario);
 
     try {
       await perfilService.actualizarUsuario(userObject, usuario);
@@ -90,8 +89,6 @@ const DatosUsuario = ({ setImage }) => {
   };
 
   const handleAgregarSaldo = async () => {
-    console.log('usuario Modificado ', monto);
-
     if (monto == '') {
       setError('Ingrese un valor numerico mayor a 1000');
       return;
@@ -139,7 +136,6 @@ const DatosUsuario = ({ setImage }) => {
   };
 
   const handleAgregarAmigo = async () => {
-    console.log(nuevoAmigo);
     if (!nuevoAmigo) {
       setError('Por favor, ingresa un nombre de usuario.');
       return;
@@ -153,8 +149,6 @@ const DatosUsuario = ({ setImage }) => {
       setMensaje('Amigo agregado exitosamente.');
       setSuccess(true);
       setAmigos((prevAmigos) => [...prevAmigos, amigoNuevo]);
-      console.log(amigos);
-      console.log(usuario.amigos);
       handleCloseAgregarAmigoModal();
     } catch (error) {
       setError('Error al agregar amigo. Por favor, inténtalo de nuevo.');

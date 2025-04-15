@@ -21,7 +21,6 @@ class HomeService {
         `${REST_SERVER_URL}/filtrar/${id}`,
         busquedaViajes,
       )
-      console.log(viajes.data)
       return viajes.data
     } catch (error) {
       console.error(error)

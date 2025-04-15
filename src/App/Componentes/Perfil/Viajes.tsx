@@ -18,7 +18,6 @@ const Viajes = () => {
         const responseRealizados = await perfilService.getViajesRealizados(userObject)
         setViajesRealizados(responseRealizados.viajesRealizados);
         setTotalFacturacion(responseRealizados.totalFacturado)
-        console.log(responseRealizados);
     
         if (!esChofer) {
           const responsePendientes = await perfilService.getViajesPendientes(userObject)

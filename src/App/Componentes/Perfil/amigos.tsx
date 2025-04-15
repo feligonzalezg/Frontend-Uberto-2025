@@ -52,7 +52,6 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
       setLoading(true)
       if (!amigoToDelete) throw new Error('No se ha seleccionado un amigo para eliminar.')
 
-      console.log('Eliminando amigo:', amigoToDelete.username)
       const userObject = obtenerUsuario()
       await perfilService.eliminarAmigo(userObject.id, amigoToDelete.id)
       handleAmigoToDelete(amigoToDelete.id)

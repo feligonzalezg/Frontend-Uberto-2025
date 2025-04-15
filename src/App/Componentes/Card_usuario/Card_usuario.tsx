@@ -48,16 +48,12 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({ viaje }) => {
   const formatoHorario = `${viaje.fechaInicio < 10 ? '0' : ''}${viaje.fechaInicio} - ${viaje.fechaFin}`;
 
   const handleCalificar = async (calificacion: Calificacion) => {
-    console.log(calificacion);
     try {
-      const response = await perfilService.calificarViaje(
+      await perfilService.calificarViaje(
         userObject.id,
         calificacion
       );
       setCalificacionEnviada(true);
-      console.log('Calificación enviada exisosamente:', {
-        ...response,
-      });
     } catch (error: any) {
       const errorMessage = error.response?.data?.message
       enqueueSnackbar(errorMessage, {      
