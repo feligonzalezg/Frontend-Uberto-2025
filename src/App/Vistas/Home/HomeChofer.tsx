@@ -23,10 +23,12 @@ const HomeChofer: React.FC<Props> = ({ user }) => {
 
   const handleFiltrar = async () => {
     try {
-      if (!usernameViajero.trim() || !origen.trim() || !destino.trim()) {
-        throw new Error('Todos los campos deben estar completos')
+      const dto = {
+        usernameViajero,
+        origen,
+        destino,
+        cantidadDePasajeros: cantidad
       }
-      const dto = { usernameViajero, origen, destino, cantidadDePasajeros: cantidad }
       const response = await homeService.BuscarViajes(dto, user.id)
       setResultados(response || [])
       setError(null)
@@ -34,6 +36,7 @@ const HomeChofer: React.FC<Props> = ({ user }) => {
       setError(err.message || 'Error al buscar')
     }
   }
+  
 
   return (
     <Box sx={{ p: 2, backgroundColor: '#f0eff2', borderRadius: 2, boxShadow: 3 }}>
