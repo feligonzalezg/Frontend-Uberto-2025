@@ -26,7 +26,7 @@ const HomeUsuario: React.FC = () => {
   const [duracion, setDuracion] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const userObject =usuarioService.getUsuarioLogeado()
+  const userObject = usuarioService.getUsuarioLogeado();
   const esChofer = userObject.esChofer;
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
@@ -72,6 +72,7 @@ const HomeUsuario: React.FC = () => {
           cantidadDePasajeros,
         };
         response = await homeService.ChoferesDisponibles(busquedaDTO);
+        console.log(response);
       }
 
       setResultados(response || []);
@@ -171,11 +172,12 @@ const HomeUsuario: React.FC = () => {
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
           InputLabelProps={{ shrink: true }}
-          sx={{ 
+          sx={{
             marginBottom: 2,
             '& .MuiInputBase-input::-webkit-calendar-picker-indicator': {
-              filter: 'invert(0.5)' 
-            }}}
+              filter: 'invert(0.5)',
+            },
+          }}
           error={!!error && !fecha.trim()}
           inputProps={{ min: getTodayMinDatetime() }}
         />
@@ -233,10 +235,7 @@ const HomeUsuario: React.FC = () => {
         {resultados.length > 0 ? (
           resultados.map((item, index) =>
             esChofer ? (
-              <CardUsuario
-                key={index}
-                viaje={item}
-              />
+              <CardUsuario key={index} viaje={item} />
             ) : (
               <CardChofer
                 key={index}
