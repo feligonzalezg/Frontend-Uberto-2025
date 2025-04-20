@@ -16,6 +16,7 @@ import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
 import usuarioService from '../../Services/LoginService';
 import FormularioUsuario from './formularioUsuarios';
+import SaldoUsuario from './SaldoUsuario';
 
 interface Usuario {
   nombre: string;
@@ -193,28 +194,13 @@ const DatosUsuario = ({ setImage }) => {
 
       {!esChofer && (
         <>
-          <Typography variant="h6" sx={{ mt: 3 }}>
-            Saldo Disponible: {usuario.saldo ?? ''}
-          </Typography>
-          <TextField
-            fullWidth
-            label="Monto"
-            type="number"
-            variant="outlined"
-            margin="normal"
-            value={monto}
-            onChange={(event) => setMonto(event.target.value)}
+          <SaldoUsuario
+            saldo={usuario.saldo ?? 0}
+            monto={monto}
+            setMonto={setMonto}
+            handleAgregarSaldo={handleAgregarSaldo}
+            loading={loading}
           />
-
-          <Button
-            className="button-primary"
-            variant="contained"
-            fullWidth
-            onClick={handleAgregarSaldo}
-            disabled={loading || !monto}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Agregar Saldo'}
-          </Button>
 
           <Box
             sx={{
