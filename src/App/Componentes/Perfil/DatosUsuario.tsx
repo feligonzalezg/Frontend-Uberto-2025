@@ -15,6 +15,13 @@ import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
 import usuarioService from '../../Services/LoginService';
+import { jwtDecode } from 'jwt-decode';
+
+
+interface JwtPayload {
+  id: string;
+  rol: string;
+}
 
 interface Usuario {
   nombre: string;
@@ -38,11 +45,22 @@ interface Amigo {
 
 const DatosUsuario = ({ setImage }) => {
   const userObject = usuarioService.getUsuarioLogeado()
-  const esChofer = userObject.esChofer;
+  //const esChofer = userObject.esChofer;
   const [usuario, setUsuario] = useState<Usuario>({
     nombre: '',
     apellido: '',
   });
+
+
+  let esChofer = null
+
+  if (userObject) {
+    const decoded = jwtDecode<JwtPayload>(userObject);
+    esChofer = decoded.rol == 'CONDUCTOR';
+    
+  }
+  
+  console.log (esChofer)
 
   const [usuarioOriginal, setUsuarioOriginal] = useState<Usuario>({
     nombre: '',

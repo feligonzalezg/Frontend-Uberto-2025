@@ -170,10 +170,15 @@ class PerfilService {
     }
   }
 
-  async deleteComentario(idUsuario, idComentario) {
+  async deleteComentario(token, idComentario) {
     try {
       const comentario = await axios.delete(
-        `${REST_SERVER_URL}/eliminarComentario/${idUsuario}/${idComentario}`
+        `${REST_SERVER_URL}/eliminarComentario/${idComentario}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
       return comentario.data;
     } catch (error) {
