@@ -1,33 +1,39 @@
 import axios from 'axios'
-import { REST_SERVER_URL } from './configuracion'
+import { REST_SERVER_URL, TOKEN_KEY } from './configuracion'
 import { ImageNotSupported } from '@mui/icons-material'
 
-
+ 
 class PerfilService {
-  async dataUsuario(userObject) {
-    try {
-      const usuario = await axios.get(
-        `${REST_SERVER_URL}/perfil/${userObject.id}`,
-        {
-          params: {
-            esChofer: userObject.esChofer,
-          },
-        }
-      );
-      return usuario.data;
-    } catch (error) {
-      console.error(error);
+
+  async  dataUsuario(userObject) {
+    
+    if (!userObject) {
+        throw new Error('No se encontró token de autenticación');
     }
-  }
+    try {
+          const response = await axios.get(`${REST_SERVER_URL}/perfil`, {
+              headers: {
+                  'Authorization': `Bearer ${userObject}`,
+              },
+          });
+
+        return response.data;
+        
+    } catch (error) {
+        console.error(error);
+
+    }
+}
 
   async getComentarios(userObject) {
+     const token = localStorage.getItem(TOKEN_KEY);
     try {
       const comentarios = await axios.get(
-        `${REST_SERVER_URL}/comentario/${userObject.id}`,
+        `${REST_SERVER_URL}/comentario`,
         {
-          params: {
-            esChofer: userObject.esChofer,
-          },
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }
         }
       );
       return comentarios.data;
@@ -36,14 +42,14 @@ class PerfilService {
     }
   }
 
-  async getViajesRealizados(userObject) {
+  async getViajesRealizados(token) {
     try {
       const viajesRealizados = await axios.get(
-        `${REST_SERVER_URL}/viajesRealizados/${userObject.id}`,
+        `${REST_SERVER_URL}/viajesRealizados`,
         {
-          params: {
-            esChofer: userObject.esChofer,
-          },
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
       return viajesRealizados.data;
@@ -52,14 +58,14 @@ class PerfilService {
     }
   }
 
-  async getViajesPendientes(userObject) {
+  async getViajesPendientes(token) {
     try {
       const viajesPendientes = await axios.get(
-        `${REST_SERVER_URL}/viajesPendientes/${userObject.id}`,
+        `${REST_SERVER_URL}/viajesPendientes`,
         {
-          params: {
-            esChofer: userObject.esChofer,
-          },
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
       return viajesPendientes.data;

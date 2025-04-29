@@ -27,6 +27,7 @@ const HomeUsuario: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const userObject =usuarioService.getUsuarioLogeado()
+  
   const esChofer = userObject.esChofer;
 
   const handleCantidadPasajerosChange = (increment: boolean) => {
