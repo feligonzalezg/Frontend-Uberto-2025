@@ -74,24 +74,30 @@ class PerfilService {
     }
   }
 
-  async actualizarUsuario(userObject, usuario) {
+  async actualizarUsuario(token, usuario) {
       const actualizarUser = await axios.patch(
-        `${REST_SERVER_URL}/actualizarUsuario/${userObject.id}`,
-        usuario
+        `${REST_SERVER_URL}/actualizarUsuario`,
+        usuario,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
       return actualizarUser.data;
   }
 
-  async cargarSaldo(userObject, monto) {
+  async cargarSaldo(token, monto) {
     try {
       const response = await axios.post(
-        `${REST_SERVER_URL}/cargarSaldo/${userObject.id}`,
-        null,
+        `${REST_SERVER_URL}/cargarSaldo`,null,
         {
-          params: {
-            esChofer: userObject.esChofer,
-            monto: monto,
+          headers: {
+            'Authorization': `Bearer ${token}`
           },
+          params: {
+            monto: monto
+          }
         }
       );
       return response.data;
@@ -101,10 +107,16 @@ class PerfilService {
     }
   }
 
-  async agregarAmigo(userId, amigoId) {
+  async agregarAmigo(token, amigoId) {
+    console.log(token)
     try {
       const response = await axios.put(
-        `${REST_SERVER_URL}/agregarAmigo/${userId}/${amigoId}`
+        `${REST_SERVER_URL}/agregarAmigo/${amigoId}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
       return response.data;
     } catch (error) {
@@ -112,10 +124,15 @@ class PerfilService {
     }
   }
 
-  async eliminarAmigo(userId, amigoId) {
+  async eliminarAmigo(token, amigoId) {
     try {
       const response = await axios.delete(
-        `${REST_SERVER_URL}/eliminarAmigo/${userId}/${amigoId}`
+        `${REST_SERVER_URL}/eliminarAmigo/${amigoId}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
       return response.data;
     } catch (error) {
@@ -123,10 +140,15 @@ class PerfilService {
     }
   }
 
-  async buscarUsuarios(query, userId) {
+  async buscarUsuarios(query, token) {
     try {
       const response = await axios.get(
-        `${REST_SERVER_URL}/buscarAmigos/${userId}?query=${query}`
+        `${REST_SERVER_URL}/buscarAmigos?query=${query}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
       return response.data;
     } catch (error) {
@@ -135,11 +157,15 @@ class PerfilService {
   }
 
 
-  async actualizarImagen(userObject, imagen) {
+  async actualizarImagen(token, imagen) {
     try {
       const actualizarImagen = await axios.patch(
-        `${REST_SERVER_URL}/actualizarImagen/${userObject.id}?esChofer=${userObject.esChofer}&imagen=${imagen}`,
-      
+        `${REST_SERVER_URL}/actualizarImagen?imagen=${imagen}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       )
       return actualizarImagen.data
     } catch (error) {
@@ -147,8 +173,14 @@ class PerfilService {
     }
   }
 
-  async confirmarViaje(viaje) {
-    const response = await axios.post(`${REST_SERVER_URL}/confirmar`, viaje);
+  async confirmarViaje(viaje,token) {
+    const response = await axios.post(`${REST_SERVER_URL}/confirmar`, viaje,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
     return response.data;
   }
 

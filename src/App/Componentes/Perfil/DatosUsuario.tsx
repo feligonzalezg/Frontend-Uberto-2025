@@ -136,7 +136,7 @@ const DatosUsuario = ({ setImage }) => {
       try {
         const response = await perfilService.buscarUsuarios(
           query,
-          userObject.id
+          userObject
         );
         setSugerencias(response);
       } catch (error) {
@@ -161,7 +161,7 @@ const DatosUsuario = ({ setImage }) => {
     setLoading(true);
     try {
       const amigoNuevo = await perfilService.agregarAmigo(
-        userObject.id,
+        userObject,
         nuevoAmigo.id
       );
       setMensaje('Amigo agregado exitosamente.');
