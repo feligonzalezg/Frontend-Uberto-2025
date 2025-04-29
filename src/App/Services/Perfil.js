@@ -25,8 +25,8 @@ class PerfilService {
     }
 }
 
-  async getComentarios(userObject) {
-     const token = localStorage.getItem(TOKEN_KEY);
+  async getComentarios(token) {
+    
     try {
       const comentarios = await axios.get(
         `${REST_SERVER_URL}/comentario`,
@@ -153,11 +153,16 @@ class PerfilService {
   }
 
 
-  async calificarViaje(userId, calificacion) {
+  async calificarViaje(token,calificacion) {
     try {
       const response = await axios.post(
-        `${REST_SERVER_URL}/calificar/${userId}`,
-        calificacion
+        `${REST_SERVER_URL}/calificar`,
+        calificacion,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
       return response.data;
     } catch (error) {

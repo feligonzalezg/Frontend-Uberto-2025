@@ -163,7 +163,7 @@ const DatosUsuario = ({ setImage }) => {
   };
 
   const fetchDatosUsuario = async () => {
-    console.log(userObject)
+ 
     try {
       const response = await perfilService.dataUsuario(userObject);
       setUsuario(response);
