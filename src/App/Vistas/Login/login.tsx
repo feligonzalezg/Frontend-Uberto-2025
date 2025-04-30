@@ -17,6 +17,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import usuarioService from '../../Services/LoginService'
+import { TOKEN_KEY } from '../../Services/configuracion'
 
 export const Login = () => {
   const navigate = useNavigate()
@@ -50,7 +51,7 @@ export const Login = () => {
         formValues.userName,
         formValues.password,
       )
-      localStorage.setItem('usuario', JSON.stringify(usuarioObjeto))
+      localStorage.setItem(TOKEN_KEY, JSON.stringify(usuarioObjeto))
       enqueueSnackbar('Inicio de sesión exitoso', {
         variant: 'success',
         autoHideDuration: 1000,

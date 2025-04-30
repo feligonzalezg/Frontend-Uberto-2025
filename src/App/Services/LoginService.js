@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { REST_SERVER_URL } from './configuracion'
+import { REST_SERVER_URL, TOKEN_KEY } from './configuracion'
 
   class UsuarioService  {
     async validarUsuario(usuario,contrasenia) {
@@ -7,18 +7,15 @@ import { REST_SERVER_URL } from './configuracion'
       return usuarioId.data
     }
 
-    cerrarSession(){
-      return usuarioId (null)
-    }
-
     getUsuarioLogeado = () =>{ 
-      const userStorage = localStorage.getItem('usuario')
+      const userStorage = localStorage.getItem(TOKEN_KEY)
       return JSON.parse(userStorage || '{}')
     }
+
+    
   
   }
 
-  
-
+ 
   const usuarioService = new UsuarioService()
   export default usuarioService
