@@ -7,8 +7,8 @@ const HomeUsuario: React.FC = () => {
   const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = userObject.esChofer
 
-
   return esChofer ? <HomeChofer user={userObject} /> : <HomeViajero user={userObject} />
+
 };
 
 export default HomeUsuario;
