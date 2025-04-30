@@ -50,7 +50,7 @@ const CardUsuario: React.FC<CardUsuarioProps> = ({ viaje }) => {
   const handleCalificar = async (calificacion: Calificacion) => {
     try {
       await perfilService.calificarViaje(
-        userObject.id,
+        userObject,
         calificacion
       );
       setCalificacionEnviada(true);

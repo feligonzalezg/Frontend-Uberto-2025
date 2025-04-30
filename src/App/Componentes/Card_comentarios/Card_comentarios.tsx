@@ -69,7 +69,7 @@ const CardComentario = ({
       if (!comentarioToDelete)
         throw new Error('No se ha seleccionado un comentario para eliminar.');
       await perfilService.deleteComentario(
-        userObject.id,
+        userObject,
         comentarioToDelete.idComentario
       );
       setMensaje(`El comentario fue eliminado exitosamente.`);

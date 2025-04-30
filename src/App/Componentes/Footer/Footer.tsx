@@ -6,6 +6,7 @@ import PortraitIcon from '@mui/icons-material/Portrait'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import Paper from '@mui/material/Paper'
 import { Link } from 'react-router-dom'
+import { TOKEN_KEY } from '../../Services/configuracion'
 
 
 const Footer = () => {
@@ -16,8 +17,8 @@ const Footer = () => {
   }
 
   const logout = () => {
-    localStorage.removeItem('usuario')
-    }
+  localStorage.removeItem(TOKEN_KEY)   
+ }
 
   return (
     <>

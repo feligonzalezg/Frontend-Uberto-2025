@@ -45,7 +45,7 @@ const ConfirmarViaje = () => {
       fechaFin,
     };
     try {
-      await perfilService.confirmarViaje(viajedata);
+      await perfilService.confirmarViaje(viajedata,userObject);
       navigate('/Home');
       enqueueSnackbar("Viaje Confirmado", {
         variant: 'success',

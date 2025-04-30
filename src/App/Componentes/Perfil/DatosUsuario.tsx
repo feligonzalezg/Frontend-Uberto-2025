@@ -17,6 +17,13 @@ import Amigos from './amigos';
 import usuarioService from '../../Services/LoginService';
 import FormularioUsuario from './formularioUsuarios';
 import SaldoUsuario from './SaldoUsuario';
+import { jwtDecode } from 'jwt-decode';
+
+
+interface JwtPayload {
+  id: string;
+  rol: string;
+}
 
 interface Usuario {
   nombre: string;
@@ -39,12 +46,24 @@ interface Amigo {
 }
 
 const DatosUsuario = ({ setImage }) => {
-  const userObject = usuarioService.getUsuarioLogeado();
-  const esChofer = userObject.esChofer;
+
+  const userObject = usuarioService.getUsuarioLogeado()
+  //const esChofer = userObject.esChofer;
   const [usuario, setUsuario] = useState<Usuario>({
     nombre: '',
     apellido: '',
   });
+
+
+  let esChofer = null
+
+  if (userObject) {
+    const decoded = jwtDecode<JwtPayload>(userObject);
+    esChofer = decoded.rol == 'CONDUCTOR';
+    
+  }
+  
+  console.log (esChofer)
 
   const [usuarioOriginal, setUsuarioOriginal] = useState<Usuario>({
     nombre: '',
@@ -120,7 +139,7 @@ const DatosUsuario = ({ setImage }) => {
       try {
         const response = await perfilService.buscarUsuarios(
           query,
-          userObject.id
+          userObject
         );
         setSugerencias(response);
       } catch (error) {
@@ -145,7 +164,7 @@ const DatosUsuario = ({ setImage }) => {
     setLoading(true);
     try {
       const amigoNuevo = await perfilService.agregarAmigo(
-        userObject.id,
+        userObject,
         nuevoAmigo.id
       );
       setMensaje('Amigo agregado exitosamente.');
@@ -165,6 +184,7 @@ const DatosUsuario = ({ setImage }) => {
   };
 
   const fetchDatosUsuario = async () => {
+ 
     try {
       const response = await perfilService.dataUsuario(userObject);
       setUsuario(response);
