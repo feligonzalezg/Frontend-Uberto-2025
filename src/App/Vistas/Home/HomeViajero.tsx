@@ -9,10 +9,10 @@ import homeService from '../../Services/HomeService';
 import CardChofer from '../../Componentes/CardChofer/CardChofer';
 
 interface Props {
-  user: any;
+  token: string;
 }
 
-const HomeViajero: React.FC<Props> = ({ user }) => {
+const HomeViajero: React.FC<Props> = ({ token }) => {
   const [origen, setOrigen] = useState('');
   const [destino, setDestino] = useState('');
   const [fecha, setFecha] = useState('');
@@ -49,7 +49,8 @@ const HomeViajero: React.FC<Props> = ({ user }) => {
         cantidadDePasajeros: cantidad,
       };
 
-      const response = await homeService.ChoferesDisponibles(dto)
+      const response = await homeService.ChoferesDisponibles(dto,token)
+      console.log(dto)
       setResultados(response || [])
       setError(null)
     } catch (err: any) {

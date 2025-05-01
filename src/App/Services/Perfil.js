@@ -5,15 +5,15 @@ import { ImageNotSupported } from '@mui/icons-material'
  
 class PerfilService {
 
-  async  dataUsuario(userObject) {
+  async  dataUsuario(token) {
     
-    if (!userObject) {
+    if (!token) {
         throw new Error('No se encontró token de autenticación');
     }
     try {
           const response = await axios.get(`${REST_SERVER_URL}/perfil`, {
               headers: {
-                  'Authorization': `Bearer ${userObject}`,
+                  'Authorization': `Bearer ${token}`,
               },
           });
 
@@ -30,6 +30,22 @@ class PerfilService {
     try {
       const comentarios = await axios.get(
         `${REST_SERVER_URL}/comentario`,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`
+              }
+        }
+      );
+      return comentarios.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async getComentariosParaConfirmacion(token,id) {
+    
+    try {
+      const comentarios = await axios.get(
+        `${REST_SERVER_URL}/comentariosParaConfirmar/${id}`,
         {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -174,12 +190,15 @@ class PerfilService {
   }
 
   async confirmarViaje(viaje,token) {
-    const response = await axios.post(`${REST_SERVER_URL}/confirmar`, viaje,
+    const response = await axios.post(`${REST_SERVER_URL}/confirmar`,
+      viaje,  
       {
         headers: {
           'Authorization': `Bearer ${token}`
         }
-      }
+      },
+      
+    
     );
     return response.data;
   }

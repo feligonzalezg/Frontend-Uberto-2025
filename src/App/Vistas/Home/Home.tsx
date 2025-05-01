@@ -5,10 +5,10 @@ import HomeViajero from './HomeViajero'
 
 
 const HomeUsuario: React.FC = () => {
-  const userObject = usuarioService.getUsuarioLogeado()
+  const token = usuarioService.getUsuarioLogeado()
   const esChofer = usuarioService.getRolUsuario()
   
-  return esChofer ? <HomeChofer user={userObject} /> : <HomeViajero user={userObject} />
+  return esChofer ? <HomeChofer token={token} /> : <HomeViajero token={token} />
 
 };
 
