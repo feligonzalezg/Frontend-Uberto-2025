@@ -1,4 +1,4 @@
-import { Alert, Box, Button, CircularProgress, Modal, Snackbar, Typography } from '@mui/material'
+import {Box} from '@mui/material'
 import CardComentario from '../Card_comentarios/Card_comentarios'
 import { useEffect, useState } from 'react'
 import perfilService from '../../Services/Perfil'

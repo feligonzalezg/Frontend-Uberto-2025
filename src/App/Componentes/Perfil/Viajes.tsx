@@ -6,7 +6,8 @@ import usuarioService from '../../Services/LoginService';
 
 const Viajes = () => {
   const userObject = usuarioService.getUsuarioLogeado()
-  const esChofer = userObject.esChofer
+  const esChofer = usuarioService.getRolUsuario()
+  
   const [viajesRealizados, setViajesRealizados] = useState<[]>([])
   const [viajesPendientes, setViajesPendientes] = useState<[]>([])
   const [totalFacturacion, setTotalFacturacion] = useState<number>(0); 

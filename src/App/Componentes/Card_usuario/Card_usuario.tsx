@@ -42,7 +42,8 @@ viaje: Viaje
 const CardUsuario: React.FC<CardUsuarioProps> = ({ viaje }) => {
 
   const userObject = usuarioService.getUsuarioLogeado()
-  const esChofer = userObject.esChofer;
+  const esChofer = usuarioService.getRolUsuario()
+  
   const [modalAbierto, setModalAbierto] = useState(false);
   const [calificacionEnviada, setCalificacionEnviada] = useState(false);
   const formatoHorario = `${viaje.fechaInicio < 10 ? '0' : ''}${viaje.fechaInicio} - ${viaje.fechaFin}`;

@@ -41,7 +41,8 @@ const CardComentario = ({
   onDeleteComentario,
 }: CardComentarioProps) => {
   const userObject = usuarioService.getUsuarioLogeado()
-  const esChofer = userObject.esChofer;
+  const esChofer = usuarioService.getRolUsuario()
+  
 
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
