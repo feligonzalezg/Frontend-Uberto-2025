@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Box, Typography, TextField, Button, IconButton, Divider, Alert,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  IconButton,
+  Divider,
+  Alert,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -22,17 +28,19 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
   const [error, setError] = useState<string | null>(null);
 
   const handleCantidad = (sumar: boolean) => {
-    setCantidad((prev) => sumar ? Math.min(4, prev + 1) : Math.max(1, prev - 1))
-  }
+    setCantidad((prev) =>
+      sumar ? Math.min(4, prev + 1) : Math.max(1, prev - 1)
+    );
+  };
 
   const getMinDatetime = () => {
     const now = new Date();
-    return now.toISOString().slice(0, 16)
-  }
+    return now.toISOString().slice(0, 16);
+  };
 
   const generarDuracion = () => {
-    return Math.floor(Math.random() * (60 - 5 + 1)) + 5
-  }
+    return Math.floor(Math.random() * (60 - 5 + 1)) + 5;
+  };
 
   const handleBuscarViaje = async () => {
     try {
@@ -40,8 +48,8 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
         throw new Error('Todos los campos deben estar completos');
       }
 
-      const duracionAleatoria = generarDuracion()
-      setDuracion(duracionAleatoria)
+      const duracionAleatoria = generarDuracion();
+      setDuracion(duracionAleatoria);
 
       const dto = {
         fecha: format(new Date(fecha), 'dd/MM/yyyy HH:mm'),
@@ -49,23 +57,40 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
         cantidadDePasajeros: cantidad,
       };
 
-      const response = await homeService.ChoferesDisponibles(dto,token)
-      console.log(dto)
-      setResultados(response || [])
-      setError(null)
+      const response = await homeService.ChoferesDisponibles(dto, token);
+      console.log(dto);
+      setResultados(response || []);
+      setError(null);
     } catch (err: any) {
-      setError(err.message || 'Error al buscar')
+      setError(err.message || 'Error al buscar');
     }
-  }
+  };
 
   return (
-    <Box sx={{ p: 2, backgroundColor: '#f0eff2', borderRadius: 2, boxShadow: 3 }}>
-      <Typography variant="h5" sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}>
+    <Box
+      sx={{ p: 2, backgroundColor: '#f0eff2', borderRadius: 2, boxShadow: 3 }}
+    >
+      <Typography
+        variant="h5"
+        sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}
+      >
         Realizar un Viaje
       </Typography>
 
-      <TextField fullWidth label="Origen" value={origen} onChange={(e) => setOrigen(e.target.value)} sx={{ mb: 2 }} />
-      <TextField fullWidth label="Destino" value={destino} onChange={(e) => setDestino(e.target.value)} sx={{ mb: 2 }} />
+      <TextField
+        fullWidth
+        label="Origen"
+        value={origen}
+        onChange={(e) => setOrigen(e.target.value)}
+        sx={{ mb: 2 }}
+      />
+      <TextField
+        fullWidth
+        label="Destino"
+        value={destino}
+        onChange={(e) => setDestino(e.target.value)}
+        sx={{ mb: 2 }}
+      />
       <TextField
         fullWidth
         type="datetime-local"
@@ -83,35 +108,67 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
       />
 
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <TextField fullWidth label="Cantidad de Pasajeros" value={cantidad} InputProps={{ readOnly: true }} />
-        <IconButton onClick={() => handleCantidad(true)}><AddCircleIcon sx={{ color: '#9348e4' }} /></IconButton>
-        <IconButton onClick={() => handleCantidad(false)}><RemoveCircleIcon sx={{ color: '#9348e4' }} /></IconButton>
+        <TextField
+          fullWidth
+          label="Cantidad de Pasajeros"
+          value={cantidad}
+          InputProps={{ readOnly: true }}
+        />
+        <IconButton onClick={() => handleCantidad(true)}>
+          <AddCircleIcon sx={{ color: '#9348e4' }} />
+        </IconButton>
+        <IconButton onClick={() => handleCantidad(false)}>
+          <RemoveCircleIcon sx={{ color: '#9348e4' }} />
+        </IconButton>
       </Box>
 
-      <Button variant="contained"className="button-primary"onClick={handleBuscarViaje}>Buscar</Button>
+      <Button
+        variant="contained"
+        className="button-primary"
+        onClick={handleBuscarViaje}
+      >
+        Buscar
+      </Button>
 
-      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+      {error && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {error}
+        </Alert>
+      )}
 
       <Divider sx={{ my: 2 }} />
-      <Typography variant="h5" sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}>
+
+      <Typography
+        variant="h5"
+        sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}
+      >
         Resultados
       </Typography>
 
-      {resultados.length > 0 ? (
-        resultados.map((chofer, idx) => (
-          <CardChofer
-            key={idx}
-            chofer={chofer}
-            origen={origen}
-            destino={destino}
-            duracion={duracion}
-            fecha={fecha}
-            cantidadDePasajeros={cantidad}
-          />
-        ))
-      ) : (
-        <Typography>No hay resultados disponibles</Typography>
-      )}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {resultados.length > 0 ? (
+          resultados.map((chofer, idx) => (
+            <CardChofer
+              key={idx}
+              chofer={chofer}
+              origen={origen}
+              destino={destino}
+              duracion={duracion}
+              fecha={fecha}
+              cantidadDePasajeros={cantidad}
+            />
+          ))
+        ) : (
+          <Typography>No hay resultados disponibles</Typography>
+        )}
+      </Box>
     </Box>
   );
 };
