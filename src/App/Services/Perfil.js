@@ -1,55 +1,45 @@
-import axios from 'axios'
-import { REST_SERVER_URL, TOKEN_KEY } from './configuracion'
-import { ImageNotSupported } from '@mui/icons-material'
+import axios from 'axios';
+import { REST_SERVER_URL, TOKEN_KEY } from './configuracion';
+import { ImageNotSupported } from '@mui/icons-material';
 
- 
 class PerfilService {
-
-  async  dataUsuario(token) {
-    
+  async dataUsuario(token) {
     if (!token) {
-        throw new Error('No se encontró token de autenticación');
+      throw new Error('No se encontró token de autenticación');
     }
     try {
-          const response = await axios.get(`${REST_SERVER_URL}/perfil`, {
-              headers: {
-                  'Authorization': `Bearer ${token}`,
-              },
-          });
+      const response = await axios.get(`${REST_SERVER_URL}/perfil`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        return response.data;
-        
+      return response.data;
     } catch (error) {
-        console.error(error);
-
+      console.error(error);
     }
-}
+  }
 
   async getComentarios(token) {
-    
     try {
-      const comentarios = await axios.get(
-        `${REST_SERVER_URL}/comentario`,
-        {
-            headers: {
-                'Authorization': `Bearer ${token}`
-              }
-        }
-      );
+      const comentarios = await axios.get(`${REST_SERVER_URL}/comentario`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return comentarios.data;
     } catch (error) {
       console.error(error);
     }
   }
-  async getComentariosParaConfirmacion(token,id) {
-    
+  async getComentariosParaConfirmacion(token, id) {
     try {
       const comentarios = await axios.get(
         `${REST_SERVER_URL}/comentariosParaConfirmar/${id}`,
         {
-            headers: {
-                'Authorization': `Bearer ${token}`
-              }
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return comentarios.data;
@@ -64,8 +54,8 @@ class PerfilService {
         `${REST_SERVER_URL}/viajesRealizados`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return viajesRealizados.data;
@@ -80,8 +70,8 @@ class PerfilService {
         `${REST_SERVER_URL}/viajesPendientes`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return viajesPendientes.data;
@@ -91,29 +81,30 @@ class PerfilService {
   }
 
   async actualizarUsuario(token, usuario) {
-      const actualizarUser = await axios.patch(
-        `${REST_SERVER_URL}/actualizarUsuario`,
-        usuario,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
-      return actualizarUser.data;
+    const actualizarUser = await axios.patch(
+      `${REST_SERVER_URL}/actualizarUsuario`,
+      usuario,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return actualizarUser.data;
   }
 
   async cargarSaldo(token, monto) {
     try {
       const response = await axios.post(
-        `${REST_SERVER_URL}/cargarSaldo`,null,
+        `${REST_SERVER_URL}/cargarSaldo`,
+        null,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
           params: {
-            monto: monto
-          }
+            monto: monto,
+          },
         }
       );
       return response.data;
@@ -124,14 +115,15 @@ class PerfilService {
   }
 
   async agregarAmigo(token, amigoId) {
-    console.log(token)
+    console.log(token);
     try {
       const response = await axios.put(
         `${REST_SERVER_URL}/agregarAmigo/${amigoId}`,
+        null,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return response.data;
@@ -146,8 +138,8 @@ class PerfilService {
         `${REST_SERVER_URL}/eliminarAmigo/${amigoId}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return response.data;
@@ -162,8 +154,8 @@ class PerfilService {
         `${REST_SERVER_URL}/buscarAmigos?query=${query}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return response.data;
@@ -172,47 +164,41 @@ class PerfilService {
     }
   }
 
-
   async actualizarImagen(token, imagen) {
     try {
       const actualizarImagen = await axios.patch(
         `${REST_SERVER_URL}/actualizarImagen?imagen=${imagen}`,
+        null,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
-      )
-      return actualizarImagen.data
+      );
+      return actualizarImagen.data;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
-  async confirmarViaje(viaje,token) {
-    const response = await axios.post(`${REST_SERVER_URL}/confirmar`,
-      viaje,  
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+  async confirmarViaje(viaje, token) {
+    const response = await axios.post(`${REST_SERVER_URL}/confirmar`, viaje, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      
-    
-    );
+    });
     return response.data;
   }
 
-
-  async calificarViaje(token,calificacion) {
+  async calificarViaje(token, calificacion) {
     try {
       const response = await axios.post(
         `${REST_SERVER_URL}/calificar`,
         calificacion,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return response.data;
@@ -227,8 +213,8 @@ class PerfilService {
         `${REST_SERVER_URL}/eliminarComentario/${idComentario}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return comentario.data;
@@ -236,7 +222,6 @@ class PerfilService {
       console.error(error);
     }
   }
-
 }
 
 const perfilService = new PerfilService();
