@@ -15,6 +15,11 @@ import { useEffect, useState } from 'react';
 import perfilService from '../../Services/Perfil';
 import Amigos from './amigos';
 import usuarioService from '../../Services/LoginService';
+import FormularioUsuario from './formularioUsuarios';
+import SaldoUsuario from './SaldoUsuario';
+
+
+
 
 interface Usuario {
   nombre: string;
@@ -37,8 +42,10 @@ interface Amigo {
 }
 
 const DatosUsuario = ({ setImage }) => {
+
   const userObject = usuarioService.getUsuarioLogeado()
-  const esChofer = userObject.esChofer;
+  const esChofer = usuarioService.getRolUsuario()
+  
   const [usuario, setUsuario] = useState<Usuario>({
     nombre: '',
     apellido: '',
@@ -118,7 +125,7 @@ const DatosUsuario = ({ setImage }) => {
       try {
         const response = await perfilService.buscarUsuarios(
           query,
-          userObject.id
+          userObject
         );
         setSugerencias(response);
       } catch (error) {
@@ -143,7 +150,7 @@ const DatosUsuario = ({ setImage }) => {
     setLoading(true);
     try {
       const amigoNuevo = await perfilService.agregarAmigo(
-        userObject.id,
+        userObject,
         nuevoAmigo.id
       );
       setMensaje('Amigo agregado exitosamente.');
@@ -163,6 +170,7 @@ const DatosUsuario = ({ setImage }) => {
   };
 
   const fetchDatosUsuario = async () => {
+ 
     try {
       const response = await perfilService.dataUsuario(userObject);
       setUsuario(response);
@@ -178,122 +186,27 @@ const DatosUsuario = ({ setImage }) => {
     fetchDatosUsuario();
   }, []);
 
-  
-
   return (
     <Box>
-      <TextField
-        fullWidth
-        label="Nombre"
-        variant="outlined"
-        margin="normal"
-        value={usuario.nombre}
-        onChange={(event) => actualizarCampo('nombre', event.target.value)}
-      />
-      <TextField
-        fullWidth
-        label="Apellido"
-        variant="outlined"
-        margin="normal"
-        value={usuario.apellido}
-        onChange={(event) => actualizarCampo('apellido', event.target.value)}
-      />
-      {!esChofer && (
-        <TextField
-          fullWidth
-          label="Teléfono"
-          variant="outlined"
-          margin="normal"
-          value={usuario.telefono ?? ''}
-          onChange={(event) =>{const number =event.target.value; if (/^\d*$/.test(number)&& number.length<=9)
-            {actualizarCampo('telefono', Number(number))}}} 
+      <Box>
+        <FormularioUsuario
+          usuario={usuario}
+          esChofer={esChofer}
+          loading={loading}
+          actualizarCampo={actualizarCampo}
+          handleGuardarCambios={handleGuardarCambios}
         />
-      )}
-      {esChofer && (
-        <>
-          <TextField
-            fullWidth
-            label="Precio base"
-            variant="outlined"
-            margin="normal"
-            value={usuario.precioBase ?? ''}
-            onChange={(event) =>
-              actualizarCampo('precioBase', Number(event.target.value))
-            }
-          />
-          <Typography variant="h6" sx={{ mt: 3 }}>
-            Informacion Vehiculo
-          </Typography>
-          <TextField
-            fullWidth
-            label="Año"
-            variant="outlined"
-            margin="normal"
-            value={usuario.anio ?? ''}
-            onChange={(event) => actualizarCampo('anio', event.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="Dominio"
-            variant="outlined"
-            margin="normal"
-            value={usuario.dominio ?? ''}
-            onChange={(event) => actualizarCampo('dominio', event.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="Marca"
-            variant="outlined"
-            margin="normal"
-            value={usuario.marca ?? ''}
-            onChange={(event) => actualizarCampo('marca', event.target.value)}
-          />
-          <TextField
-            fullWidth
-            label="Modelo"
-            variant="outlined"
-            margin="normal"
-            value={usuario.modelo ?? ''}
-            sx={{ mb: 2 }}
-            onChange={(event) => actualizarCampo('modelo', event.target.value)}
-          />
-        </>
-      )}
-      <Button
-        className="button-primary"
-        variant="contained"
-        fullWidth
-        sx={{ mt: 2, mb: 2 }}
-        onClick={handleGuardarCambios}
-        disabled={loading}
-      >
-        {loading ? <CircularProgress size={24} /> : 'Guardar Cambios'}
-      </Button>
+      </Box>
 
       {!esChofer && (
         <>
-          <Typography variant="h6" sx={{ mt: 3 }}>
-            Saldo Disponible: {usuario.saldo ?? ''}
-          </Typography>
-          <TextField
-            fullWidth
-            label="Monto"
-            type="number"
-            variant="outlined"
-            margin="normal"
-            value={monto}
-            onChange={(event) => setMonto(event.target.value)}
+          <SaldoUsuario
+            saldo={usuario.saldo ?? 0}
+            monto={monto}
+            setMonto={setMonto}
+            handleAgregarSaldo={handleAgregarSaldo}
+            loading={loading}
           />
-
-          <Button
-            className="button-primary"
-            variant="contained"
-            fullWidth
-            onClick={handleAgregarSaldo}
-            disabled={loading || !monto}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Agregar Saldo'}
-          </Button>
 
           <Box
             sx={{

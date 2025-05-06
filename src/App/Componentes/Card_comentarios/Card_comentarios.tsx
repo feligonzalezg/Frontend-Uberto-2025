@@ -41,7 +41,8 @@ const CardComentario = ({
   onDeleteComentario,
 }: CardComentarioProps) => {
   const userObject = usuarioService.getUsuarioLogeado()
-  const esChofer = userObject.esChofer;
+  const esChofer = usuarioService.getRolUsuario()
+  
 
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,7 @@ const CardComentario = ({
       if (!comentarioToDelete)
         throw new Error('No se ha seleccionado un comentario para eliminar.');
       await perfilService.deleteComentario(
-        userObject.id,
+        userObject,
         comentarioToDelete.idComentario
       );
       setMensaje(`El comentario fue eliminado exitosamente.`);

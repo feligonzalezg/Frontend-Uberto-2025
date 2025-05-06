@@ -17,6 +17,7 @@ const ConfirmarViaje = () => {
   const [comentarios, setComentarios] = useState<[]>([]);
   const { enqueueSnackbar } = useSnackbar();
 
+  console.log(chofer.id)
   const calcularHoraFin = (fechaInicio: string, duracion: number) => {
     const [dia, mes, anio, hora, min] = fechaInicio.match(/\d+/g)!.map(Number);
     const fechaObj = new Date(2000 + anio, mes - 1, dia, hora, min);
@@ -32,7 +33,6 @@ const ConfirmarViaje = () => {
       ? format(new Date(fecha), 'dd/MM/yyyy HH:mm')
       : '';
     const viajedata = {
-      idViajero: userObject?.id || 0,
       idConductor: chofer?.id,
       nombre: chofer?.nombreYApellido,
       origen,
@@ -45,7 +45,8 @@ const ConfirmarViaje = () => {
       fechaFin,
     };
     try {
-      await perfilService.confirmarViaje(viajedata);
+      console.log(viajedata)
+      await perfilService.confirmarViaje(viajedata,userObject);
       navigate('/Home');
       enqueueSnackbar("Viaje Confirmado", {
         variant: 'success',
@@ -64,7 +65,7 @@ const ConfirmarViaje = () => {
   useEffect(() => {
     const fetchComentarios = async () => {
       try {
-        const response = await perfilService.getComentarios(chofer);
+        const response = await perfilService.getComentariosParaConfirmacion(userObject,chofer.id);
         setComentarios(response);
       } catch (error) {
         console.error(error);

@@ -53,7 +53,7 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
       if (!amigoToDelete) throw new Error('No se ha seleccionado un amigo para eliminar.')
 
       const userObject = obtenerUsuario()
-      await perfilService.eliminarAmigo(userObject.id, amigoToDelete.id)
+      await perfilService.eliminarAmigo(userObject, amigoToDelete.id)
       handleAmigoToDelete(amigoToDelete.id)
       setMensaje(`${amigoToDelete.nombreYApellido} fue eliminado exitosamente.`)
       setSuccess(true)

@@ -1,12 +1,15 @@
 import axios from 'axios'
-import { REST_SERVER_URL } from './configuracion'
+import { REST_SERVER_URL, TOKEN_KEY } from './configuracion'
 
 class HomeService {
-  async ChoferesDisponibles(busquedaDTO) {
+  async ChoferesDisponibles(busquedaDTO,token) {
     try {
       const choferes_Disponibles = await axios.post(
         `${REST_SERVER_URL}/home/buscar`,
         busquedaDTO,
+        {headers:{
+          'Authorization': `Bearer ${token}`,
+      }},
       )
       return choferes_Disponibles.data
     } catch (error) {
@@ -14,12 +17,15 @@ class HomeService {
     }
   }
 
-  async BuscarViajes(busquedaViajes, id) {
+  async BuscarViajes(busquedaViajes,token) {
 
     try {
-      const viajes = await axios.post(
-        `${REST_SERVER_URL}/filtrar/${id}`,
+      console.log(token)
+      const viajes = await axios.post(`${REST_SERVER_URL}/filtrar`,
         busquedaViajes,
+        {headers:{
+          'Authorization': `Bearer ${token}`,
+      }},
       )
       return viajes.data
     } catch (error) {
