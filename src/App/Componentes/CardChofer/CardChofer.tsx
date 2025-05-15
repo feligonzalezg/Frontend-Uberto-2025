@@ -9,15 +9,17 @@ import {
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
+import logService from '../../Services/LogService';
+import usuarioService from '../../Services/LoginService';
 
 interface CardChoferProps {
-  chofer:Chofer;
+  chofer: Chofer;
   origen: string;
   destino: string;
   fecha: string;
   duracion: number;
   cantidadDePasajeros: number;
-  esChofer:boolean;
+  esChofer: boolean;
 }
 
 interface Chofer {
@@ -42,8 +44,18 @@ const CardChofer: React.FC<CardChoferProps> = ({
   cantidadDePasajeros,
 }) => {
   const navigate = useNavigate();
+  const userObject = usuarioService.getUsuarioLogeado();
 
-  const handleClick = () => {
+  const registrarLogConductor = async () => {
+    await logService.registrarClick(chofer.nombreYApellido, userObject);
+  };
+
+  const handleClick = async () => {
+    try {
+      await registrarLogConductor();
+    } catch (error) {
+      console.error('Error al registrar el log:', error);
+    }
     navigate('/Confirmar_viaje', {
       state: {
         origen,
@@ -75,7 +87,9 @@ const CardChofer: React.FC<CardChoferProps> = ({
         />
         <CardContent className="card-chofer__content">
           <Box>
-            <Typography className="card-chofer__nombre">{chofer.nombreYApellido}</Typography>
+            <Typography className="card-chofer__nombre">
+              {chofer.nombreYApellido}
+            </Typography>
 
             <Typography className="card-chofer__modelo">
               {chofer.marca} | {chofer.modelo} • {chofer.anio}
@@ -88,7 +102,10 @@ const CardChofer: React.FC<CardChoferProps> = ({
           </Box>
           <Box>
             {' '}
-            <Avatar src={chofer.foto} style={{ width: '5rem', height: '5rem' }} />
+            <Avatar
+              src={chofer.foto}
+              style={{ width: '5rem', height: '5rem' }}
+            />
           </Box>
         </CardContent>
       </Card>
