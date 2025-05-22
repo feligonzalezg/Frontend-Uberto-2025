@@ -11,6 +11,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 import logService from '../../Services/LogService';
 import usuarioService from '../../Services/LoginService';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface CardChoferProps {
   chofer: Chofer;
@@ -20,6 +21,7 @@ interface CardChoferProps {
   duracion: number;
   cantidadDePasajeros: number;
   esChofer: boolean;
+  cantidadDeClicks: number;
 }
 
 interface Chofer {
@@ -33,6 +35,7 @@ interface Chofer {
   calificacion: number;
   foto: string;
   esChofer: boolean;
+  cantidadDeClicks: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
@@ -47,7 +50,13 @@ const CardChofer: React.FC<CardChoferProps> = ({
   const userObject = usuarioService.getUsuarioLogeado();
 
   const registrarLogConductor = async () => {
-    await logService.registrarClick(chofer.nombreYApellido, userObject);
+    const registro = {
+      conductorNombre: chofer.nombreYApellido,
+      conductorId: chofer.id,
+    };
+
+    console.log(' el chofer es ', chofer);
+    await logService.registrarClick(registro, userObject);
   };
 
   const handleClick = async () => {
@@ -97,6 +106,16 @@ const CardChofer: React.FC<CardChoferProps> = ({
             <Box className="card-chofer__info">
               <Typography className="card-chofer__tarifa">
                 Valor <strong>${chofer.importe}</strong>
+              </Typography>
+            </Box>
+            <Box display="flex" alignItems="center" mt={1}>
+              <VisibilityIcon
+                fontSize="small"
+                style={{ marginRight: 4, color: '#6b6b6b' }}
+              />
+              <Typography variant="body2" color="textSecondary">
+                {chofer.cantidadDeClicks}{' '}
+                {chofer.cantidadDeClicks === 1 ? 'vista' : 'vistas'}
               </Typography>
             </Box>
           </Box>
