@@ -108,16 +108,6 @@ const CardChofer: React.FC<CardChoferProps> = ({
                 Valor <strong>${chofer.importe}</strong>
               </Typography>
             </Box>
-            <Box display="flex" alignItems="center" mt={1}>
-              <VisibilityIcon
-                fontSize="small"
-                style={{ marginRight: 4, color: '#6b6b6b' }}
-              />
-              <Typography variant="body2" color="textSecondary">
-                {chofer.cantidadDeClicks}{' '}
-                {chofer.cantidadDeClicks === 1 ? 'vista' : 'vistas'}
-              </Typography>
-            </Box>
           </Box>
           <Box>
             {' '}
