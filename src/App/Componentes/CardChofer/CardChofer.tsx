@@ -9,15 +9,19 @@ import {
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
+import logService from '../../Services/LogService';
+import usuarioService from '../../Services/LoginService';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface CardChoferProps {
-  chofer:Chofer;
+  chofer: Chofer;
   origen: string;
   destino: string;
   fecha: string;
   duracion: number;
   cantidadDePasajeros: number;
-  esChofer:boolean;
+  esChofer: boolean;
+  cantidadDeClicks: number;
 }
 
 interface Chofer {
@@ -31,6 +35,7 @@ interface Chofer {
   calificacion: number;
   foto: string;
   esChofer: boolean;
+  cantidadDeClicks: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
@@ -42,8 +47,24 @@ const CardChofer: React.FC<CardChoferProps> = ({
   cantidadDePasajeros,
 }) => {
   const navigate = useNavigate();
+  const userObject = usuarioService.getUsuarioLogeado();
 
-  const handleClick = () => {
+  const registrarLogConductor = async () => {
+    const registro = {
+      conductorNombre: chofer.nombreYApellido,
+      conductorId: chofer.id,
+    };
+
+    console.log(' el chofer es ', chofer);
+    await logService.registrarClick(registro, userObject);
+  };
+
+  const handleClick = async () => {
+    try {
+      await registrarLogConductor();
+    } catch (error) {
+      console.error('Error al registrar el log:', error);
+    }
     navigate('/Confirmar_viaje', {
       state: {
         origen,
@@ -75,7 +96,9 @@ const CardChofer: React.FC<CardChoferProps> = ({
         />
         <CardContent className="card-chofer__content">
           <Box>
-            <Typography className="card-chofer__nombre">{chofer.nombreYApellido}</Typography>
+            <Typography className="card-chofer__nombre">
+              {chofer.nombreYApellido}
+            </Typography>
 
             <Typography className="card-chofer__modelo">
               {chofer.marca} | {chofer.modelo} • {chofer.anio}
@@ -85,10 +108,23 @@ const CardChofer: React.FC<CardChoferProps> = ({
                 Valor <strong>${chofer.importe}</strong>
               </Typography>
             </Box>
+            <Box display="flex" alignItems="center" mt={1}>
+              <VisibilityIcon
+                fontSize="small"
+                style={{ marginRight: 4, color: '#6b6b6b' }}
+              />
+              <Typography variant="body2" color="textSecondary">
+                {chofer.cantidadDeClicks}{' '}
+                {chofer.cantidadDeClicks === 1 ? 'vista' : 'vistas'}
+              </Typography>
+            </Box>
           </Box>
           <Box>
             {' '}
-            <Avatar src={chofer.foto} style={{ width: '5rem', height: '5rem' }} />
+            <Avatar
+              src={chofer.foto}
+              style={{ width: '5rem', height: '5rem' }}
+            />
           </Box>
         </CardContent>
       </Card>
