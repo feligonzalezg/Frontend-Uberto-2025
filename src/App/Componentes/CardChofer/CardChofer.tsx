@@ -11,7 +11,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 import logService from '../../Services/LogService';
 import usuarioService from '../../Services/LoginService';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+
 
 interface CardChoferProps {
   chofer: Chofer;
