@@ -55,6 +55,8 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
         fecha: format(new Date(fecha), 'dd/MM/yyyy HH:mm'),
         duracion: duracionAleatoria,
         cantidadDePasajeros: cantidad,
+        origen:origen,
+        destino:destino,
       };
 
       const response = await homeService.ChoferesDisponibles(dto, token);
