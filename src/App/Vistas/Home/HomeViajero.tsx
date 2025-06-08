@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -13,6 +13,8 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { format } from 'date-fns';
 import homeService from '../../Services/HomeService';
 import CardChofer from '../../Componentes/CardChofer/CardChofer';
+import CardSugerencia from '../../Componentes/CardSugerencia/CardSugerencia';
+import usuarioService from '../../Services/LoginService';
 
 interface Props {
   token: string;
@@ -26,6 +28,7 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
   const [duracion, setDuracion] = useState(0);
   const [resultados, setResultados] = useState([]);
   const [error, setError] = useState<string | null>(null);
+  const [ultimaBusqueda, setUltimaBusqueda] = useState(null)
 
   const handleCantidad = (sumar: boolean) => {
     setCantidad((prev) =>
@@ -67,6 +70,20 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
       setError(err.message || 'Error al buscar');
     }
   };
+
+  const fetchUltimaBusqueda = async () => {
+    const data = await homeService.ultimoViaje(token);
+    if (data) {
+            console.log("Token", token); 
+
+      console.log("Última búsqueda del backend:", data); 
+      setUltimaBusqueda(data);
+    }
+  }
+ useEffect(() => {
+  fetchUltimaBusqueda();
+}, []);
+
 
   return (
     <Box
@@ -139,6 +156,18 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
       )}
 
       <Divider sx={{ my: 2 }} />
+
+      <Box>
+      {ultimaBusqueda && (
+  <CardSugerencia
+    origen={ultimaBusqueda.origen}
+    destino={ultimaBusqueda.destino}
+    cantidad={ultimaBusqueda.cantidadDePasajeros}
+  />
+)}
+
+
+      </Box>
 
       <Typography
         variant="h5"

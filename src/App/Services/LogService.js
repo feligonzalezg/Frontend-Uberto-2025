@@ -19,7 +19,7 @@ class LogService {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response; // Agregá este return si lo vas a usar en el componente
+      return response; 
     } catch (error) {
       console.error('Error obteniendo clicks del chofer:', error);
     }
