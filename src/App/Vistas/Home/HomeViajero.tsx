@@ -185,12 +185,14 @@ const [mostrarSugerencia, setMostrarSugerencia] = useState(true);
 
       </Box>
 
-      <Typography
-        variant="h5"
-        sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}
-      >
-        Resultados
-      </Typography>
+     {resultados.length > 0 && (
+  <Typography
+    variant="h5"
+    sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}
+  >
+    Resultados
+  </Typography>
+)}
 
       <Box
         sx={{
