@@ -35,6 +35,7 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
   const [error, setError] = useState<string | null>(null);
 const [ultimaBusqueda, setUltimaBusqueda] = useState<Busqueda | null>(null);
 const [mostrarSugerencia, setMostrarSugerencia] = useState(true);
+const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
 
   const handleCantidad = (sumar: boolean) => {
@@ -55,6 +56,7 @@ const [mostrarSugerencia, setMostrarSugerencia] = useState(true);
   const handleBuscarViaje = async () => {
     try {
        setMostrarSugerencia(false);
+        setBusquedaRealizada(true)
       if (!origen.trim() || !destino.trim() || !fecha.trim()) {
         throw new Error('Todos los campos deben estar completos');
       }
@@ -202,21 +204,37 @@ const [mostrarSugerencia, setMostrarSugerencia] = useState(true);
           justifyContent: 'center',
         }}
       >
-        {resultados.length > 0 ? (
-          resultados.map((chofer, idx) => (
-            <CardChofer
-              key={idx}
-              chofer={chofer}
-              origen={origen}
-              destino={destino}
-              duracion={duracion}
-              fecha={fecha}
-              cantidadDePasajeros={cantidad}
-            />
-          ))
-        ) : (
-          <Typography>No hay resultados disponibles</Typography>
-        )}
+ {resultados.length > 0 ? (
+  resultados.map((chofer, idx) => (
+    <CardChofer
+      key={idx}
+      chofer={chofer}
+      origen={origen}
+      destino={destino}
+      duracion={duracion}
+      fecha={fecha}
+      cantidadDePasajeros={cantidad}
+    />
+  ))
+) : (
+  busquedaRealizada && !error && (
+    <Box
+      sx={{
+        mt: 2,
+        p: 3,
+        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Typography >
+        No hay resultados disponibles
+      </Typography>
+    </Box>
+  )
+)}
+
       </Box>
     </Box>
   );
