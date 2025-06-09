@@ -71,7 +71,6 @@ const [mostrarSugerencia, setMostrarSugerencia] = useState(true);
       };
 
       const response = await homeService.ChoferesDisponibles(dto, token);
-      console.log(dto);
       setResultados(response || []);
       setError(null);
     } catch (err: any) {

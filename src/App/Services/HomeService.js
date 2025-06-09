@@ -4,7 +4,6 @@ import { REST_SERVER_URL, TOKEN_KEY } from './configuracion'
 class HomeService {
   async ChoferesDisponibles(busquedaDTO,token) {
     try {
-      console.log(token)
       const choferes_Disponibles = await axios.post(
         `${REST_SERVER_URL}/home/buscar`,
         busquedaDTO,
