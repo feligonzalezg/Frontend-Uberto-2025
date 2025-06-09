@@ -35,7 +35,6 @@ class HomeService {
   }
 
   async ultimoViaje(token) {
-    console.log("este es el token", token)
     try {
       const viaje = await axios.get(`${REST_SERVER_URL}/ultimaBusqueda`,  {
         headers: {
