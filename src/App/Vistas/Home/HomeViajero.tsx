@@ -187,7 +187,7 @@ const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
       </Box>
 
-     {resultados.length > 0 && (
+     { busquedaRealizada&&(
   <Typography
     variant="h5"
     sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}
@@ -206,6 +206,7 @@ const [busquedaRealizada, setBusquedaRealizada] = useState(false);
       >
  {resultados.length > 0 ? (
   resultados.map((chofer, idx) => (
+    
     <CardChofer
       key={idx}
       chofer={chofer}
@@ -217,7 +218,7 @@ const [busquedaRealizada, setBusquedaRealizada] = useState(false);
     />
   ))
 ) : (
-  busquedaRealizada && !error && (
+  busquedaRealizada && (
     <Box
       sx={{
         mt: 2,
@@ -234,7 +235,6 @@ const [busquedaRealizada, setBusquedaRealizada] = useState(false);
     </Box>
   )
 )}
-
       </Box>
     </Box>
   );
