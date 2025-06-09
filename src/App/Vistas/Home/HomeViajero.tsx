@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -13,10 +13,17 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { format } from 'date-fns';
 import homeService from '../../Services/HomeService';
 import CardChofer from '../../Componentes/CardChofer/CardChofer';
+import CardSugerencia from '../../Componentes/CardSugerencia/CardSugerencia';
 
 interface Props {
   token: string;
 }
+interface Busqueda {
+  origen: string;
+  destino: string;
+  cantidadDePasajeros: number;
+}
+
 
 const HomeViajero: React.FC<Props> = ({ token }) => {
   const [origen, setOrigen] = useState('');
@@ -26,6 +33,10 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
   const [duracion, setDuracion] = useState(0);
   const [resultados, setResultados] = useState([]);
   const [error, setError] = useState<string | null>(null);
+const [ultimaBusqueda, setUltimaBusqueda] = useState<Busqueda | null>(null);
+const [mostrarSugerencia, setMostrarSugerencia] = useState(true);
+const [busquedaRealizada, setBusquedaRealizada] = useState(false);
+
 
   const handleCantidad = (sumar: boolean) => {
     setCantidad((prev) =>
@@ -44,6 +55,8 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
 
   const handleBuscarViaje = async () => {
     try {
+       setMostrarSugerencia(false);
+        setBusquedaRealizada(true)
       if (!origen.trim() || !destino.trim() || !fecha.trim()) {
         throw new Error('Todos los campos deben estar completos');
       }
@@ -60,13 +73,23 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
       };
 
       const response = await homeService.ChoferesDisponibles(dto, token);
-      console.log(dto);
       setResultados(response || []);
       setError(null);
     } catch (err: any) {
       setError(err.message || 'Error al buscar');
     }
   };
+
+  const fetchUltimaBusqueda = async () => {
+    const data = await homeService.ultimoViaje(token);
+    if (data) {
+      setUltimaBusqueda(data);
+    }
+  }
+ useEffect(() => {
+  fetchUltimaBusqueda();
+}, []);
+
 
   return (
     <Box
@@ -140,12 +163,38 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
 
       <Divider sx={{ my: 2 }} />
 
-      <Typography
-        variant="h5"
-        sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}
-      >
-        Resultados
-      </Typography>
+      <Box>
+     
+  {ultimaBusqueda && mostrarSugerencia && (
+  <CardSugerencia
+    origen={ultimaBusqueda.origen}
+    destino={ultimaBusqueda.destino}
+    cantidad={ultimaBusqueda.cantidadDePasajeros}
+    onClick={() => {
+      setOrigen(ultimaBusqueda.origen)
+      setDestino(ultimaBusqueda.destino)
+      setCantidad(ultimaBusqueda.cantidadDePasajeros)
+
+      const now = new Date()
+      const tzOffset = now.getTimezoneOffset() * 60000
+      const formattedNow = new Date(now.getTime() - tzOffset).toISOString().slice(0, 16)
+      setFecha(formattedNow)
+      setMostrarSugerencia(false)
+
+    }}
+  />
+)}
+
+      </Box>
+
+     {resultados.length > 0 && (
+  <Typography
+    variant="h5"
+    sx={{ color: '#5508a7', fontWeight: 'bold', mb: 2 }}
+  >
+    Resultados
+  </Typography>
+)}
 
       <Box
         sx={{
@@ -155,21 +204,37 @@ const HomeViajero: React.FC<Props> = ({ token }) => {
           justifyContent: 'center',
         }}
       >
-        {resultados.length > 0 ? (
-          resultados.map((chofer, idx) => (
-            <CardChofer
-              key={idx}
-              chofer={chofer}
-              origen={origen}
-              destino={destino}
-              duracion={duracion}
-              fecha={fecha}
-              cantidadDePasajeros={cantidad}
-            />
-          ))
-        ) : (
-          <Typography>No hay resultados disponibles</Typography>
-        )}
+ {resultados.length > 0 ? (
+  resultados.map((chofer, idx) => (
+    <CardChofer
+      key={idx}
+      chofer={chofer}
+      origen={origen}
+      destino={destino}
+      duracion={duracion}
+      fecha={fecha}
+      cantidadDePasajeros={cantidad}
+    />
+  ))
+) : (
+  busquedaRealizada && !error && (
+    <Box
+      sx={{
+        mt: 2,
+        p: 3,
+        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Typography >
+        No hay resultados disponibles
+      </Typography>
+    </Box>
+  )
+)}
+
       </Box>
     </Box>
   );
