@@ -26,7 +26,6 @@ interface Usuario {
   apellido: string;
   telefono?: number;
   saldo?: number;
-  amigos?: Amigo[];
   precioBase?: number;
   anio?: number | string;
   dominio?: string;
@@ -176,7 +175,16 @@ const DatosUsuario = ({ setImage }) => {
       setUsuario(response);
       setImage(response.foto);
       setUsuarioOriginal(response);
-      setAmigos(response.amigos);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+    const amigazos = async () => {
+ 
+    try {
+      const response = await perfilService.amigos(userObject);
+      setAmigos(response);
     } catch (error) {
       console.error(error);
     }
@@ -184,6 +192,8 @@ const DatosUsuario = ({ setImage }) => {
 
   useEffect(() => {
     fetchDatosUsuario();
+    amigazos();
+
   }, []);
 
   return (
@@ -229,7 +239,7 @@ const DatosUsuario = ({ setImage }) => {
             </Box>
           </Box>
 
-          {usuario.amigos && (
+          {amigos && (
             <Amigos amigos={amigos} handleAmigoToDelete={removeAmigo} />
           )}
         </>

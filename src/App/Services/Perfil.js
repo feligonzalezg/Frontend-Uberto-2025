@@ -115,7 +115,7 @@ class PerfilService {
   }
 
   async agregarAmigo(token, amigoId) {
-    console.log(token);
+    console.log("amigo a agregar",amigoId);
     try {
       const response = await axios.put(
         `${REST_SERVER_URL}/agregarAmigo/${amigoId}`,
@@ -218,6 +218,23 @@ class PerfilService {
         }
       );
       return comentario.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+    async amigos(token, amigoId) {
+    try {
+      const response = await axios.get(
+        `${REST_SERVER_URL}/amigos`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("amigos perfil",response.data);
+      return response.data;
     } catch (error) {
       console.error(error);
     }
