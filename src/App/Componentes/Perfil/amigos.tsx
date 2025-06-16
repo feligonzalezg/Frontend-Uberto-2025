@@ -108,7 +108,6 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
   title={`¿Estás seguro de eliminar a ${amigoToDelete?.nombreYApellido}?`}
   description="Esta acción no se puede deshacer."
   confirmText="Eliminar"
-  confirmColor="error"
   loading={loading}
 />
 

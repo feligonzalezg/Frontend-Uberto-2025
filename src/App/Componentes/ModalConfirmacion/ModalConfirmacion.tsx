@@ -22,7 +22,6 @@ const ModalConfirmacion = ({
   loading = false,
   confirmText = 'Confirmar',
   cancelText = 'Cancelar',
-  confirmColor = 'primary',
 }: ModalConfirmacionProps) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -46,10 +45,10 @@ const ModalConfirmacion = ({
           {description}
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-          <Button variant="outlined" onClick={onClose}>
+          <Button variant="outlined" onClick={onClose}sx={{color: "var(--primary-color)", borderColor:"var(--primary-color)"}}>
             {cancelText}
           </Button>
-          <Button variant="contained" color={confirmColor} onClick={onConfirm}>
+          <Button variant="contained" sx={{backgroundColor: "var(--primary-color)"}} onClick={onConfirm}>
             {loading ? <CircularProgress size={24} /> : confirmText}
           </Button>
         </Box>

@@ -50,8 +50,10 @@ const [busquedaRealizada, setBusquedaRealizada] = useState(false);
   };
 
   const generarDuracion = () => {
-    return Math.floor(Math.random() * (60 - 5 + 1)) + 5;
+    //return Math.floor(Math.random() * (60 - 5 + 1)) + 5;
+    return 1
   };
+
 
   const handleBuscarViaje = async () => {
     try {

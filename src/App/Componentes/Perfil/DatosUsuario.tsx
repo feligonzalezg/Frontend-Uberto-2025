@@ -392,13 +392,14 @@ const agregarAmigoDesdeSugerencias = async (amigo: Amigo) => {
           <Box
             sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}
           >
-            <Button variant="outlined" onClick={handleCloseAgregarAmigoModal}>
+            <Button variant="outlined" onClick={handleCloseAgregarAmigoModal}sx={{color: "var(--primary-color)", borderColor:"var(--primary-color)"}}>
               Cancelar
             </Button>
             <Button
               variant="contained"
               onClick={handleAgregarAmigo}
               disabled={loading}
+              sx={{backgroundColor: "var(--primary-color)"}}
             >
               {loading ? <CircularProgress size={24} /> : 'Agregar'}
             </Button>
