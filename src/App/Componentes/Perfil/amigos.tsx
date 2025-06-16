@@ -4,6 +4,7 @@ import { useState } from 'react'
 import perfilService from '../../Services/Perfil'
 import { AxiosError } from 'axios'
 import usuarioService from '../../Services/LoginService'
+import ModalConfirmacion from '../ModalConfirmacion/ModalConfirmacion'
 
 interface Amigo {
   nombreYApellido: string
@@ -100,60 +101,40 @@ const Amigos = ({ amigos, handleAmigoToDelete }: AmigosProps ) => {
         </Box>
       ))}
 
-      <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-          }}
-        >
-          <Typography id="modal-title" variant="h6" fontWeight="bold" sx={{ marginBottom: 2 }}>
-            ¿Estás seguro de eliminar a {amigoToDelete?.nombreYApellido}?
-          </Typography>
-          <Typography id="modal-description" variant="body1" sx={{ marginBottom: 3 }}>
-            Esta acción no se puede deshacer.
-          </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-            <Button variant="outlined" onClick={handleCloseModal}>
-              Cancelar
-            </Button>
-            <Button variant="contained" color="error" onClick={handleConfirmDelete}>
-              {loading ? <CircularProgress size={24} /> : 'Eliminar'}
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+    <ModalConfirmacion
+  open={openModal}
+  onClose={handleCloseModal}
+  onConfirm={handleConfirmDelete}
+  title={`¿Estás seguro de eliminar a ${amigoToDelete?.nombreYApellido}?`}
+  description="Esta acción no se puede deshacer."
+  confirmText="Eliminar"
+  confirmColor="error"
+  loading={loading}
+/>
 
-      <Snackbar
-        open={success || !!error}
-        autoHideDuration={6000}
-        onClose={() => {
-          setSuccess(false)
-          setError('')
-        }}
-      >
-        <Alert
-          severity={success ? 'success' : 'error'}
-          onClose={() => {
-            setSuccess(false)
-            setError('')
-          }}
-        >
-          {success ? mensaje : error}
-        </Alert>
-      </Snackbar>
+
+    <Snackbar
+  open={success || !!error}
+  autoHideDuration={6000}
+  onClose={() => {
+    setSuccess(false)
+    setError('')
+  }}
+  anchorOrigin={{
+    vertical: 'bottom',
+    horizontal: 'center',
+  }}
+>
+  <Alert
+    severity={success ? 'success' : 'error'}
+    onClose={() => {
+      setSuccess(false)
+      setError('')
+    }}
+  >
+    {success ? mensaje : error}
+  </Alert>
+</Snackbar>
     </Box>
   )
 }
