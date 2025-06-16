@@ -17,6 +17,8 @@ import Amigos from './amigos';
 import usuarioService from '../../Services/LoginService';
 import FormularioUsuario from './formularioUsuarios';
 import SaldoUsuario from './SaldoUsuario';
+import { Tabs, Tab } from '@mui/material';
+import Sugerencias from './amigosSugeridos';
 
 
 
@@ -38,9 +40,13 @@ interface Amigo {
   username: string;
   avatar: string;
   id: number;
+  foto: string
+}
+interface DatosUsuarioProps {
+  setImage: (url: string) => void;
 }
 
-const DatosUsuario = ({ setImage }) => {
+const DatosUsuario: React.FC<DatosUsuarioProps> = ({ setImage }) => {
 
   const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = usuarioService.getRolUsuario()
@@ -63,6 +69,9 @@ const DatosUsuario = ({ setImage }) => {
   const [amigos, setAmigos] = useState<Amigo[] | null>([]);
   const [nuevoAmigo, setNuevoAmigo] = useState<Amigo | null>();
   const [sugerencias, setSugerencias] = useState<[]>([]);
+  const [tabActiva, setTabActiva] = useState(0);
+const [amigosSugeridos, setAmigosSugeridos] =  useState<Amigo[]>([]);
+
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
     setUsuario((prevUsuario) => ({
@@ -154,8 +163,10 @@ const DatosUsuario = ({ setImage }) => {
       );
       setMensaje('Amigo agregado exitosamente.');
       setSuccess(true);
-      setAmigos((prevAmigos) => [...prevAmigos, amigoNuevo]);
-      handleCloseAgregarAmigoModal();
+      setAmigos((prevAmigos) => [...(prevAmigos ?? []), amigoNuevo]);
+      handleCloseAgregarAmigoModal(); 
+      setAmigosSugeridos((prev) => prev.filter((a) => a.id !== nuevoAmigo.id));
+
     } catch (error) {
       setError('Error al agregar amigo. Por favor, inténtalo de nuevo.');
       console.error(error);
@@ -164,9 +175,16 @@ const DatosUsuario = ({ setImage }) => {
     }
   };
 
-  const removeAmigo = (id: number) => {
-    setAmigos(amigos!!.filter((amigo) => amigo.id !== id));
-  };
+ const removeAmigo = async (id: number) => {
+  setAmigos(amigos!!.filter((amigo) => amigo.id !== id));
+    try {
+    const nuevasSugerencias = await perfilService.getSugerenciaDeAmistad(userObject);
+    setAmigosSugeridos(nuevasSugerencias);
+  } catch (error) {
+    console.error('Error al actualizar sugerencias después de eliminar amigo:', error);
+  }
+};
+
 
   const fetchDatosUsuario = async () => {
  
@@ -196,6 +214,42 @@ const DatosUsuario = ({ setImage }) => {
 
   }, []);
 
+
+const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+  setTabActiva(newValue);
+};
+
+useEffect(() => {
+  const obtenerSugerencias = async () => {
+    try {
+      const amigosSugeridos = await perfilService.getSugerenciaDeAmistad(userObject)
+      setAmigosSugeridos(amigosSugeridos);
+    } catch (error) {
+      console.error('Error al obtener sugerencias:', error);
+    }
+  };
+  obtenerSugerencias();
+}, []);
+
+const agregarAmigoDesdeSugerencias = async (amigo: Amigo) => {
+  setLoading(true)
+  try {
+    const nuevo = await perfilService.agregarAmigo(userObject, amigo.id)
+    setMensaje(`${amigo.nombreYApellido} fue agregado exitosamente.`)
+    setSuccess(true)
+    setAmigos((prevAmigos) => [...prevAmigos  ?? [] , nuevo])
+    setAmigosSugeridos((prev) => prev.filter((a) => a.id !== amigo.id))
+  } catch (error) {
+    setError('Error al agregar amigo desde sugerencias.')
+    console.error(error)
+  } finally {
+    setLoading(false)
+  }
+}
+
+
+
+  
   return (
     <Box>
       <Box>
@@ -218,30 +272,70 @@ const DatosUsuario = ({ setImage }) => {
             loading={loading}
           />
 
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mt: '2em',
-            }}
-          >
-            <Typography variant="h5" fontWeight="bold">
-              Amigos
-            </Typography>
-            <Box>
-              <IconButton
-                onClick={handleOpenAgregarAmigoModal}
-                sx={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
-              >
-                <AddIcon />
-              </IconButton>
-            </Box>
-          </Box>
+   
 
-          {amigos && (
-            <Amigos amigos={amigos} handleAmigoToDelete={removeAmigo} />
-          )}
+
+<Box
+  sx={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    mt: 4,
+    px: 2, 
+  }}
+>
+  <Tabs
+    value={tabActiva}
+    onChange={handleChangeTab}
+    indicatorColor="primary"
+    textColor="primary"
+    sx={{
+      '& .MuiTab-root': {
+        fontSize: '1rem', 
+        fontWeight: 600, 
+        color: 'black', 
+        textTransform: 'none', 
+      },
+      '& .Mui-selected': {
+        color: 'var(--primary-color)',
+      },
+    }}
+  >
+    <Tab label="Amigos" />
+    <Tab label="Sugerencias" />
+  </Tabs>
+
+  <IconButton
+    onClick={handleOpenAgregarAmigoModal}
+    sx={{
+      backgroundColor: 'var(--primary-color)',
+      color: 'white',
+      ml: 2,
+      '&:hover': {
+        backgroundColor: '#480066',
+      },
+    }}
+  >
+    <AddIcon />
+  </IconButton>
+</Box>
+
+         {tabActiva === 0 && amigos && (
+       <Amigos amigos={amigos} handleAmigoToDelete={removeAmigo} />
+)}
+
+        {tabActiva === 1 && (
+        <Box mt={2}>
+    
+        <Sugerencias
+        sugeridos={amigosSugeridos} 
+        handleAgregarAmigo={agregarAmigoDesdeSugerencias}
+
+      />
+    
+  </Box>
+)}
+
         </>
       )}
 

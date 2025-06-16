@@ -239,6 +239,23 @@ class PerfilService {
       console.error(error);
     }
   }
+
+
+ async getSugerenciaDeAmistad(token) {
+    try {
+      const sugerencias = await axios.get(
+        `${REST_SERVER_URL}/sugerencias`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return sugerencias.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 const perfilService = new PerfilService();
