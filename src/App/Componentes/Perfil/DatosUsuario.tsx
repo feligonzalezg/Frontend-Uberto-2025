@@ -216,6 +216,7 @@ const [amigosSugeridos, setAmigosSugeridos] =  useState<Amigo[]>([]);
   useEffect(() => {
     fetchDatosUsuario();
     amigazos();
+    obtenerSugerencias();
   }, []);
 
 

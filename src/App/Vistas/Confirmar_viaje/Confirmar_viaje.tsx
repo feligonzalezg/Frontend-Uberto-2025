@@ -2,7 +2,7 @@ import './ConfirmarViaje.css';
 import { Box, Typography, Divider, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import perfilService from '../../Services/Perfil';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import CardComentario from '../../Componentes/Card_comentarios/Card_comentarios';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
@@ -15,6 +15,7 @@ const ConfirmarViaje = () => {
     location.state || {};
   const navigate = useNavigate();
   const [comentarios, setComentarios] = useState<[]>([]);
+  const [botonDisabled, setBotonDisabled] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   console.log(chofer.id)
@@ -28,6 +29,7 @@ const ConfirmarViaje = () => {
   };
 
   const handleConfirmarViaje = async (fechaInicio: string) => {
+    setBotonDisabled(true);
     const fechaFin = calcularHoraFin(fecha, duracion);
     const fechaFormateada = fechaInicio
       ? format(new Date(fecha), 'dd/MM/yyyy HH:mm')
@@ -61,6 +63,7 @@ const ConfirmarViaje = () => {
         anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
       });
     }
+    setBotonDisabled(false);
   };
   useEffect(() => {
     const fetchComentarios = async () => {
@@ -177,6 +180,7 @@ const ConfirmarViaje = () => {
               ml: 4,
             }}
             onClick={() => navigate('/home')}
+            disabled={botonDisabled}
           >
             Volver
           </Button>
@@ -190,8 +194,9 @@ const ConfirmarViaje = () => {
               ml: 11,
             }}
             onClick={handleConfirmarViaje}
+            disabled={botonDisabled}
           >
-            Confirmar
+            {botonDisabled ? 'Confirmando...' : 'Confirmar Viaje'}
           </Button>
         </Box>
       </Box>
