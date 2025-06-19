@@ -165,7 +165,7 @@ const [amigosSugeridos, setAmigosSugeridos] =  useState<Amigo[]>([]);
       setSuccess(true);
       setAmigos((prevAmigos) => [...(prevAmigos ?? []), amigoNuevo]);
       handleCloseAgregarAmigoModal(); 
-      setAmigosSugeridos((prev) => prev.filter((a) => a.id !== nuevoAmigo.id));
+      obtenerSugerencias()
 
     } catch (error) {
       setError('Error al agregar amigo. Por favor, inténtalo de nuevo.');
@@ -177,12 +177,7 @@ const [amigosSugeridos, setAmigosSugeridos] =  useState<Amigo[]>([]);
 
  const removeAmigo = async (id: number) => {
   setAmigos(amigos!!.filter((amigo) => amigo.id !== id));
-    try {
-    const nuevasSugerencias = await perfilService.getSugerenciaDeAmistad(userObject);
-    setAmigosSugeridos(nuevasSugerencias);
-  } catch (error) {
-    console.error('Error al actualizar sugerencias después de eliminar amigo:', error);
-  }
+  obtenerSugerencias()
 };
 
 
@@ -197,8 +192,18 @@ const [amigosSugeridos, setAmigosSugeridos] =  useState<Amigo[]>([]);
       console.error(error);
     }
   };
+  
+  const obtenerSugerencias = async () => {
+    try {
+      const amigosSugeridos = await perfilService.getSugerenciaDeAmistad(userObject)
+      setAmigosSugeridos(amigosSugeridos);
+    } catch (error) {
+      console.error('Error al obtener sugerencias:', error);
+    }
+  };
+ 
 
-    const amigazos = async () => {
+  const amigazos = async () => {
  
     try {
       const response = await perfilService.amigos(userObject);
@@ -211,7 +216,6 @@ const [amigosSugeridos, setAmigosSugeridos] =  useState<Amigo[]>([]);
   useEffect(() => {
     fetchDatosUsuario();
     amigazos();
-
   }, []);
 
 
@@ -219,17 +223,7 @@ const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
   setTabActiva(newValue);
 };
 
-useEffect(() => {
-  const obtenerSugerencias = async () => {
-    try {
-      const amigosSugeridos = await perfilService.getSugerenciaDeAmistad(userObject)
-      setAmigosSugeridos(amigosSugeridos);
-    } catch (error) {
-      console.error('Error al obtener sugerencias:', error);
-    }
-  };
-  obtenerSugerencias();
-}, []);
+
 
 const agregarAmigoDesdeSugerencias = async (amigo: Amigo) => {
   setLoading(true)
