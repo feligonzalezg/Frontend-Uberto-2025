@@ -17,6 +17,8 @@ import Amigos from './amigos';
 import usuarioService from '../../Services/LoginService';
 import FormularioUsuario from './formularioUsuarios';
 import SaldoUsuario from './SaldoUsuario';
+import { Tabs, Tab } from '@mui/material';
+import Sugerencias from './amigosSugeridos';
 
 
 
@@ -26,7 +28,6 @@ interface Usuario {
   apellido: string;
   telefono?: number;
   saldo?: number;
-  amigos?: Amigo[];
   precioBase?: number;
   anio?: number | string;
   dominio?: string;
@@ -39,9 +40,13 @@ interface Amigo {
   username: string;
   avatar: string;
   id: number;
+  foto: string
+}
+interface DatosUsuarioProps {
+  setImage: (url: string) => void;
 }
 
-const DatosUsuario = ({ setImage }) => {
+const DatosUsuario: React.FC<DatosUsuarioProps> = ({ setImage }) => {
 
   const userObject = usuarioService.getUsuarioLogeado()
   const esChofer = usuarioService.getRolUsuario()
@@ -64,6 +69,9 @@ const DatosUsuario = ({ setImage }) => {
   const [amigos, setAmigos] = useState<Amigo[] | null>([]);
   const [nuevoAmigo, setNuevoAmigo] = useState<Amigo | null>();
   const [sugerencias, setSugerencias] = useState<[]>([]);
+  const [tabActiva, setTabActiva] = useState(0);
+const [amigosSugeridos, setAmigosSugeridos] =  useState<Amigo[]>([]);
+
 
   const actualizarCampo = (tipo: keyof Usuario, value: string | number) => {
     setUsuario((prevUsuario) => ({
@@ -155,8 +163,10 @@ const DatosUsuario = ({ setImage }) => {
       );
       setMensaje('Amigo agregado exitosamente.');
       setSuccess(true);
-      setAmigos((prevAmigos) => [...prevAmigos, amigoNuevo]);
-      handleCloseAgregarAmigoModal();
+      setAmigos((prevAmigos) => [...(prevAmigos ?? []), amigoNuevo]);
+      handleCloseAgregarAmigoModal(); 
+      obtenerSugerencias()
+
     } catch (error) {
       setError('Error al agregar amigo. Por favor, inténtalo de nuevo.');
       console.error(error);
@@ -165,9 +175,11 @@ const DatosUsuario = ({ setImage }) => {
     }
   };
 
-  const removeAmigo = (id: number) => {
-    setAmigos(amigos!!.filter((amigo) => amigo.id !== id));
-  };
+ const removeAmigo = async (id: number) => {
+  setAmigos(amigos!!.filter((amigo) => amigo.id !== id));
+  obtenerSugerencias()
+};
+
 
   const fetchDatosUsuario = async () => {
  
@@ -176,7 +188,26 @@ const DatosUsuario = ({ setImage }) => {
       setUsuario(response);
       setImage(response.foto);
       setUsuarioOriginal(response);
-      setAmigos(response.amigos);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const obtenerSugerencias = async () => {
+    try {
+      const amigosSugeridos = await perfilService.getSugerenciaDeAmistad(userObject)
+      setAmigosSugeridos(amigosSugeridos);
+    } catch (error) {
+      console.error('Error al obtener sugerencias:', error);
+    }
+  };
+ 
+
+  const amigazos = async () => {
+ 
+    try {
+      const response = await perfilService.amigos(userObject);
+      setAmigos(response);
     } catch (error) {
       console.error(error);
     }
@@ -184,8 +215,35 @@ const DatosUsuario = ({ setImage }) => {
 
   useEffect(() => {
     fetchDatosUsuario();
+    amigazos();
   }, []);
 
+
+const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+  setTabActiva(newValue);
+};
+
+
+
+const agregarAmigoDesdeSugerencias = async (amigo: Amigo) => {
+  setLoading(true)
+  try {
+    const nuevo = await perfilService.agregarAmigo(userObject, amigo.id)
+    setMensaje(`${amigo.nombreYApellido} fue agregado exitosamente.`)
+    setSuccess(true)
+    setAmigos((prevAmigos) => [...prevAmigos  ?? [] , nuevo])
+    setAmigosSugeridos((prev) => prev.filter((a) => a.id !== amigo.id))
+  } catch (error) {
+    setError('Error al agregar amigo desde sugerencias.')
+    console.error(error)
+  } finally {
+    setLoading(false)
+  }
+}
+
+
+
+  
   return (
     <Box>
       <Box>
@@ -208,30 +266,70 @@ const DatosUsuario = ({ setImage }) => {
             loading={loading}
           />
 
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mt: '2em',
-            }}
-          >
-            <Typography variant="h5" fontWeight="bold">
-              Amigos
-            </Typography>
-            <Box>
-              <IconButton
-                onClick={handleOpenAgregarAmigoModal}
-                sx={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
-              >
-                <AddIcon />
-              </IconButton>
-            </Box>
-          </Box>
+   
 
-          {usuario.amigos && (
-            <Amigos amigos={amigos} handleAmigoToDelete={removeAmigo} />
-          )}
+
+<Box
+  sx={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    mt: 4,
+    px: 2, 
+  }}
+>
+  <Tabs
+    value={tabActiva}
+    onChange={handleChangeTab}
+    indicatorColor="primary"
+    textColor="primary"
+    sx={{
+      '& .MuiTab-root': {
+        fontSize: '1rem', 
+        fontWeight: 600, 
+        color: 'black', 
+        textTransform: 'none', 
+      },
+      '& .Mui-selected': {
+        color: 'var(--primary-color)',
+      },
+    }}
+  >
+    <Tab label="Amigos" />
+    <Tab label="Sugerencias" />
+  </Tabs>
+
+  <IconButton
+    onClick={handleOpenAgregarAmigoModal}
+    sx={{
+      backgroundColor: 'var(--primary-color)',
+      color: 'white',
+      ml: 2,
+      '&:hover': {
+        backgroundColor: '#480066',
+      },
+    }}
+  >
+    <AddIcon />
+  </IconButton>
+</Box>
+
+         {tabActiva === 0 && amigos && (
+       <Amigos amigos={amigos} handleAmigoToDelete={removeAmigo} />
+)}
+
+        {tabActiva === 1 && (
+        <Box mt={2}>
+    
+        <Sugerencias
+        sugeridos={amigosSugeridos} 
+        handleAgregarAmigo={agregarAmigoDesdeSugerencias}
+
+      />
+    
+  </Box>
+)}
+
         </>
       )}
 
@@ -288,13 +386,14 @@ const DatosUsuario = ({ setImage }) => {
           <Box
             sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 3 }}
           >
-            <Button variant="outlined" onClick={handleCloseAgregarAmigoModal}>
+            <Button variant="outlined" onClick={handleCloseAgregarAmigoModal}sx={{color: "var(--primary-color)", borderColor:"var(--primary-color)"}}>
               Cancelar
             </Button>
             <Button
               variant="contained"
               onClick={handleAgregarAmigo}
               disabled={loading}
+              sx={{backgroundColor: "var(--primary-color)"}}
             >
               {loading ? <CircularProgress size={24} /> : 'Agregar'}
             </Button>

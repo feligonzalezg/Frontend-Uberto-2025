@@ -20,8 +20,6 @@ interface CardChoferProps {
   fecha: string;
   duracion: number;
   cantidadDePasajeros: number;
-  esChofer: boolean;
-  cantidadDeClicks: number;
 }
 
 interface Chofer {
@@ -34,8 +32,6 @@ interface Chofer {
   importe: number;
   calificacion: number;
   foto: string;
-  esChofer: boolean;
-  cantidadDeClicks: number;
 }
 
 const CardChofer: React.FC<CardChoferProps> = ({
@@ -54,8 +50,6 @@ const CardChofer: React.FC<CardChoferProps> = ({
       conductorNombre: chofer.nombreYApellido,
       conductorId: chofer.id,
     };
-
-    console.log(' el chofer es ', chofer);
     await logService.registrarClick(registro, userObject);
   };
 

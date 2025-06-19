@@ -32,8 +32,22 @@ class HomeService {
       console.error(error)
     }
   }
+
+  async ultimoViaje(token) {
+    try {
+      const viaje = await axios.get(`${REST_SERVER_URL}/ultimaBusqueda`,  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return viaje.data;
+    } catch (error) {
+      console.error('Error al obtener la última búsqueda:', error);
+      return null;
+    }
+  }
 }
 
-const homeService = new HomeService()
+const homeService = new HomeService();
 
 export default homeService
